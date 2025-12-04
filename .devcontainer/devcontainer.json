@@ -2,7 +2,9 @@
   "name": "UIForge",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye",
   "features": {},
-  "postCreateCommand": "npm install",
+  "postCreateCommand": "bash -lc \"bash .devcontainer/install-deps.sh\"",
+  "postStartCommand": "bash -lc \"bash .devcontainer/install-deps.sh\"",
+  "postAttachCommand": "bash -lc \"bash .devcontainer/install-deps.sh\"",
   "customizations": {
     "vscode": {
       "extensions": [

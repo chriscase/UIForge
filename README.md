@@ -156,6 +156,40 @@ This repository is optimized for development using:
 
 Simply open this repository in GitHub Codespaces to get started immediately!
 
+### Codespaces / Dev Container details
+
+This repository contains a `.devcontainer` folder that configures a dev container with Node.js and TypeScript tooling preinstalled.
+
+- When you open the repo in GitHub Codespaces (or via `Remote - Containers` / devcontainer in VS Code), the container will automatically install dependencies on first creation and each subsequent start/attach using `.devcontainer/install-deps.sh`.
+- The installer script uses the lockfile to choose the appropriate package manager: it prefers `pnpm` (`pnpm-lock.yaml`) then `yarn` (`yarn.lock`) then `npm` (`package-lock.json`), and defaults to `npm` if no lockfile is present. The script will try to use `pnpm`/`yarn` when the lockfile exists and will fall back to `npm` when those tools are unavailable in the container.
+- The installer uses `npm ci`, `pnpm install --frozen-lockfile` or `yarn install` (appropriate for the package manager), and caches a hash of the lockfile to skip re-running an install when dependencies haven't changed.
+- To force a fresh install, remove `node_modules` and `.devcontainer/.deps_hash` and then restart the Dev Container/Codespace.
+
+You can also manually verify installation from within the Codespace/dev container:
+
+```bash
+# Explicitly invoke the scripts using bash to avoid permission errors if the files are not executable
+bash .devcontainer/verify-deps.sh
+```
+
+### Automated verification on PRs
+
+This repository includes a GitHub workflow (`.github/workflows/verify-devcontainer-deps.yml`) that runs on pull requests. The workflow will:
+
+- Checkout the code and set up Node.js
+- Run the repository's devcontainer install script (`.devcontainer/install-deps.sh`) to make sure dependencies install correctly
+- Verify dependencies are installed (`.devcontainer/verify-deps.sh`)
+- Run the test suite (`npm test`) to ensure the project builds and tests pass after installation
+
+### Codespaces Prebuilds
+
+This repository enables Codespaces prebuilds (see `.github/codespaces.yml`) and the prebuild will run `.devcontainer/prebuild.sh` to prepare the environment before a developer opens the Codespace. The prebuild script installs dependencies, verifies they are present, and optionally runs a quick test.
+
+Note: The prebuild script also ensures devcontainer scripts are executable (uses `chmod +x .devcontainer/*.sh`) so you don't need to manually change permissions.
+
+This helps catch environment and installation issues early during PRs.
+
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
