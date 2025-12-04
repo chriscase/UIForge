@@ -1,0 +1,77 @@
+.uiforge-button {
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.uiforge-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Sizes */
+.uiforge-button--small {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.uiforge-button--medium {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+
+.uiforge-button--large {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.125rem;
+}
+
+/* Variants */
+.uiforge-button--primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.uiforge-button--primary:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.uiforge-button--primary:active:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+.uiforge-button--secondary {
+  background-color: #6b7280;
+  color: white;
+}
+
+.uiforge-button--secondary:hover:not(:disabled) {
+  background-color: #4b5563;
+}
+
+.uiforge-button--secondary:active:not(:disabled) {
+  background-color: #374151;
+}
+
+.uiforge-button--outline {
+  background-color: transparent;
+  color: #3b82f6;
+  border: 2px solid #3b82f6;
+}
+
+.uiforge-button--outline:hover:not(:disabled) {
+  background-color: #eff6ff;
+}
+
+.uiforge-button--outline:active:not(:disabled) {
+  background-color: #dbeafe;
+}

@@ -1,0 +1,104 @@
+# Contributing to UIForge
+
+Thank you for your interest in contributing to UIForge! We welcome contributions from everyone.
+
+## Getting Started
+
+1. **Fork the repository** on GitHub
+2. **Clone your fork** locally:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/UIForge.git
+   cd UIForge
+   ```
+3. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+4. **Create a branch** for your changes:
+   ```bash
+   git checkout -b feature/my-new-feature
+   ```
+
+## Development Workflow
+
+### Running the Development Server
+
+Start the development server to see your changes in real-time:
+
+```bash
+npm run dev
+```
+
+Visit `http://localhost:5173` to see the component showcase.
+
+### Writing Code
+
+- Follow the existing code style
+- Write TypeScript code with proper type definitions
+- Add JSDoc comments for public APIs
+- Keep components simple and reusable
+
+### Testing
+
+Write tests for any new features or bug fixes:
+
+```bash
+npm test
+```
+
+Run tests with coverage:
+
+```bash
+npm run test:coverage
+```
+
+### Linting and Formatting
+
+Before committing, ensure your code passes linting:
+
+```bash
+npm run lint
+npm run format
+```
+
+## Submitting Changes
+
+1. **Commit your changes** with a descriptive message:
+   ```bash
+   git commit -m "Add new Button variant"
+   ```
+
+2. **Push to your fork**:
+   ```bash
+   git push origin feature/my-new-feature
+   ```
+
+3. **Open a Pull Request** on GitHub with:
+   - A clear title and description
+   - Reference to any related issues
+   - Screenshots for UI changes (if applicable)
+
+## Code Review Process
+
+- Maintainers will review your PR
+- Address any feedback or requested changes
+- Once approved, your PR will be merged
+
+## Component Guidelines
+
+When adding a new component:
+
+1. Create a new file in `src/components/`
+2. Add corresponding CSS in the same directory
+3. Write comprehensive tests in `src/tests/`
+4. Export the component from `src/index.ts`
+5. Add examples in the showcase
+6. Update the README with usage examples
+
+## Questions?
+
+Feel free to open an issue for any questions or concerns.
+
+## Code of Conduct
+
+Be respectful and inclusive. We're all here to learn and build great things together.
