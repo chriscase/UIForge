@@ -1,0 +1,24 @@
+# Development files
+examples/
+src/tests/
+.github/
+*.log
+
+# Configuration files
+.prettierrc
+.prettierignore
+eslint.config.js
+tsconfig.json
+tsconfig.node.json
+vite.config.ts
+vitest.config.ts
+index.html
+
+# Test and build artifacts
+coverage/
+.vite/
+node_modules/
+
+# Other
+*.md
+!README.md
