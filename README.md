@@ -187,6 +187,25 @@ This repository enables Codespaces prebuilds (see `.github/codespaces.yml`) and 
 
 Note: The prebuild script also ensures devcontainer scripts are executable (uses `chmod +x .devcontainer/*.sh`) so you don't need to manually change permissions.
 
+### Making the scripts executable in Git (optional)
+
+If you'd like the scripts to be executable in the repo (so they can run directly), there is a helper script to set the executable bit and commit the change for you: `scripts/set-exec-devcontainer-scripts.sh`.
+
+You can run it directly:
+
+```bash
+# This will set the exec bits and commit the change if necessary
+bash scripts/set-exec-devcontainer-scripts.sh
+```
+
+Or via npm:
+
+```bash
+npm run devcontainer:set-exec
+```
+
+This is optional — the devcontainer lifecycle commands and prebuild script should run the scripts using `bash` even if they are not executable.
+
 This helps catch environment and installation issues early during PRs.
 
 
