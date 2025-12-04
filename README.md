@@ -71,6 +71,156 @@ import { Button } from '@chriscase/uiforge'
 <Button disabled>Disabled</Button>
 ```
 
+### UIForgeGrid
+
+A feature-rich data grid component with selection, editing, search, pagination, and custom actions.
+
+```tsx
+import { UIForgeGrid, GridColumn } from '@chriscase/uiforge'
+
+interface User {
+  id: number
+  name: string
+  email: string
+  role: string
+}
+
+const columns: GridColumn<User>[] = [
+  { key: 'name', header: 'Name', field: 'name', editable: true },
+  { key: 'email', header: 'Email', field: 'email' },
+  { key: 'role', header: 'Role', field: 'role' },
+]
+
+const data: User[] = [
+  { id: 1, name: 'Alice', email: 'alice@example.com', role: 'Developer' },
+  { id: 2, name: 'Bob', email: 'bob@example.com', role: 'Designer' },
+]
+
+function MyGrid() {
+  return (
+    <UIForgeGrid
+      columns={columns}
+      data={data}
+      selectable
+      searchable
+      pagination={{ currentPage: 0, pageSize: 10 }}
+    />
+  )
+}
+```
+
+**Key Features:**
+
+- **Row Selection**: Enable with `selectable` prop. Includes master checkbox for select all/none.
+- **Editable Cells**: Set `editable: true` on column definitions for inline editing.
+- **Custom Renderers**: Use `render` function in column definitions for custom cell content.
+- **Search**: Enable with `searchable` prop. Supports custom filter functions.
+- **Pagination**: Supports both client-side and server-side pagination.
+- **Action Buttons**: Add custom action buttons with event handlers.
+- **Accessibility**: Full keyboard navigation and ARIA labels.
+- **Responsive**: Mobile-friendly design that adapts to different screen sizes.
+
+**Advanced Example:**
+
+```tsx
+import { UIForgeGrid, GridColumn, GridActionButton } from '@chriscase/uiforge'
+
+const columns: GridColumn<User>[] = [
+  { 
+    key: 'name', 
+    header: 'Name', 
+    field: 'name',
+    editable: true,
+    width: '200px'
+  },
+  { 
+    key: 'email', 
+    header: 'Email', 
+    field: 'email',
+    render: (value) => <a href={`mailto:${value}`}>{value}</a>
+  },
+  { 
+    key: 'status', 
+    header: 'Status', 
+    field: 'status',
+    render: (value) => (
+      <span className={`status-badge status-${value}`}>
+        {value}
+      </span>
+    )
+  },
+]
+
+const actionButtons: GridActionButton[] = [
+  {
+    label: 'Export',
+    variant: 'primary',
+    onClick: (selectedRows) => exportData(selectedRows),
+    requiresSelection: true
+  },
+  {
+    label: 'Delete',
+    variant: 'secondary',
+    onClick: (selectedRows) => deleteRows(selectedRows),
+    requiresSelection: true
+  }
+]
+
+function AdvancedGrid() {
+  const [currentPage, setCurrentPage] = useState(0)
+  const [pageSize, setPageSize] = useState(25)
+  
+  return (
+    <UIForgeGrid
+      columns={columns}
+      data={data}
+      selectable
+      onSelectionChange={(keys, rows) => console.log('Selected:', rows)}
+      getRowKey={(row) => row.id}
+      onCellEdit={(rowKey, columnKey, newValue) => {
+        // Handle cell edit
+        console.log('Edit:', rowKey, columnKey, newValue)
+      }}
+      searchable
+      searchPlaceholder="Search users..."
+      customFilter={(row, searchTerm) => {
+        // Custom search logic
+        return row.name.toLowerCase().includes(searchTerm.toLowerCase())
+      }}
+      actionButtons={actionButtons}
+      pagination={{ currentPage, pageSize }}
+      onPageChange={setCurrentPage}
+      onPageSizeChange={setPageSize}
+      pageSizeOptions={[10, 25, 50, 100]}
+    />
+  )
+}
+```
+
+**Props Reference:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `columns` | `GridColumn<T>[]` | required | Column definitions |
+| `data` | `T[]` | required | Data to display |
+| `selectable` | `boolean` | `false` | Enable row selection |
+| `selectedRows` | `Set<string \| number>` | - | Controlled selection state |
+| `getRowKey` | `(row, index) => string \| number` | `(_, i) => i` | Function to get unique key |
+| `onSelectionChange` | `(keys, rows) => void` | - | Selection change handler |
+| `onCellEdit` | `(rowKey, columnKey, newValue, row) => void` | - | Cell edit handler |
+| `searchable` | `boolean` | `false` | Enable search |
+| `searchPlaceholder` | `string` | `"Search..."` | Search input placeholder |
+| `onSearch` | `(searchTerm) => void` | - | Search change handler |
+| `customFilter` | `(row, searchTerm) => boolean` | - | Custom filter function |
+| `pagination` | `GridPaginationConfig` | - | Pagination configuration |
+| `onPageChange` | `(page, pageSize) => void` | - | Page change handler |
+| `onPageSizeChange` | `(pageSize) => void` | - | Page size change handler |
+| `pageSizeOptions` | `number[]` | `[10, 25, 50, 100]` | Available page sizes |
+| `actionButtons` | `GridActionButton[]` | `[]` | Action button configurations |
+| `loading` | `boolean` | `false` | Show loading state |
+| `emptyMessage` | `string` | `"No data available"` | Empty state message |
+| `className` | `string` | - | Additional CSS classes |
+
 ## Development
 
 ### Prerequisites

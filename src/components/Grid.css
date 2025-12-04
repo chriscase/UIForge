@@ -1,0 +1,391 @@
+.uiforge-grid {
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Toolbar */
+.uiforge-grid__toolbar {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.uiforge-grid__search {
+  flex: 1;
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.uiforge-grid__search-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  transition: border-color 0.2s;
+}
+
+.uiforge-grid__search-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.uiforge-grid__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.uiforge-grid__action-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+}
+
+.uiforge-grid__action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.uiforge-grid__action-button--primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.uiforge-grid__action-button--primary:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.uiforge-grid__action-button--secondary {
+  background-color: #6b7280;
+  color: white;
+}
+
+.uiforge-grid__action-button--secondary:hover:not(:disabled) {
+  background-color: #4b5563;
+}
+
+.uiforge-grid__action-button--outline {
+  background-color: transparent;
+  color: #3b82f6;
+  border: 2px solid #3b82f6;
+}
+
+.uiforge-grid__action-button--outline:hover:not(:disabled) {
+  background-color: #eff6ff;
+}
+
+/* Table Container */
+.uiforge-grid__table-container {
+  overflow-x: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+}
+
+.uiforge-grid__table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+/* Header */
+.uiforge-grid__header-cell {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #374151;
+  background-color: #f9fafb;
+  border-bottom: 2px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+.uiforge-grid__header-cell--checkbox {
+  width: 40px;
+  text-align: center;
+}
+
+/* Rows */
+.uiforge-grid__row {
+  transition: background-color 0.15s;
+}
+
+.uiforge-grid__row:hover {
+  background-color: #f9fafb;
+}
+
+.uiforge-grid__row--selected {
+  background-color: #eff6ff;
+}
+
+.uiforge-grid__row--selected:hover {
+  background-color: #dbeafe;
+}
+
+/* Cells */
+.uiforge-grid__cell {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: #1f2937;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: middle;
+}
+
+.uiforge-grid__cell--checkbox {
+  width: 40px;
+  text-align: center;
+}
+
+.uiforge-grid__cell-content {
+  min-height: 1.25rem;
+}
+
+.uiforge-grid__cell-content--editable {
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 2px;
+  transition: background-color 0.15s;
+}
+
+.uiforge-grid__cell-content--editable:hover {
+  background-color: #f3f4f6;
+}
+
+.uiforge-grid__cell-content--editable:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+}
+
+/* Editing */
+.uiforge-grid__edit-cell {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.uiforge-grid__edit-input {
+  flex: 1;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #3b82f6;
+  border-radius: 2px;
+  font-size: 0.875rem;
+  min-width: 100px;
+}
+
+.uiforge-grid__edit-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.uiforge-grid__edit-button {
+  padding: 0.25rem 0.5rem;
+  border: none;
+  border-radius: 2px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  line-height: 1;
+}
+
+.uiforge-grid__edit-button--save {
+  background-color: #10b981;
+  color: white;
+}
+
+.uiforge-grid__edit-button--save:hover {
+  background-color: #059669;
+}
+
+.uiforge-grid__edit-button--cancel {
+  background-color: #ef4444;
+  color: white;
+}
+
+.uiforge-grid__edit-button--cancel:hover {
+  background-color: #dc2626;
+}
+
+/* Empty / Loading states */
+.uiforge-grid__loading-cell,
+.uiforge-grid__empty-cell {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+/* Pagination */
+.uiforge-grid__pagination {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0.5rem 0;
+}
+
+.uiforge-grid__pagination-info {
+  font-size: 0.875rem;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+.uiforge-grid__pagination-controls {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.uiforge-grid__pagination-button {
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background-color: white;
+  color: #374151;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.uiforge-grid__pagination-button:hover:not(:disabled) {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.uiforge-grid__pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.uiforge-grid__pagination-button--active {
+  background-color: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.uiforge-grid__pagination-button--active:hover {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+
+.uiforge-grid__pagination-ellipsis {
+  padding: 0 0.5rem;
+  color: #9ca3af;
+}
+
+.uiforge-grid__page-size {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+.uiforge-grid__page-size-select {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.uiforge-grid__page-size-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Checkboxes */
+input[type='checkbox'] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: #3b82f6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .uiforge-grid__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .uiforge-grid__search {
+    max-width: 100%;
+  }
+
+  .uiforge-grid__actions {
+    justify-content: flex-end;
+  }
+
+  .uiforge-grid__pagination {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .uiforge-grid__pagination-controls {
+    justify-content: center;
+  }
+
+  .uiforge-grid__pagination-info,
+  .uiforge-grid__page-size {
+    text-align: center;
+    justify-content: center;
+  }
+
+  .uiforge-grid__cell,
+  .uiforge-grid__header-cell {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .uiforge-grid__row,
+  .uiforge-grid__cell-content--editable,
+  .uiforge-grid__search-input,
+  .uiforge-grid__pagination-button,
+  .uiforge-grid__action-button,
+  .uiforge-grid__edit-button {
+    transition: none;
+  }
+}
+
+/* Focus visible styles for keyboard navigation */
+.uiforge-grid__search-input:focus-visible,
+.uiforge-grid__page-size-select:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.uiforge-grid__pagination-button:focus-visible,
+.uiforge-grid__action-button:focus-visible,
+.uiforge-grid__edit-button:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+input[type='checkbox']:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
