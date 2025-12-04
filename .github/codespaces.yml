@@ -1,0 +1,19 @@
+name: UIForge Dev Container
+
+on:
+  codespaces_prebuild: {}
+
+devcontainers:
+  - .devcontainer/devcontainer.json
+
+github:
+  prebuild: true
+
+prebuilds:
+  - name: UIForge prebuild
+    on:
+      - pull_request
+      - push
+    branches:
+      - main
+    build_command: bash -lc './.devcontainer/prebuild.sh'

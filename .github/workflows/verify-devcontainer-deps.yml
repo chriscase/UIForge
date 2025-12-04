@@ -1,0 +1,47 @@
+name: Verify devcontainer dependency installation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  verify-deps:
+    name: Verify dependencies and devcontainer script
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Make devcontainer scripts executable
+        run: |
+          chmod +x .devcontainer/install-deps.sh || true
+          chmod +x .devcontainer/verify-deps.sh || true
+          chmod +x .devcontainer/prebuild.sh || true
+
+      - name: Install pnpm or yarn if lockfiles are present
+        run: |
+          if [ -f pnpm-lock.yaml ]; then
+            echo "📦 pnpm lockfile detected — installing pnpm"
+            npm install -g pnpm
+          fi
+          if [ -f yarn.lock ]; then
+            echo "📦 yarn.lock detected — installing yarn"
+            npm install -g yarn
+          fi
+
+      - name: Run devcontainer install script
+        run: |
+          bash .devcontainer/install-deps.sh
+
+      - name: Verify node_modules or pnpm store exists
+        run: |
+          bash .devcontainer/verify-deps.sh
+
+      - name: Run tests
+        run: |
+          npm test --silent
