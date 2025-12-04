@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Button } from '../src/components/Button'
 import { UIForgeGrid, GridColumn } from '../src/components/Grid'
+import { UIForgeBlocksEditor, ContentBlock, blocksToHTML, blocksToMarkdown } from '../src/components/BlocksEditor'
 import './App.css'
 
 // Sample data for the grid
@@ -31,6 +32,9 @@ function App() {
   const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set())
   const [currentPage, setCurrentPage] = useState(0)
   const [pageSize, setPageSize] = useState(5)
+  const [editorBlocks, setEditorBlocks] = useState<ContentBlock[]>([])
+  const [exportedContent, setExportedContent] = useState<string>('')
+  const [exportFormat, setExportFormat] = useState<'html' | 'markdown'>('html')
 
   const columns: GridColumn<User>[] = [
     { 
@@ -147,6 +151,11 @@ function App() {
     }
   ]
 
+  const handleExportContent = () => {
+    const content = exportFormat === 'html' ? blocksToHTML(editorBlocks) : blocksToMarkdown(editorBlocks)
+    setExportedContent(content)
+  }
+
   return (
     <div className="app">
       <header className="app-header">
@@ -182,6 +191,88 @@ function App() {
               <Button>Enabled</Button>
               <Button disabled>Disabled</Button>
             </div>
+          </div>
+        </section>
+
+        <section className="demo-section">
+          <h2>UIForgeBlocksEditor Component</h2>
+          <p style={{ marginBottom: '1rem', color: '#6b7280' }}>
+            A rich, block-based content editor for flexible layouts and content creation.
+          </p>
+
+          <div className="demo-group">
+            <h3>Interactive Editor</h3>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              Try these features: Add blocks, drag to reorder, format text (Ctrl+B for bold, Ctrl+I for italic), and export content.
+            </p>
+            
+            <div style={{ marginBottom: '1rem' }}>
+              <UIForgeBlocksEditor
+                initialBlocks={editorBlocks}
+                onChange={setEditorBlocks}
+                placeholder="Start writing your content here..."
+                maxHeight="500px"
+              />
+            </div>
+
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginTop: '1rem' }}>
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                <label htmlFor="export-format" style={{ fontSize: '0.875rem', fontWeight: 500 }}>
+                  Export as:
+                </label>
+                <select
+                  id="export-format"
+                  value={exportFormat}
+                  onChange={(e) => setExportFormat(e.target.value as 'html' | 'markdown')}
+                  style={{
+                    padding: '0.5rem',
+                    borderRadius: '6px',
+                    border: '1px solid #d1d5db',
+                    fontSize: '0.875rem'
+                  }}
+                >
+                  <option value="html">HTML</option>
+                  <option value="markdown">Markdown</option>
+                </select>
+              </div>
+              <Button onClick={handleExportContent}>
+                Export Content
+              </Button>
+            </div>
+
+            {exportedContent && (
+              <div style={{ marginTop: '1rem' }}>
+                <h4 style={{ marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 600 }}>
+                  Exported {exportFormat.toUpperCase()}:
+                </h4>
+                <pre style={{
+                  padding: '1rem',
+                  backgroundColor: '#1f2937',
+                  color: '#f9fafb',
+                  borderRadius: '6px',
+                  fontSize: '0.75rem',
+                  overflow: 'auto',
+                  maxHeight: '200px'
+                }}>
+                  {exportedContent}
+                </pre>
+              </div>
+            )}
+          </div>
+
+          <div className="demo-group" style={{ marginTop: '2rem' }}>
+            <h3>Read-Only Mode</h3>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              Display content in read-only mode (no editing controls).
+            </p>
+            <UIForgeBlocksEditor
+              initialBlocks={[
+                { id: '1', type: 'heading1', content: 'Welcome to UIForge', format: {} },
+                { id: '2', type: 'paragraph', content: 'This is a read-only editor example.', format: {} },
+                { id: '3', type: 'quote', content: 'Block-based editing makes content creation intuitive and flexible.', format: {} },
+              ]}
+              readOnly
+            />
           </div>
         </section>
 

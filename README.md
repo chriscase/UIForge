@@ -71,6 +71,72 @@ import { Button } from '@chriscase/uiforge'
 <Button disabled>Disabled</Button>
 ```
 
+### UIForgeBlocksEditor
+
+A rich, block-based content editor for flexible layouts and content creation.
+
+**Features:**
+- **Block-based editing** - Create, move, and delete content blocks (text, headings, images, quotes, code)
+- **Rich formatting** - WYSIWYG controls for bold, italic, underline, inline code, and more
+- **Drag-and-drop** - Intuitive reordering of content blocks
+- **Multiple block types** - Paragraphs, headings, lists, quotes, code blocks, and images
+- **Export capabilities** - Export content to JSON, HTML, or Markdown
+- **No HTML/CSS knowledge required** - User-friendly interface for non-technical users
+- **Reusable component** - Easy integration into any React application
+
+```tsx
+import { UIForgeBlocksEditor, blocksToHTML, blocksToMarkdown, ContentBlock } from '@chriscase/uiforge'
+
+function MyEditor() {
+  const [blocks, setBlocks] = useState<ContentBlock[]>([])
+  
+  const handleExport = () => {
+    // Export to HTML
+    const html = blocksToHTML(blocks)
+    console.log(html)
+    
+    // Export to Markdown
+    const markdown = blocksToMarkdown(blocks)
+    console.log(markdown)
+  }
+  
+  return (
+    <>
+      <UIForgeBlocksEditor
+        initialBlocks={blocks}
+        onChange={setBlocks}
+        placeholder="Start typing..."
+      />
+      <button onClick={handleExport}>Export Content</button>
+    </>
+  )
+}
+```
+
+**Props Reference:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `initialBlocks` | `ContentBlock[]` | `[]` | Initial blocks to display |
+| `onChange` | `(blocks: ContentBlock[]) => void` | - | Callback when blocks change |
+| `placeholder` | `string` | `"Start typing..."` | Placeholder text for empty editor |
+| `readOnly` | `boolean` | `false` | Whether the editor is read-only |
+| `className` | `string` | - | Additional CSS classes |
+| `maxHeight` | `string` | - | Maximum height of the editor (CSS value) |
+
+**Block Types:**
+- `paragraph` - Standard text block
+- `heading1`, `heading2`, `heading3` - Heading blocks
+- `list` - List item
+- `quote` - Blockquote
+- `code` - Code block
+- `image` - Image with URL and alt text
+
+**Export Functions:**
+- `blocksToHTML(blocks)` - Convert blocks to HTML string
+- `blocksToMarkdown(blocks)` - Convert blocks to Markdown string
+- `blocksToJSON(blocks)` - Convert blocks to JSON string
+
 ### UIForgeGrid
 
 A feature-rich data grid component with selection, editing, search, pagination, and custom actions.
