@@ -83,7 +83,7 @@ export interface UIForgeBlocksEditorProps {
  * Generate a unique ID for blocks
  */
 const generateId = (): string => {
-  return `block-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+  return `block-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
 }
 
 /**

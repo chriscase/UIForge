@@ -1,11 +1,43 @@
 import { ContentBlock } from './BlocksEditor'
 
 /**
+ * Escape HTML to prevent XSS vulnerabilities
+ */
+function escapeHtml(unsafe: string): string {
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
+/**
+ * Validate and sanitize URL to prevent XSS
+ */
+function sanitizeUrl(url: string): string {
+  // Remove any whitespace
+  const trimmed = url.trim()
+  
+  // Block potentially dangerous protocols
+  const dangerousProtocols = ['javascript:', 'data:', 'vbscript:', 'file:']
+  const lower = trimmed.toLowerCase()
+  
+  for (const protocol of dangerousProtocols) {
+    if (lower.startsWith(protocol)) {
+      return '' // Return empty string for dangerous URLs
+    }
+  }
+  
+  return trimmed
+}
+
+/**
  * Convert blocks to HTML
  */
 export function blocksToHTML(blocks: ContentBlock[]): string {
   return blocks.map(block => {
-    let content = block.content
+    let content = escapeHtml(block.content)
     
     // Apply text formatting
     if (block.format?.bold) content = `<strong>${content}</strong>`
@@ -23,9 +55,12 @@ export function blocksToHTML(blocks: ContentBlock[]): string {
       case 'quote':
         return `<blockquote>${content}</blockquote>`
       case 'code':
-        return `<pre><code>${block.content}</code></pre>`
-      case 'image':
-        return `<img src="${block.imageUrl || ''}" alt="${block.imageAlt || ''}" />`
+        return `<pre><code>${escapeHtml(block.content)}</code></pre>`
+      case 'image': {
+        const safeUrl = sanitizeUrl(block.imageUrl || '')
+        const safeAlt = escapeHtml(block.imageAlt || '')
+        return safeUrl ? `<img src="${safeUrl}" alt="${safeAlt}" />` : ''
+      }
       case 'list':
         return `<ul><li>${content}</li></ul>`
       default:

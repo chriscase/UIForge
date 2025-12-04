@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Button } from '../src/components/Button'
 import { UIForgeGrid, GridColumn } from '../src/components/Grid'
-import { UIForgeBlocksEditor, ContentBlock, blocksToHTML, blocksToMarkdown } from '../src/components/BlocksEditor'
+import { UIForgeBlocksEditor, ContentBlock } from '../src/components/BlocksEditor'
+import { blocksToHTML, blocksToMarkdown } from '../src/components/BlocksEditorUtils'
 import './App.css'
 
 // Sample data for the grid

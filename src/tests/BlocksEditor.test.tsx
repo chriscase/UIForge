@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { UIForgeBlocksEditor, ContentBlock } from '../components/BlocksEditor'
+import { blocksToHTML } from '../components/BlocksEditorUtils'
 
 describe('UIForgeBlocksEditor', () => {
   it('renders editor with placeholder', () => {
@@ -372,4 +373,31 @@ describe('UIForgeBlocksEditor', () => {
       )
     })
   })
+
+  it('properly escapes HTML in content to prevent XSS', () => {
+    const blocks: ContentBlock[] = [
+      { id: '1', type: 'paragraph', content: '<script>alert("xss")</script>', format: {} },
+    ]
+    const html = blocksToHTML(blocks)
+    expect(html).not.toContain('<script>')
+    expect(html).toContain('&lt;script&gt;')
+  })
+
+  it('sanitizes dangerous URLs in image blocks', () => {
+    const blocks: ContentBlock[] = [
+      { id: '1', type: 'image', content: '', imageUrl: 'javascript:alert("xss")', imageAlt: 'test', format: {} },
+    ]
+    const html = blocksToHTML(blocks)
+    expect(html).toBe('') // Dangerous URL should result in empty output
+  })
+
+  it('allows safe URLs in image blocks', () => {
+    const blocks: ContentBlock[] = [
+      { id: '1', type: 'image', content: '', imageUrl: 'https://example.com/image.jpg', imageAlt: 'test', format: {} },
+    ]
+    const html = blocksToHTML(blocks)
+    expect(html).toContain('https://example.com/image.jpg')
+    expect(html).toContain('alt="test"')
+  })
 })
+
