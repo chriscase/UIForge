@@ -6,8 +6,12 @@ import {
 import '../src/components/ActivityStream.css'
 import './ActivityStreamExample.css'
 
-function ActivityStreamExample() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light')
+interface ActivityStreamExampleProps {
+  onNavigate?: (path: string) => void
+}
+
+function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) {
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark')
   const [enableGrouping, setEnableGrouping] = useState(true)
   const [showTimeline, setShowTimeline] = useState(true)
   const [showDateSeparators, setShowDateSeparators] = useState(true)
@@ -218,7 +222,12 @@ function ActivityStreamExample() {
   return (
     <div className={`activity-stream-example ${theme === 'dark' ? 'dark-theme' : ''}`}>
       <header className="activity-stream-example__header">
-        <h1>UIForge Activity Stream - Enhanced</h1>
+        {onNavigate && (
+          <button className="back-button" onClick={() => onNavigate('/')}>
+            ← Back to Home
+          </button>
+        )}
+        <h1>UIForge Activity Stream</h1>
         <p className="activity-stream-example__subtitle">
           GitHub-inspired activity feed with smart grouping, timeline visualization, and date
           separators

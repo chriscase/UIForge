@@ -109,8 +109,31 @@ export const UnfoldIcon: React.FC<IconProps> = ({
   className = '',
   color = 'currentColor',
 }) => (
-  <svg width={size} height={size} viewBox="0 0 16 16" fill={color} className={className}>
-    <path d="M8.177 14.323a.75.75 0 01-1.06 0l-2.5-2.5a.75.75 0 111.06-1.06l1.22 1.22V9.75a.75.75 0 011.5 0v2.233l1.22-1.22a.75.75 0 111.06 1.06l-2.5 2.5zM7.25 6.25V4.017L6.03 5.237a.75.75 0 01-1.06-1.06l2.5-2.5a.75.75 0 011.06 0l2.5 2.5a.75.75 0 11-1.06 1.06L8.75 4.017V6.25a.75.75 0 01-1.5 0z" />
+  <svg width={size} height={size} viewBox="0 0 16 16" fill="none" className={className}>
+    {/* Top arrow pointing up with tail */}
+    <path
+      d="M8 2L6 4M8 2L10 4M8 2V5"
+      stroke={color}
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    {/* Dotted line in middle */}
+    <path
+      d="M8 6V10"
+      stroke={color}
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeDasharray="1 2"
+    />
+    {/* Bottom arrow pointing down with tail */}
+    <path
+      d="M8 14L6 12M8 14L10 12M8 14V11"
+      stroke={color}
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 )
 
@@ -119,8 +142,31 @@ export const FoldIcon: React.FC<IconProps> = ({
   className = '',
   color = 'currentColor',
 }) => (
-  <svg width={size} height={size} viewBox="0 0 16 16" fill={color} className={className}>
-    <path d="M8.177 7.823a.75.75 0 001.06 0l2.5-2.5a.75.75 0 10-1.06-1.06L9.457 5.483V3.25a.75.75 0 00-1.5 0v2.233L6.737 4.263a.75.75 0 10-1.06 1.06l2.5 2.5zM7.25 9.75v2.233l-1.22-1.22a.75.75 0 00-1.06 1.06l2.5 2.5a.75.75 0 001.06 0l2.5-2.5a.75.75 0 10-1.06-1.06l-1.22 1.22V9.75a.75.75 0 00-1.5 0z" />
+  <svg width={size} height={size} viewBox="0 0 16 16" fill="none" className={className}>
+    {/* Top arrow pointing down with tail */}
+    <path
+      d="M8 5L6 3M8 5L10 3M8 5V2"
+      stroke={color}
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    {/* Dotted line in middle */}
+    <path
+      d="M8 6V10"
+      stroke={color}
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeDasharray="1 2"
+    />
+    {/* Bottom arrow pointing up with tail */}
+    <path
+      d="M8 11L6 13M8 11L10 13M8 11V14"
+      stroke={color}
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 )
 
