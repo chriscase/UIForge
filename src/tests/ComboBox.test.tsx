@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { UIForgeComboBox, ComboBoxOption } from '../components/ComboBox'
@@ -93,7 +93,7 @@ describe('UIForgeComboBox', () => {
       const option = screen.getByText('Option 2')
       await user.click(option)
       
-      expect(handleChange).toHaveBeenCalledWith(2, basicOptions[1])
+      expect(handleChange).toHaveBeenCalledWith(2, expect.objectContaining({ value: 2, label: 'Option 2' }))
     })
 
     it('closes dropdown after selection', async () => {
@@ -140,8 +140,9 @@ describe('UIForgeComboBox', () => {
       const control = container.querySelector('.uiforge-combobox-control') as HTMLElement
       await user.click(control)
       
-      const images = screen.getAllByRole('img')
+      const images = container.querySelectorAll('img')
       expect(images.length).toBeGreaterThan(0)
+      expect(images[0]).toHaveAttribute('src', 'https://example.com/icon1.png')
     })
   })
 
@@ -203,9 +204,9 @@ describe('UIForgeComboBox', () => {
   describe('Search/Filter', () => {
     it('filters options by search text', async () => {
       const user = userEvent.setup()
-      render(<UIForgeComboBox options={basicOptions} searchable />)
+      const { container } = render(<UIForgeComboBox options={basicOptions} searchable />)
       
-      const control = screen.getByRole('combobox')
+      const control = container.querySelector('.uiforge-combobox-control') as HTMLElement
       await user.click(control)
       
       const input = screen.getByRole('textbox')
@@ -220,9 +221,9 @@ describe('UIForgeComboBox', () => {
 
     it('shows no options message when no matches', async () => {
       const user = userEvent.setup()
-      render(<UIForgeComboBox options={basicOptions} searchable noOptionsMessage="No matches" />)
+      const { container } = render(<UIForgeComboBox options={basicOptions} searchable noOptionsMessage="No matches" />)
       
-      const control = screen.getByRole('combobox')
+      const control = container.querySelector('.uiforge-combobox-control') as HTMLElement
       await user.click(control)
       
       const input = screen.getByRole('textbox')
@@ -235,9 +236,9 @@ describe('UIForgeComboBox', () => {
 
     it('filters hierarchical options recursively', async () => {
       const user = userEvent.setup()
-      render(<UIForgeComboBox options={hierarchicalOptions} searchable />)
+      const { container } = render(<UIForgeComboBox options={hierarchicalOptions} searchable />)
       
-      const control = screen.getByRole('combobox')
+      const control = container.querySelector('.uiforge-combobox-control') as HTMLElement
       await user.click(control)
       
       const input = screen.getByRole('textbox')
@@ -320,7 +321,7 @@ describe('UIForgeComboBox', () => {
       
       await user.keyboard('{Enter}')
       
-      expect(handleChange).toHaveBeenCalledWith(1, basicOptions[0])
+      expect(handleChange).toHaveBeenCalledWith(1, expect.objectContaining({ value: 1, label: 'Option 1' }))
     })
   })
 

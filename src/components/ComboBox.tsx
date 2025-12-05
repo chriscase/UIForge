@@ -144,7 +144,7 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
   const containerRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
-  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Flatten hierarchical options for easier navigation
   const flattenOptions = useCallback((opts: ComboBoxOption[], level = 0): ComboBoxOption[] => {
@@ -335,13 +335,19 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
 
   const renderDefaultOption = (option: ComboBoxOption) => {
     const indent = (option.level || 0) * 20
+    const isIconUrl = typeof option.icon === 'string' && (
+      option.icon.startsWith('http://') || 
+      option.icon.startsWith('https://') ||
+      option.icon.startsWith('data:') ||
+      option.icon.startsWith('/')
+    )
     
     return (
       <div className="uiforge-combobox-option-content" style={{ paddingLeft: `${indent}px` }}>
         {option.icon && (
           <span className="uiforge-combobox-option-icon">
-            {typeof option.icon === 'string' ? (
-              <img src={option.icon} alt="" className="uiforge-combobox-option-icon-img" />
+            {isIconUrl ? (
+              <img src={option.icon as string} alt="" className="uiforge-combobox-option-icon-img" />
             ) : (
               option.icon
             )}
@@ -355,12 +361,19 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
   const renderDefaultValue = (option: ComboBoxOption | null) => {
     if (!option) return placeholder
     
+    const isIconUrl = typeof option.icon === 'string' && (
+      option.icon.startsWith('http://') || 
+      option.icon.startsWith('https://') ||
+      option.icon.startsWith('data:') ||
+      option.icon.startsWith('/')
+    )
+    
     return (
       <div className="uiforge-combobox-value-content">
         {option.icon && (
           <span className="uiforge-combobox-value-icon">
-            {typeof option.icon === 'string' ? (
-              <img src={option.icon} alt="" className="uiforge-combobox-value-icon-img" />
+            {isIconUrl ? (
+              <img src={option.icon as string} alt="" className="uiforge-combobox-value-icon-img" />
             ) : (
               option.icon
             )}

@@ -287,6 +287,185 @@ function AdvancedGrid() {
 | `emptyMessage` | `string` | `"No data available"` | Empty state message |
 | `className` | `string` | - | Additional CSS classes |
 
+### UIForgeComboBox
+
+A rich, powerful select/combo box component for ReactJS supporting static lists, dynamic server-backed data sources, hierarchical options, and advanced UX features.
+
+**Features:**
+- **Dynamic Suggestions** - Filter options as you type with client-side or server-side search
+- **Static Data Support** - Simple dropdown selection from a fixed set of items
+- **Icons per Option** - Display icons alongside option labels for better visual context
+- **Hierarchical/Tree View** - Support for nested, multi-level option structures
+- **Non-selectable Headers** - Group options with disabled header rows or section dividers
+- **Async Callback Support** - Integrate with APIs for query-as-you-type autocomplete
+- **Highly Customizable** - Custom rendering, styling, and behavior
+- **Keyboard Navigation** - Full keyboard support (arrows, Enter, Escape, Tab)
+- **Accessibility** - ARIA attributes and screen reader support
+
+```tsx
+import { UIForgeComboBox, ComboBoxOption } from '@chriscase/uiforge'
+
+// Static dropdown
+const options: ComboBoxOption[] = [
+  { value: 1, label: 'Option 1' },
+  { value: 2, label: 'Option 2' },
+  { value: 3, label: 'Option 3' },
+]
+
+function MyCombo() {
+  const [value, setValue] = useState(null)
+  
+  return (
+    <UIForgeComboBox
+      options={options}
+      value={value}
+      onChange={(val, option) => setValue(val)}
+      placeholder="Select an option..."
+    />
+  )
+}
+```
+
+**With Icons:**
+
+```tsx
+const optionsWithIcons: ComboBoxOption[] = [
+  { value: 'home', label: 'Home', icon: '🏠' },
+  { value: 'star', label: 'Favorites', icon: '⭐' },
+  { value: 'settings', label: 'Settings', icon: '⚙️' },
+]
+
+<UIForgeComboBox
+  options={optionsWithIcons}
+  value={value}
+  onChange={(val) => setValue(val)}
+  clearable
+/>
+```
+
+**Hierarchical Options (Tree View):**
+
+```tsx
+const hierarchicalOptions: ComboBoxOption[] = [
+  {
+    value: 'fruits',
+    label: 'Fruits',
+    disabled: true, // Non-selectable header
+    children: [
+      { value: 'apple', label: 'Apple', icon: '🍎' },
+      { value: 'banana', label: 'Banana', icon: '🍌' },
+    ],
+  },
+  {
+    value: 'vegetables',
+    label: 'Vegetables',
+    disabled: true,
+    children: [
+      { value: 'carrot', label: 'Carrot', icon: '🥕' },
+      { value: 'broccoli', label: 'Broccoli', icon: '🥦' },
+    ],
+  },
+]
+
+<UIForgeComboBox
+  options={hierarchicalOptions}
+  value={value}
+  onChange={(val) => setValue(val)}
+/>
+```
+
+**Async/Dynamic Search:**
+
+```tsx
+const handleSearch = async (searchText: string) => {
+  // Call your API
+  const response = await fetch(`/api/search?q=${searchText}`)
+  const results = await response.json()
+  return results.map(item => ({
+    value: item.id,
+    label: item.name,
+    icon: item.iconUrl,
+  }))
+}
+
+<UIForgeComboBox
+  onSearch={handleSearch}
+  value={value}
+  onChange={(val) => setValue(val)}
+  searchable
+  debounceMs={300}
+  placeholder="Search..."
+/>
+```
+
+**Custom Rendering:**
+
+```tsx
+const renderOption = (option: ComboBoxOption) => (
+  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+    {option.icon && <span>{option.icon}</span>}
+    <div>
+      <div style={{ fontWeight: 'bold' }}>{option.label}</div>
+      <div style={{ fontSize: '0.8em', color: '#666' }}>
+        {option.data?.description}
+      </div>
+    </div>
+  </div>
+)
+
+<UIForgeComboBox
+  options={optionsWithDetails}
+  renderOption={renderOption}
+  value={value}
+  onChange={(val) => setValue(val)}
+/>
+```
+
+**Props Reference:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `options` | `ComboBoxOption[]` | `[]` | Static list of options |
+| `value` | `string \| number \| null` | - | Selected value |
+| `onChange` | `(value, option) => void` | - | Callback when selection changes |
+| `onSearch` | `(searchText) => Promise<ComboBoxOption[]>` | - | Async callback for dynamic suggestions |
+| `placeholder` | `string` | `"Select an option..."` | Placeholder text |
+| `disabled` | `boolean` | `false` | Whether the combo box is disabled |
+| `clearable` | `boolean` | `false` | Show clear button to deselect |
+| `className` | `string` | - | Custom class name |
+| `renderOption` | `(option) => ReactNode` | - | Custom option renderer |
+| `renderValue` | `(option) => ReactNode` | - | Custom selected value renderer |
+| `loading` | `boolean` | `false` | Show loading indicator |
+| `maxHeight` | `string` | `"300px"` | Maximum height for dropdown |
+| `debounceMs` | `number` | `300` | Debounce delay for async search (ms) |
+| `searchable` | `boolean` | `true` | Enable search/filter input |
+| `noOptionsMessage` | `string` | `"No options found"` | Message when no options match |
+| `ariaLabel` | `string` | - | ARIA label for accessibility |
+
+**ComboBoxOption Interface:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `value` | `string \| number` | Unique value for the option |
+| `label` | `string` | Display label |
+| `icon` | `React.ReactNode` | Optional icon (string/emoji or React component) |
+| `disabled` | `boolean` | Whether the option is non-selectable (for headers) |
+| `level` | `number` | Nesting level for hierarchical display |
+| `children` | `ComboBoxOption[]` | Child options for tree structures |
+| `data` | `unknown` | Optional custom data |
+
+**Keyboard Navigation:**
+- `↓` / `↑` - Navigate through options
+- `Enter` - Select highlighted option / Toggle dropdown
+- `Escape` - Close dropdown
+- `Tab` - Close dropdown and move focus
+
+**Accessibility:**
+- Full ARIA support (`role="combobox"`, `aria-expanded`, `aria-selected`, etc.)
+- Keyboard navigation
+- Screen reader friendly
+- Focus management
+
 ## Development
 
 ### Prerequisites

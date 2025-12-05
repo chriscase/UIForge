@@ -3,6 +3,7 @@ import { Button } from '../src/components/Button'
 import { UIForgeGrid, GridColumn } from '../src/components/Grid'
 import { UIForgeBlocksEditor, ContentBlock } from '../src/components/BlocksEditor'
 import { blocksToHTML, blocksToMarkdown } from '../src/components/BlocksEditorUtils'
+import { UIForgeComboBox, ComboBoxOption } from '../src/components/ComboBox'
 import './App.css'
 
 // Sample data for the grid
@@ -36,6 +37,71 @@ function App() {
   const [editorBlocks, setEditorBlocks] = useState<ContentBlock[]>([])
   const [exportedContent, setExportedContent] = useState<string>('')
   const [exportFormat, setExportFormat] = useState<'html' | 'markdown'>('html')
+
+  // ComboBox state
+  const [selectedOption, setSelectedOption] = useState<string | number | null>(null)
+  const [selectedHierarchical, setSelectedHierarchical] = useState<string | number | null>(null)
+  const [asyncValue, setAsyncValue] = useState<string | number | null>(null)
+
+  // ComboBox options
+  const simpleOptions: ComboBoxOption[] = [
+    { value: 1, label: 'JavaScript', icon: '🟨' },
+    { value: 2, label: 'Python', icon: '🐍' },
+    { value: 3, label: 'TypeScript', icon: '🔷' },
+    { value: 4, label: 'Rust', icon: '🦀' },
+    { value: 5, label: 'Go', icon: '🐹' },
+  ]
+
+  const hierarchicalOptions: ComboBoxOption[] = [
+    {
+      value: 'frontend',
+      label: 'Frontend',
+      disabled: true,
+      children: [
+        { value: 'react', label: 'React', icon: '⚛️' },
+        { value: 'vue', label: 'Vue.js', icon: '💚' },
+        { value: 'angular', label: 'Angular', icon: '🅰️' },
+      ],
+    },
+    {
+      value: 'backend',
+      label: 'Backend',
+      disabled: true,
+      children: [
+        { value: 'nodejs', label: 'Node.js', icon: '💚' },
+        { value: 'django', label: 'Django', icon: '🐍' },
+        { value: 'spring', label: 'Spring Boot', icon: '🍃' },
+      ],
+    },
+    {
+      value: 'database',
+      label: 'Database',
+      disabled: true,
+      children: [
+        { value: 'postgres', label: 'PostgreSQL', icon: '🐘' },
+        { value: 'mongodb', label: 'MongoDB', icon: '🍃' },
+        { value: 'redis', label: 'Redis', icon: '🔴' },
+      ],
+    },
+  ]
+
+  // Simulate async search
+  const handleAsyncSearch = async (searchText: string): Promise<ComboBoxOption[]> => {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 500))
+    
+    const allOptions = [
+      { value: 'user1', label: 'Alice Johnson', icon: '👩', data: { email: 'alice@example.com' } },
+      { value: 'user2', label: 'Bob Smith', icon: '👨', data: { email: 'bob@example.com' } },
+      { value: 'user3', label: 'Charlie Brown', icon: '🧑', data: { email: 'charlie@example.com' } },
+      { value: 'user4', label: 'Diana Prince', icon: '👩', data: { email: 'diana@example.com' } },
+      { value: 'user5', label: 'Eve Davis', icon: '👩', data: { email: 'eve@example.com' } },
+    ]
+    
+    return allOptions.filter(opt =>
+      opt.label.toLowerCase().includes(searchText.toLowerCase())
+    )
+  }
 
   const columns: GridColumn<User>[] = [
     { 
@@ -339,6 +405,110 @@ function App() {
               data={[]}
               emptyMessage="No users found. Try adding some!"
             />
+          </div>
+        </section>
+
+        <section className="demo-section">
+          <h2>UIForgeComboBox Component</h2>
+          <p style={{ marginBottom: '1rem', color: '#6b7280' }}>
+            A rich, powerful select/combo box with icons, hierarchical options, and async search support.
+          </p>
+
+          <div className="demo-group">
+            <h3>Simple Select with Icons</h3>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              Click to select a programming language. The dropdown is searchable.
+            </p>
+            <div style={{ maxWidth: '400px' }}>
+              <UIForgeComboBox
+                options={simpleOptions}
+                value={selectedOption}
+                onChange={(val) => setSelectedOption(val)}
+                placeholder="Select a language..."
+                clearable
+                searchable
+              />
+            </div>
+            {selectedOption && (
+              <p style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#374151' }}>
+                Selected: <strong>{simpleOptions.find(o => o.value === selectedOption)?.label}</strong>
+              </p>
+            )}
+          </div>
+
+          <div className="demo-group" style={{ marginTop: '2rem' }}>
+            <h3>Hierarchical Options (Tree View)</h3>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              Options grouped into categories with non-selectable headers.
+            </p>
+            <div style={{ maxWidth: '400px' }}>
+              <UIForgeComboBox
+                options={hierarchicalOptions}
+                value={selectedHierarchical}
+                onChange={(val) => setSelectedHierarchical(val)}
+                placeholder="Select a technology..."
+                clearable
+              />
+            </div>
+            {selectedHierarchical && (
+              <p style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#374151' }}>
+                Selected: <strong>
+                  {hierarchicalOptions
+                    .flatMap(cat => cat.children || [])
+                    .find(o => o.value === selectedHierarchical)?.label}
+                </strong>
+              </p>
+            )}
+          </div>
+
+          <div className="demo-group" style={{ marginTop: '2rem' }}>
+            <h3>Async Search (Server-Side)</h3>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              Type to search. Results are fetched asynchronously (simulated 500ms delay).
+            </p>
+            <div style={{ maxWidth: '400px' }}>
+              <UIForgeComboBox
+                onSearch={handleAsyncSearch}
+                value={asyncValue}
+                onChange={(val) => setAsyncValue(val)}
+                placeholder="Search for a user..."
+                clearable
+                searchable
+              />
+            </div>
+            {asyncValue && (
+              <p style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#374151' }}>
+                Selected user ID: <strong>{asyncValue}</strong>
+              </p>
+            )}
+          </div>
+
+          <div className="demo-group" style={{ marginTop: '2rem' }}>
+            <h3>Disabled State</h3>
+            <div style={{ maxWidth: '400px' }}>
+              <UIForgeComboBox
+                options={simpleOptions}
+                value={1}
+                onChange={() => {}}
+                disabled
+              />
+            </div>
+          </div>
+
+          <div className="demo-group" style={{ marginTop: '2rem' }}>
+            <h3>Non-Searchable</h3>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              A simple dropdown without search functionality.
+            </p>
+            <div style={{ maxWidth: '400px' }}>
+              <UIForgeComboBox
+                options={simpleOptions}
+                value={selectedOption}
+                onChange={(val) => setSelectedOption(val)}
+                placeholder="Select a language..."
+                searchable={false}
+              />
+            </div>
           </div>
         </section>
       </main>
