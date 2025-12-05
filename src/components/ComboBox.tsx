@@ -260,6 +260,19 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
     return flattenOptions(filteredOptions.length > 0 ? filteredOptions : options)
   }, [filteredOptions, options, flattenOptions])
 
+  // Create index mapping for performance in render loop
+  const optionIndexMap = useMemo(() => {
+    const map = new Map<string, number>()
+    flatOptionsForRender.forEach((opt) => {
+      const key = `${opt.value}-${opt.label}`
+      const selectableIdx = flatOptions.findIndex(fo => 
+        fo.value === opt.value && fo.label === opt.label
+      )
+      map.set(key, selectableIdx)
+    })
+    return map
+  }, [flatOptionsForRender, flatOptions])
+
   // Handle keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (disabled) return
@@ -311,7 +324,7 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
       const highlightedElement = dropdownRef.current.querySelector(
         `[data-index="${highlightedIndex}"]`
       )
-      if (highlightedElement) {
+      if (highlightedElement && typeof highlightedElement.scrollIntoView === 'function') {
         highlightedElement.scrollIntoView({ block: 'nearest' })
       }
     }
@@ -454,9 +467,11 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
           ) : flatOptions.length === 0 ? (
             <div className={`${baseClass}-no-options`}>{noOptionsMessage}</div>
           ) : (
-            flatOptionsForRender.map((option, index) => {
+            flatOptionsForRender.map((option) => {
+              const optionKey = `${option.value}-${option.label}`
+              const selectableIndex = optionIndexMap.get(optionKey) ?? -1
               const isSelected = option.value === value
-              const isHighlighted = flatOptions.indexOf(option) === highlightedIndex
+              const isHighlighted = selectableIndex === highlightedIndex
               
               const optionClasses = [
                 `${baseClass}-option`,
@@ -467,13 +482,13 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
               
               return (
                 <div
-                  key={`${option.value}-${index}`}
+                  key={optionKey}
                   className={optionClasses}
                   onClick={() => handleSelectOption(option)}
                   role="option"
                   aria-selected={isSelected}
                   aria-disabled={option.disabled}
-                  data-index={flatOptions.indexOf(option)}
+                  data-index={selectableIndex}
                 >
                   {renderOption ? renderOption(option) : renderDefaultOption(option)}
                 </div>
