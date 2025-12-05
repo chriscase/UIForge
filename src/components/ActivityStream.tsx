@@ -153,20 +153,22 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
   const [showMoreVisible, setShowMoreVisible] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const prevInitiallyExpandedAllRef = useRef(initiallyExpandedAll)
+  const prevEventsLengthRef = useRef(events.length)
 
-  // Update expanded events when initiallyExpandedAll or events change
+  // Update expanded events when initiallyExpandedAll changes or new events are added
   useEffect(() => {
-    if (initiallyExpandedAll) {
+    const expandedAllChanged = prevInitiallyExpandedAllRef.current !== initiallyExpandedAll
+    const eventsAdded = prevEventsLengthRef.current < events.length
+
+    if (initiallyExpandedAll && (expandedAllChanged || eventsAdded)) {
+      // This is a valid use of setState in useEffect - responding to prop changes
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setExpandedEvents((prev) => {
-        const newSet = new Set(events.map((e) => e.id))
-        // Only update if the sets are different
-        if (prev.size !== newSet.size || ![...prev].every((id) => newSet.has(id))) {
-          return newSet
-        }
-        return prev
-      })
+      setExpandedEvents(new Set(events.map((e) => e.id)))
     }
+
+    prevInitiallyExpandedAllRef.current = initiallyExpandedAll
+    prevEventsLengthRef.current = events.length
   }, [initiallyExpandedAll, events])
 
   // Handle scroll to show/hide "Show more" bar
