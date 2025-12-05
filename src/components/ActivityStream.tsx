@@ -154,7 +154,9 @@ export interface UIForgeActivityStreamProps {
  * Get default icon for event type from icon library
  */
 const getDefaultIcon = (type: string): React.ReactNode => {
-  const IconComponent = ActivityIcons[type as keyof typeof ActivityIcons] || ActivityIcons.commit
+  const IconComponent =
+    (ActivityIcons as Record<string, React.FC<{ size?: number }>>)[type] ||
+    ActivityIcons.commit
   return <IconComponent size={16} />
 }
 
