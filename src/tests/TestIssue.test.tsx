@@ -1,8 +1,12 @@
 /**
- * Test Issue - Simple Test Case
+ * Test Issue - Demo Test Case
  * 
- * This test file demonstrates a basic test case for the UIForge library.
- * It serves as a minimal example to verify that the test infrastructure is working correctly.
+ * This is a minimal demo test file created as a test issue.
+ * It demonstrates that the test infrastructure is working correctly
+ * with basic examples. This file can be used as a reference for
+ * understanding the testing setup or can be removed if not needed.
+ * 
+ * Note: Comprehensive Button tests already exist in Button.test.tsx
  */
 
 import { describe, it, expect } from 'vitest'
@@ -10,52 +14,34 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Button } from '../components/Button'
 
-describe('TestIssue - Simple Test Case', () => {
+describe('TestIssue - Demo Test Suite', () => {
   it('should verify test infrastructure is working', () => {
     // Simple assertion to verify test framework
     expect(true).toBe(true)
+    expect(1 + 1).toBe(2)
   })
 
-  it('should render a basic Button component', () => {
-    render(<Button>Test Button</Button>)
+  it('should demonstrate basic component rendering', () => {
+    render(<Button>Demo Button</Button>)
     
     // Verify the button is rendered with the correct text
-    const button = screen.getByRole('button', { name: /test button/i })
+    const button = screen.getByRole('button', { name: /demo button/i })
     expect(button).toBeInTheDocument()
+    expect(button).toHaveTextContent('Demo Button')
   })
 
-  it('should handle button click events', async () => {
+  it('should demonstrate user interaction testing', async () => {
     let clicked = false
     const handleClick = () => {
       clicked = true
     }
 
     const user = userEvent.setup()
-    render(<Button onClick={handleClick}>Click Me</Button>)
+    render(<Button onClick={handleClick}>Interactive Demo</Button>)
     
-    const button = screen.getByRole('button', { name: /click me/i })
+    const button = screen.getByRole('button', { name: /interactive demo/i })
     await user.click(button)
     
     expect(clicked).toBe(true)
-  })
-
-  it('should render button with different variants', () => {
-    const { container } = render(
-      <div>
-        <Button variant="primary">Primary</Button>
-        <Button variant="secondary">Secondary</Button>
-        <Button variant="outline">Outline</Button>
-      </div>
-    )
-
-    // Verify all buttons are rendered
-    expect(container.querySelectorAll('button')).toHaveLength(3)
-  })
-
-  it('should render disabled button', () => {
-    render(<Button disabled>Disabled Button</Button>)
-    
-    const button = screen.getByRole('button', { name: /disabled button/i })
-    expect(button).toBeDisabled()
   })
 })
