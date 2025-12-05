@@ -105,7 +105,7 @@ export const DeployIcon: React.FC<IconProps> = ({
 
 // UI Control Icons
 export const UnfoldIcon: React.FC<IconProps> = ({
-  size = 16,
+  size = 18,
   className = '',
   color = 'currentColor',
 }) => (
@@ -138,7 +138,7 @@ export const UnfoldIcon: React.FC<IconProps> = ({
 )
 
 export const FoldIcon: React.FC<IconProps> = ({
-  size = 16,
+  size = 18,
   className = '',
   color = 'currentColor',
 }) => (

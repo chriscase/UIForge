@@ -414,7 +414,7 @@ const events = [
     title: 'Custom event',
     timestamp: new Date(),
     // Provide custom icon as React element
-    icon: <ActivityIcons.star size={16} />,
+    icon: <ActivityIcons.commit size={16} />,
   },
   {
     id: 3,
