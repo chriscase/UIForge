@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import { ActivityIcons, UIIcons } from '../icons'
 import './ActivityStream.css'
 
 /**
@@ -30,34 +31,52 @@ export interface ActivityEvent {
    */
   icon?: React.ReactNode
   /**
-   * Optional metadata for the event
+   * Optional metadata for the event (e.g., repository name, user, etc.)
    */
   metadata?: Record<string, unknown>
   /**
    * Whether the event is initially expanded
    */
   initiallyExpanded?: boolean
+  /**
+   * Child events for grouped activities
+   */
+  children?: ActivityEvent[]
 }
+
+/**
+ * Grouped event structure
+ */
+interface GroupedEvent {
+  id: string
+  type: string
+  count: number
+  title: string
+  timestamp: Date
+  icon?: React.ReactNode
+  events: ActivityEvent[]
+  children?: GroupedEvent[]
+}
+
+/**
+ * Date separator structure
+ */
+interface DateSeparator {
+  id: string
+  type: 'date-separator'
+  date: Date
+  label: string
+}
+
+type StreamItem = GroupedEvent | DateSeparator
 
 /**
  * Pagination configuration for loading more events
  */
 export interface ActivityStreamPagination {
-  /**
-   * Current page number
-   */
   currentPage: number
-  /**
-   * Number of items per page
-   */
   pageSize: number
-  /**
-   * Total number of items available
-   */
   totalItems?: number
-  /**
-   * Whether there are more items to load
-   */
   hasMore?: boolean
 }
 
@@ -94,14 +113,6 @@ export interface UIForgeActivityStreamProps {
    */
   pagination?: ActivityStreamPagination
   /**
-   * Custom renderer for event items
-   */
-  renderEvent?: (event: ActivityEvent) => React.ReactNode
-  /**
-   * Custom renderer for event icons
-   */
-  renderIcon?: (event: ActivityEvent) => React.ReactNode
-  /**
    * Maximum height of the stream container (CSS value)
    */
   maxHeight?: string
@@ -121,10 +132,223 @@ export interface UIForgeActivityStreamProps {
    * Callback when an event is expanded/collapsed
    */
   onToggleExpand?: (eventId: string | number, expanded: boolean) => void
+  /**
+   * Whether to enable automatic grouping of consecutive events
+   */
+  enableGrouping?: boolean
+  /**
+   * Minimum number of consecutive events to trigger grouping
+   */
+  groupingThreshold?: number
+  /**
+   * Whether to show date separators
+   */
+  showDateSeparators?: boolean
+  /**
+   * Whether to show the timeline line
+   */
+  showTimeline?: boolean
 }
 
 /**
- * A GitHub-inspired activity stream component with theming, icons, and infinite scroll
+ * Get default icon for event type from icon library
+ */
+const getDefaultIcon = (type: string): React.ReactNode => {
+  const IconComponent = ActivityIcons[type as keyof typeof ActivityIcons] || ActivityIcons.commit
+  return <IconComponent size={16} />
+}
+
+/**
+ * Group consecutive events of the same type
+ */
+const groupEvents = (events: ActivityEvent[], threshold: number = 2): StreamItem[] => {
+  if (events.length === 0) return []
+
+  const result: StreamItem[] = []
+  let currentGroup: ActivityEvent[] = []
+  let currentType: string | null = null
+
+  events.forEach((event, index) => {
+    if (currentType === event.type) {
+      currentGroup.push(event)
+    } else {
+      // Finalize previous group
+      if (currentGroup.length >= threshold && currentType) {
+        result.push(createGroupedEvent(currentGroup, currentType))
+      } else {
+        currentGroup.forEach((e) => {
+          result.push({
+            id: e.id.toString(),
+            type: e.type,
+            count: 1,
+            title: e.title,
+            timestamp: new Date(e.timestamp),
+            icon: e.icon,
+            events: [e],
+          })
+        })
+      }
+
+      // Start new group
+      currentGroup = [event]
+      currentType = event.type
+    }
+
+    // Handle last group
+    if (index === events.length - 1) {
+      if (currentGroup.length >= threshold && currentType) {
+        result.push(createGroupedEvent(currentGroup, currentType))
+      } else {
+        currentGroup.forEach((e) => {
+          result.push({
+            id: e.id.toString(),
+            type: e.type,
+            count: 1,
+            title: e.title,
+            timestamp: new Date(e.timestamp),
+            icon: e.icon,
+            events: [e],
+          })
+        })
+      }
+    }
+  })
+
+  return result
+}
+
+/**
+ * Create a grouped event from multiple events
+ */
+const createGroupedEvent = (events: ActivityEvent[], type: string): GroupedEvent => {
+  // Group by repository/context if metadata.repository exists
+  const byRepo = events.reduce(
+    (acc, event) => {
+      const repo = (event.metadata?.repository as string) || 'unknown'
+      if (!acc[repo]) acc[repo] = []
+      acc[repo].push(event)
+      return acc
+    },
+    {} as Record<string, ActivityEvent[]>
+  )
+
+  const repoGroups = Object.entries(byRepo)
+  const hasMultipleRepos = repoGroups.length > 1
+
+  // Create title based on grouping
+  let title = ''
+  if (hasMultipleRepos) {
+    title = `Created ${events.length} ${getEventTypeLabel(type)} in ${repoGroups.length} repositories`
+  } else {
+    const repo = repoGroups[0][0]
+    title = `Created ${events.length} ${getEventTypeLabel(type)}${repo !== 'unknown' ? ` in ${repo}` : ''}`
+  }
+
+  return {
+    id: `group-${type}-${events[0].id}`,
+    type,
+    count: events.length,
+    title,
+    timestamp: new Date(events[0].timestamp),
+    icon: events[0].icon,
+    events,
+    children: hasMultipleRepos
+      ? repoGroups.map(([repo, repoEvents]) => ({
+          id: `group-${type}-${repo}`,
+          type,
+          count: repoEvents.length,
+          title: `Created ${repoEvents.length} ${getEventTypeLabel(type)} in ${repo}`,
+          timestamp: new Date(repoEvents[0].timestamp),
+          icon: repoEvents[0].icon,
+          events: repoEvents,
+        }))
+      : undefined,
+  }
+}
+
+/**
+ * Get human-readable label for event type
+ */
+const getEventTypeLabel = (type: string): string => {
+  const labels: Record<string, string> = {
+    pr: 'pull requests',
+    issue: 'issues',
+    commit: 'commits',
+    comment: 'comments',
+    star: 'stars',
+    fork: 'forks',
+    merge: 'merges',
+    release: 'releases',
+    deploy: 'deployments',
+  }
+  return labels[type] || `${type}s`
+}
+
+/**
+ * Add date separators to events
+ */
+const addDateSeparators = (items: StreamItem[]): (StreamItem | DateSeparator)[] => {
+  if (items.length === 0) return []
+
+  const result: (StreamItem | DateSeparator)[] = []
+  let lastMonth: string | null = null
+
+  items.forEach((item, index) => {
+    if ('type' in item && item.type === 'date-separator') {
+      result.push(item)
+      return
+    }
+
+    const groupedItem = item as GroupedEvent
+    const date = groupedItem.timestamp
+    const monthYear = `${date.getFullYear()}-${date.getMonth()}`
+
+    if (monthYear !== lastMonth) {
+      const separator: DateSeparator = {
+        id: `sep-${index}`,
+        type: 'date-separator',
+        date,
+        label: formatMonthYear(date),
+      }
+      result.push(separator)
+      lastMonth = monthYear
+    }
+
+    result.push(item)
+  })
+
+  return result
+}
+
+/**
+ * Format date as "Month Year"
+ */
+const formatMonthYear = (date: Date): string => {
+  return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+}
+
+/**
+ * Format relative time
+ */
+const formatTimestamp = (timestamp: Date | string): string => {
+  const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp
+  const now = new Date()
+  const diffMs = now.getTime() - date.getTime()
+  const diffSeconds = Math.floor(diffMs / 1000)
+  const diffMinutes = Math.floor(diffSeconds / 60)
+  const diffHours = Math.floor(diffMinutes / 60)
+  const diffDays = Math.floor(diffHours / 24)
+
+  if (diffSeconds < 60) return 'just now'
+  if (diffMinutes < 60) return `${diffMinutes}m ago`
+  if (diffHours < 24) return `${diffHours}h ago`
+  if (diffDays < 30) return `${diffDays}d ago`
+
+  return date.toLocaleDateString()
+}
+
+/**
+ * A GitHub-inspired activity stream component with smart grouping, timeline, and theming
  */
 export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
   events,
@@ -134,42 +358,67 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
   loading = false,
   onLoadMore,
   pagination,
-  renderEvent,
-  renderIcon,
   maxHeight,
   showMoreThreshold = 100,
   initiallyExpandedAll = false,
   emptyMessage = 'No activity to display',
   onToggleExpand,
+  enableGrouping = true,
+  groupingThreshold = 2,
+  showDateSeparators = true,
+  showTimeline = true,
 }) => {
-  const [expandedEvents, setExpandedEvents] = useState<Set<string | number>>(
-    () =>
-      new Set(
-        initiallyExpandedAll
-          ? events.map((e) => e.id)
-          : events.filter((e) => e.initiallyExpanded).map((e) => e.id)
-      )
-  )
+  const [expandedEvents, setExpandedEvents] = useState<Set<string>>(() => {
+    if (!initiallyExpandedAll) return new Set()
+
+    const allIds = new Set<string>()
+    const items = enableGrouping
+      ? showDateSeparators
+        ? addDateSeparators(groupEvents(events, groupingThreshold))
+        : groupEvents(events, groupingThreshold)
+      : events.map((e) => ({
+          id: e.id.toString(),
+          type: e.type,
+          count: 1,
+          title: e.title,
+          timestamp: new Date(e.timestamp),
+          icon: e.icon,
+          events: [e],
+        }))
+
+    items.forEach((item) => {
+      if ('events' in item && item.type !== 'date-separator') {
+        const groupedItem = item as GroupedEvent
+        allIds.add(groupedItem.id)
+        if (groupedItem.children) {
+          groupedItem.children.forEach((child: GroupedEvent) => allIds.add(child.id))
+        }
+      }
+    })
+    return allIds
+  })
   const [showMoreVisible, setShowMoreVisible] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
-  const prevInitiallyExpandedAllRef = useRef(initiallyExpandedAll)
-  const prevEventsLengthRef = useRef(events.length)
 
-  // Update expanded events when initiallyExpandedAll changes or new events are added
-  useEffect(() => {
-    const expandedAllChanged = prevInitiallyExpandedAllRef.current !== initiallyExpandedAll
-    const eventsAdded = prevEventsLengthRef.current < events.length
-
-    if (initiallyExpandedAll && (expandedAllChanged || eventsAdded)) {
-      // This is a valid use of setState in useEffect - responding to prop changes
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setExpandedEvents(new Set(events.map((e) => e.id)))
+  // Process events: group and add date separators
+  const processedItems = useMemo(() => {
+    if (!enableGrouping) {
+      const ungrouped = events.map((e) => ({
+        id: e.id.toString(),
+        type: e.type,
+        count: 1,
+        title: e.title,
+        timestamp: new Date(e.timestamp),
+        icon: e.icon,
+        events: [e],
+      }))
+      return showDateSeparators ? addDateSeparators(ungrouped) : ungrouped
     }
 
-    prevInitiallyExpandedAllRef.current = initiallyExpandedAll
-    prevEventsLengthRef.current = events.length
-  }, [initiallyExpandedAll, events])
+    const grouped = groupEvents(events, groupingThreshold)
+    return showDateSeparators ? addDateSeparators(grouped) : grouped
+  }, [events, enableGrouping, groupingThreshold, showDateSeparators])
 
   // Handle scroll to show/hide "Show more" bar
   const handleScroll = useCallback(() => {
@@ -186,7 +435,6 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
     if (!scrollElement) return
 
     scrollElement.addEventListener('scroll', handleScroll)
-    // Check initial state
     handleScroll()
 
     return () => {
@@ -195,7 +443,7 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
   }, [handleScroll])
 
   const toggleExpand = useCallback(
-    (eventId: string | number) => {
+    (eventId: string) => {
       setExpandedEvents((prev) => {
         const newSet = new Set(prev)
         const isExpanded = newSet.has(eventId)
@@ -211,81 +459,73 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
     [onToggleExpand]
   )
 
-  const formatTimestamp = (timestamp: Date | string): string => {
-    const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp
-    const now = new Date()
-    const diffMs = now.getTime() - date.getTime()
-    const diffSeconds = Math.floor(diffMs / 1000)
-    const diffMinutes = Math.floor(diffSeconds / 60)
-    const diffHours = Math.floor(diffMinutes / 60)
-    const diffDays = Math.floor(diffHours / 24)
-
-    if (diffSeconds < 60) return 'just now'
-    if (diffMinutes < 60) return `${diffMinutes}m ago`
-    if (diffHours < 24) return `${diffHours}h ago`
-    if (diffDays < 30) return `${diffDays}d ago`
-
-    return date.toLocaleDateString()
-  }
-
-  const defaultRenderIcon = (event: ActivityEvent): React.ReactNode => {
-    if (event.icon) return event.icon
-
-    // Default icons based on event type
-    const typeIcons: Record<string, string> = {
-      commit: '📝',
-      issue: '🐛',
-      pr: '🔀',
-      comment: '💬',
-      star: '⭐',
-      fork: '🍴',
-      merge: '✅',
-      deploy: '🚀',
-      release: '🎉',
-    }
-
-    return typeIcons[event.type] || '📌'
-  }
-
-  const defaultRenderEvent = (event: ActivityEvent): React.ReactNode => {
-    const isExpanded = expandedEvents.has(event.id)
-    const hasDescription = Boolean(event.description)
+  const renderGroupedEvent = (item: GroupedEvent, isChild = false) => {
+    const isExpanded = expandedEvents.has(item.id)
+    const hasChildren = item.children && item.children.length > 0
+    const hasMultipleEvents = item.count > 1
 
     return (
       <div
-        className={`activity-stream__event ${isExpanded ? 'activity-stream__event--expanded' : ''}`}
-        data-event-id={event.id}
-        data-event-type={event.type}
+        key={item.id}
+        className={`activity-stream__item ${isChild ? 'activity-stream__item--child' : ''}`}
       >
-        <div className="activity-stream__event-icon">
-          {renderIcon ? renderIcon(event) : defaultRenderIcon(event)}
-        </div>
-        <div className="activity-stream__event-content">
+        {showTimeline && !isChild && <div className="activity-stream__timeline-marker" />}
+        <div className="activity-stream__icon">{item.icon || getDefaultIcon(item.type)}</div>
+        <div className="activity-stream__content">
           <div
-            className="activity-stream__event-header"
-            onClick={() => hasDescription && toggleExpand(event.id)}
+            className={`activity-stream__header ${hasMultipleEvents || hasChildren ? 'activity-stream__header--clickable' : ''}`}
+            onClick={() => (hasMultipleEvents || hasChildren) && toggleExpand(item.id)}
             onKeyDown={(e) => {
-              if (hasDescription && (e.key === 'Enter' || e.key === ' ')) {
+              if ((hasMultipleEvents || hasChildren) && (e.key === 'Enter' || e.key === ' ')) {
                 e.preventDefault()
-                toggleExpand(event.id)
+                toggleExpand(item.id)
               }
             }}
-            role={hasDescription ? 'button' : undefined}
-            tabIndex={hasDescription ? 0 : undefined}
-            aria-expanded={hasDescription ? isExpanded : undefined}
+            role={hasMultipleEvents || hasChildren ? 'button' : undefined}
+            tabIndex={hasMultipleEvents || hasChildren ? 0 : undefined}
+            aria-expanded={hasMultipleEvents || hasChildren ? isExpanded : undefined}
           >
-            <div className="activity-stream__event-title">{event.title}</div>
-            <div className="activity-stream__event-timestamp">
-              {formatTimestamp(event.timestamp)}
-            </div>
-            {hasDescription && (
-              <div className="activity-stream__event-toggle">{isExpanded ? '▼' : '▶'}</div>
+            <div className="activity-stream__title">{item.title}</div>
+            <div className="activity-stream__timestamp">{formatTimestamp(item.timestamp)}</div>
+            {(hasMultipleEvents || hasChildren) && (
+              <div className="activity-stream__toggle">
+                {isExpanded ? <UIIcons.fold size={12} /> : <UIIcons.unfold size={12} />}
+              </div>
             )}
           </div>
-          {hasDescription && isExpanded && (
-            <div className="activity-stream__event-description">{event.description}</div>
+
+          {isExpanded && hasChildren && item.children && (
+            <div className="activity-stream__children">
+              {item.children.map((child) => renderGroupedEvent(child, true))}
+            </div>
+          )}
+
+          {isExpanded && !hasChildren && item.events.length > 1 && (
+            <div className="activity-stream__events-list">
+              {item.events.map((event) => (
+                <div key={event.id} className="activity-stream__event-item">
+                  <div className="activity-stream__event-title">{event.title}</div>
+                  {event.description && (
+                    <div className="activity-stream__event-description">{event.description}</div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {isExpanded && item.count === 1 && item.events[0].description && (
+            <div className="activity-stream__description">{item.events[0].description}</div>
           )}
         </div>
+      </div>
+    )
+  }
+
+  const renderDateSeparator = (separator: DateSeparator) => {
+    return (
+      <div key={separator.id} className="activity-stream__date-separator">
+        <div className="activity-stream__date-label">{separator.label}</div>
+        <div className="activity-stream__date-line" />
       </div>
     )
   }
@@ -299,23 +539,22 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
 
   const baseClass = 'activity-stream'
   const themeClass = `${baseClass}--${theme}`
-  const classes = `${baseClass} ${themeClass} ${className}`.trim()
+  const timelineClass = showTimeline ? `${baseClass}--with-timeline` : ''
+  const classes = `${baseClass} ${themeClass} ${timelineClass} ${className}`.trim()
 
   const containerStyle = maxHeight ? { maxHeight } : undefined
 
   return (
     <div ref={containerRef} className={classes} data-theme={theme}>
       <div ref={scrollRef} className="activity-stream__container" style={containerStyle}>
-        {events.length === 0 ? (
+        {processedItems.length === 0 ? (
           <div className="activity-stream__empty">{emptyMessage}</div>
         ) : (
-          <div className="activity-stream__events">
-            {events.map((event) =>
-              renderEvent ? (
-                <div key={event.id}>{renderEvent(event)}</div>
-              ) : (
-                <div key={event.id}>{defaultRenderEvent(event)}</div>
-              )
+          <div className="activity-stream__items">
+            {processedItems.map((item) =>
+              'type' in item && item.type === 'date-separator'
+                ? renderDateSeparator(item as DateSeparator)
+                : renderGroupedEvent(item as GroupedEvent)
             )}
           </div>
         )}

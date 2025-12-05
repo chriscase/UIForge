@@ -1,9 +1,9 @@
 import { useState, useMemo } from 'react'
 import {
-  UIForgeActivityStreamEnhanced,
+  UIForgeActivityStream,
   ActivityEvent,
-} from '../src/components/ActivityStreamEnhanced'
-import '../src/components/ActivityStreamEnhanced.css'
+} from '../src/components/ActivityStream'
+import '../src/components/ActivityStream.css'
 import './ActivityStreamExample.css'
 
 function ActivityStreamExample() {
@@ -289,7 +289,7 @@ function ActivityStreamExample() {
           </p>
 
           <div className="activity-stream-example__stream-container">
-            <UIForgeActivityStreamEnhanced
+            <UIForgeActivityStream
               events={events}
               theme={theme}
               enableGrouping={enableGrouping}
@@ -354,7 +354,7 @@ function ActivityStreamExample() {
         <h3>Usage Example</h3>
         <pre>
           <code>
-            {`import { UIForgeActivityStreamEnhanced } from '@chriscase/uiforge'
+            {`import { UIForgeActivityStream } from '@chriscase/uiforge'
 
 const events = [
   {
@@ -367,7 +367,7 @@ const events = [
   // ... more events
 ]
 
-<UIForgeActivityStreamEnhanced
+<UIForgeActivityStream
   events={events}
   theme="dark"
   enableGrouping={true}
