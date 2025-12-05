@@ -491,7 +491,7 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
             <div className="activity-stream__timestamp">{formatTimestamp(item.timestamp)}</div>
             {(hasMultipleEvents || hasChildren) && (
               <div className="activity-stream__toggle">
-                {isExpanded ? <UIIcons.fold size={12} /> : <UIIcons.unfold size={12} />}
+                {isExpanded ? <UIIcons.fold size={16} /> : <UIIcons.unfold size={16} />}
               </div>
             )}
           </div>
