@@ -158,6 +158,16 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
     }, [])
   }, [])
 
+  // Helper to check if icon is a URL
+  const isIconUrl = (icon: React.ReactNode): boolean => {
+    return typeof icon === 'string' && (
+      icon.startsWith('http://') || 
+      icon.startsWith('https://') ||
+      icon.startsWith('data:') ||
+      icon.startsWith('/')
+    )
+  }
+
   // Get the selected option
   const selectedOption = useMemo(() => {
     const allOptions = flattenOptions(filteredOptions.length > 0 ? filteredOptions : options)
@@ -243,6 +253,11 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
   const flatOptions = useMemo(() => {
     const opts = flattenOptions(filteredOptions.length > 0 ? filteredOptions : options)
     return opts.filter(opt => !opt.disabled)
+  }, [filteredOptions, options, flattenOptions])
+
+  // Memoize flattened options for rendering (includes disabled options)
+  const flatOptionsForRender = useMemo(() => {
+    return flattenOptions(filteredOptions.length > 0 ? filteredOptions : options)
   }, [filteredOptions, options, flattenOptions])
 
   // Handle keyboard navigation
@@ -335,18 +350,12 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
 
   const renderDefaultOption = (option: ComboBoxOption) => {
     const indent = (option.level || 0) * 20
-    const isIconUrl = typeof option.icon === 'string' && (
-      option.icon.startsWith('http://') || 
-      option.icon.startsWith('https://') ||
-      option.icon.startsWith('data:') ||
-      option.icon.startsWith('/')
-    )
     
     return (
       <div className="uiforge-combobox-option-content" style={{ paddingLeft: `${indent}px` }}>
         {option.icon && (
           <span className="uiforge-combobox-option-icon">
-            {isIconUrl ? (
+            {isIconUrl(option.icon) ? (
               <img src={option.icon as string} alt="" className="uiforge-combobox-option-icon-img" />
             ) : (
               option.icon
@@ -361,18 +370,11 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
   const renderDefaultValue = (option: ComboBoxOption | null) => {
     if (!option) return placeholder
     
-    const isIconUrl = typeof option.icon === 'string' && (
-      option.icon.startsWith('http://') || 
-      option.icon.startsWith('https://') ||
-      option.icon.startsWith('data:') ||
-      option.icon.startsWith('/')
-    )
-    
     return (
       <div className="uiforge-combobox-value-content">
         {option.icon && (
           <span className="uiforge-combobox-value-icon">
-            {isIconUrl ? (
+            {isIconUrl(option.icon) ? (
               <img src={option.icon as string} alt="" className="uiforge-combobox-value-icon-img" />
             ) : (
               option.icon
@@ -452,7 +454,7 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
           ) : flatOptions.length === 0 ? (
             <div className={`${baseClass}-no-options`}>{noOptionsMessage}</div>
           ) : (
-            flattenOptions(filteredOptions.length > 0 ? filteredOptions : options).map((option, index) => {
+            flatOptionsForRender.map((option, index) => {
               const isSelected = option.value === value
               const isHighlighted = flatOptions.indexOf(option) === highlightedIndex
               
