@@ -128,7 +128,7 @@ export interface UIForgeComboBoxProps {
 
 /**
  * UIForgeComboBox - A rich, powerful select/combo box component
- * 
+ *
  * Features:
  * - Static and dynamic data support
  * - Icons per option
@@ -166,7 +166,7 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
   const [filteredOptions, setFilteredOptions] = useState<ComboBoxOption[]>([])
   const [highlightedIndex, setHighlightedIndex] = useState(0)
   const [asyncLoading, setAsyncLoading] = useState(false)
-  
+
   const containerRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -194,18 +194,19 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
 
   // Helper to check if icon is a URL
   const isIconUrl = (icon: React.ReactNode): boolean => {
-    return typeof icon === 'string' && (
-      icon.startsWith('http://') || 
-      icon.startsWith('https://') ||
-      icon.startsWith('data:') ||
-      icon.startsWith('/')
+    return (
+      typeof icon === 'string' &&
+      (icon.startsWith('http://') ||
+        icon.startsWith('https://') ||
+        icon.startsWith('data:') ||
+        icon.startsWith('/'))
     )
   }
 
   // Get the selected option
   const selectedOption = useMemo(() => {
     const allOptions = flattenOptions(filteredOptions.length > 0 ? filteredOptions : options)
-    return allOptions.find(opt => opt.value === value) || null
+    return allOptions.find((opt) => opt.value === value) || null
   }, [value, options, filteredOptions, flattenOptions])
 
   // Filter options based on search text
@@ -213,23 +214,23 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
     if (!text.trim()) return opts
 
     const lowerText = text.toLowerCase()
-    
+
     const filterRecursive = (options: ComboBoxOption[]): ComboBoxOption[] => {
       return options.reduce<ComboBoxOption[]>((acc, opt) => {
         const matches = opt.label.toLowerCase().includes(lowerText)
         const childMatches = opt.children ? filterRecursive(opt.children) : []
-        
+
         if (matches || childMatches.length > 0) {
           acc.push({
             ...opt,
             children: childMatches.length > 0 ? childMatches : opt.children,
           })
         }
-        
+
         return acc
       }, [])
     }
-    
+
     return filterRecursive(opts)
   }, [])
 
@@ -263,18 +264,21 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
         if (controllerRef.current) controllerRef.current.abort()
         controllerRef.current = new AbortController()
         const signal = controllerRef.current.signal
-        setAsyncLoading(true)
-        (async () => {
+        setAsyncLoading(true)(async () => {
           try {
             const now = Date.now()
             const cacheKey = searchText
             const cachedEntry = cacheRef.current.get(cacheKey)
-            const isCacheValid = cachedEntry && (!cacheTTLRef.current || (now - cachedEntry.timestamp < cacheTTLRef.current))
+            const isCacheValid =
+              cachedEntry &&
+              (!cacheTTLRef.current || now - cachedEntry.timestamp < cacheTTLRef.current)
             let results: ComboBoxOption[]
             if (enableCacheRef.current && isCacheValid) {
               results = cachedEntry!.data
             } else {
-              results = await (onSearchRef.current ? onSearchRef.current(searchText, signal) : onSearch(searchText, signal))
+              results = await (onSearchRef.current
+                ? onSearchRef.current(searchText, signal)
+                : onSearch(searchText, signal))
               if (!signal.aborted && enableCacheRef.current) {
                 cacheRef.current.set(cacheKey, { data: results, timestamp: now })
               }
@@ -308,12 +312,12 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
       }
 
       debounceTimerRef.current = setTimeout(async () => {
-            // Abort previous in-flight request
-            if (controllerRef.current) {
-              controllerRef.current.abort()
-            }
-            controllerRef.current = new AbortController()
-            const signal = controllerRef.current.signal
+        // Abort previous in-flight request
+        if (controllerRef.current) {
+          controllerRef.current.abort()
+        }
+        controllerRef.current = new AbortController()
+        const signal = controllerRef.current.signal
         setAsyncLoading(true)
         try {
           // Check cache first
@@ -321,13 +325,15 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
           const cacheKey = searchText
           const cachedEntry = cacheRef.current.get(cacheKey)
           const now = Date.now()
-          const isCacheValid = cachedEntry && (
-            !cacheTTLRef.current || (now - cachedEntry.timestamp < cacheTTLRef.current)
-          )
+          const isCacheValid =
+            cachedEntry &&
+            (!cacheTTLRef.current || now - cachedEntry.timestamp < cacheTTLRef.current)
           if (enableCacheRef.current && isCacheValid) {
             results = cachedEntry.data
           } else {
-            results = await (onSearchRef.current ? onSearchRef.current(searchText, signal) : onSearch(searchText, signal))
+            results = await (onSearchRef.current
+              ? onSearchRef.current(searchText, signal)
+              : onSearch(searchText, signal))
             if (!signal.aborted && enableCacheRef.current) {
               cacheRef.current.set(cacheKey, { data: results, timestamp: now })
             }
@@ -383,7 +389,7 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
   // Flatten current options for keyboard navigation
   const flatOptions = useMemo(() => {
     const opts = flattenOptions(filteredOptions.length > 0 ? filteredOptions : options)
-    return opts.filter(opt => !opt.disabled)
+    return opts.filter((opt) => !opt.disabled)
   }, [filteredOptions, options, flattenOptions])
 
   // Memoize flattened options for rendering (includes disabled options)
@@ -397,8 +403,8 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
     flatOptionsForRender.forEach((opt) => {
       // Use JSON.stringify for robust key generation to avoid collisions
       const key = JSON.stringify({ value: opt.value, label: opt.label })
-      const selectableIdx = flatOptions.findIndex(fo => 
-        fo.value === opt.value && fo.label === opt.label
+      const selectableIdx = flatOptions.findIndex(
+        (fo) => fo.value === opt.value && fo.label === opt.label
       )
       map.set(key, selectableIdx)
     })
@@ -415,17 +421,13 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
         if (!isOpen) {
           setIsOpen(true)
         } else {
-          setHighlightedIndex(prev => 
-            prev < flatOptions.length - 1 ? prev + 1 : 0
-          )
+          setHighlightedIndex((prev) => (prev < flatOptions.length - 1 ? prev + 1 : 0))
         }
         break
       case 'ArrowUp':
         e.preventDefault()
         if (isOpen) {
-          setHighlightedIndex(prev => 
-            prev > 0 ? prev - 1 : flatOptions.length - 1
-          )
+          setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : flatOptions.length - 1))
         }
         break
       case 'Enter':
@@ -464,7 +466,7 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
 
   const handleSelectOption = (option: ComboBoxOption) => {
     if (option.disabled) return
-    
+
     onChange?.(option.value, option)
     setIsOpen(false)
     setSearchText('')
@@ -479,7 +481,7 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
 
   const handleToggle = () => {
     if (disabled) return
-    setIsOpen(prev => {
+    setIsOpen((prev) => {
       const newOpen = !prev
       if (newOpen) setTimeout(() => inputRef.current?.focus(), 0)
       return newOpen
@@ -503,13 +505,17 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
 
   const renderDefaultOption = (option: ComboBoxOption) => {
     const indent = (option.level || 0) * 20
-    
+
     return (
       <div className="uiforge-combobox-option-content" style={{ paddingLeft: `${indent}px` }}>
         {option.icon && (
           <span className="uiforge-combobox-option-icon">
             {isIconUrl(option.icon) ? (
-              <img src={option.icon as string} alt="" className="uiforge-combobox-option-icon-img" />
+              <img
+                src={option.icon as string}
+                alt=""
+                className="uiforge-combobox-option-icon-img"
+              />
             ) : (
               option.icon
             )}
@@ -522,7 +528,7 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
 
   const renderDefaultValue = (option: ComboBoxOption | null) => {
     if (!option) return placeholder
-    
+
     return (
       <div className="uiforge-combobox-value-content">
         {option.icon && (
@@ -545,7 +551,9 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
     isOpen && `${baseClass}--open`,
     disabled && `${baseClass}--disabled`,
     className,
-  ].filter(Boolean).join(' ')
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   return (
     <div
@@ -577,7 +585,7 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
             {renderValue ? renderValue(selectedOption) : renderDefaultValue(selectedOption)}
           </div>
         )}
-        
+
         <div className={`${baseClass}-indicators`}>
           {clearable && value !== null && value !== undefined && !disabled && (
             <button
@@ -612,14 +620,16 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
               const selectableIndex = optionIndexMap.get(optionKey) ?? -1
               const isSelected = option.value === value
               const isHighlighted = selectableIndex === highlightedIndex
-              
+
               const optionClasses = [
                 `${baseClass}-option`,
                 isSelected && `${baseClass}-option--selected`,
                 isHighlighted && `${baseClass}-option--highlighted`,
                 option.disabled && `${baseClass}-option--disabled`,
-              ].filter(Boolean).join(' ')
-              
+              ]
+                .filter(Boolean)
+                .join(' ')
+
               return (
                 <div
                   key={optionKey}

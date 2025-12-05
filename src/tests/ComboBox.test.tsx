@@ -66,11 +66,11 @@ describe('UIForgeComboBox', () => {
     it('opens dropdown on click', async () => {
       const user = userEvent.setup()
       const { container } = render(<UIForgeComboBox options={basicOptions} searchable={false} />)
-      
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{ArrowDown}')
-      
+
       expect(screen.getByRole('listbox')).toBeInTheDocument()
       expect(screen.getByText('Option 1')).toBeInTheDocument()
       expect(screen.getByText('Option 2')).toBeInTheDocument()
@@ -81,34 +81,33 @@ describe('UIForgeComboBox', () => {
       const user = userEvent.setup()
       const handleChange = vi.fn()
       const { container } = render(
-        <UIForgeComboBox
-          options={basicOptions}
-          onChange={handleChange}
-          searchable={false}
-        />
+        <UIForgeComboBox options={basicOptions} onChange={handleChange} searchable={false} />
       )
-      
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{ArrowDown}')
-      
+
       const option = screen.getByText('Option 2')
       await user.click(option)
-      
-      expect(handleChange).toHaveBeenCalledWith(2, expect.objectContaining({ value: 2, label: 'Option 2' }))
+
+      expect(handleChange).toHaveBeenCalledWith(
+        2,
+        expect.objectContaining({ value: 2, label: 'Option 2' })
+      )
     })
 
     it('closes dropdown after selection', async () => {
       const user = userEvent.setup()
       const { container } = render(<UIForgeComboBox options={basicOptions} searchable={false} />)
-      
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{ArrowDown}')
-      
+
       const option = screen.getByText('Option 1')
       await user.click(option)
-      
+
       expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
     })
   })
@@ -116,12 +115,14 @@ describe('UIForgeComboBox', () => {
   describe('Icons', () => {
     it('renders icons in options', async () => {
       const user = userEvent.setup()
-      const { container } = render(<UIForgeComboBox options={optionsWithIcons} searchable={false} />)
-      
+      const { container } = render(
+        <UIForgeComboBox options={optionsWithIcons} searchable={false} />
+      )
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{ArrowDown}')
-      
+
       expect(screen.getByText('🏠')).toBeInTheDocument()
       expect(screen.getByText('⭐')).toBeInTheDocument()
       expect(screen.getByText('🔥')).toBeInTheDocument()
@@ -138,13 +139,15 @@ describe('UIForgeComboBox', () => {
       const optionsWithImages: ComboBoxOption[] = [
         { value: 1, label: 'Option 1', icon: 'https://example.com/icon1.png' },
       ]
-      
-      const { container } = render(<UIForgeComboBox options={optionsWithImages} searchable={false} />)
-      
+
+      const { container } = render(
+        <UIForgeComboBox options={optionsWithImages} searchable={false} />
+      )
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{ArrowDown}')
-      
+
       const images = container.querySelectorAll('img')
       expect(images.length).toBeGreaterThan(0)
       expect(images[0]).toHaveAttribute('src', 'https://example.com/icon1.png')
@@ -154,12 +157,14 @@ describe('UIForgeComboBox', () => {
   describe('Hierarchical Options', () => {
     it('renders hierarchical options with indentation', async () => {
       const user = userEvent.setup()
-      const { container } = render(<UIForgeComboBox options={hierarchicalOptions} searchable={false} />)
-      
+      const { container } = render(
+        <UIForgeComboBox options={hierarchicalOptions} searchable={false} />
+      )
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{ArrowDown}')
-      
+
       expect(screen.getByText('Category 1')).toBeInTheDocument()
       expect(screen.getByText('Item 1.1')).toBeInTheDocument()
       expect(screen.getByText('Item 1.2')).toBeInTheDocument()
@@ -170,20 +175,16 @@ describe('UIForgeComboBox', () => {
       const user = userEvent.setup()
       const handleChange = vi.fn()
       const { container } = render(
-        <UIForgeComboBox
-          options={hierarchicalOptions}
-          onChange={handleChange}
-          searchable={false}
-        />
+        <UIForgeComboBox options={hierarchicalOptions} onChange={handleChange} searchable={false} />
       )
-      
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{ArrowDown}')
-      
+
       const header = screen.getByText('Category 1')
       await user.click(header)
-      
+
       expect(handleChange).not.toHaveBeenCalled()
     })
 
@@ -191,20 +192,16 @@ describe('UIForgeComboBox', () => {
       const user = userEvent.setup()
       const handleChange = vi.fn()
       const { container } = render(
-        <UIForgeComboBox
-          options={hierarchicalOptions}
-          onChange={handleChange}
-          searchable={false}
-        />
+        <UIForgeComboBox options={hierarchicalOptions} onChange={handleChange} searchable={false} />
       )
-      
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{ArrowDown}')
-      
+
       const option = screen.getByText('Item 1.1')
       await user.click(option)
-      
+
       expect(handleChange).toHaveBeenCalledWith(1, expect.objectContaining({ label: 'Item 1.1' }))
     })
   })
@@ -217,28 +214,28 @@ describe('UIForgeComboBox', () => {
     it('opens dropdown when searchable is true', async () => {
       const user = userEvent.setup()
       render(<UIForgeComboBox options={basicOptions} searchable={false} />)
-      
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{ArrowDown}')
-      
+
       expect(screen.getByRole('listbox')).toBeInTheDocument()
     })
 
     it('filters options by search text', async () => {
       const user = userEvent.setup()
       render(<UIForgeComboBox options={basicOptions} searchable />)
-      
+
       const combobox = screen.getByRole('combobox')
       fireEvent.keyDown(combobox, { key: 'ArrowDown' })
-      
+
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
       })
-      
+
       const input = screen.getByRole('textbox')
       await user.type(input, '2')
-      
+
       await waitFor(() => {
         expect(screen.getByText('Option 2')).toBeInTheDocument()
         expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
@@ -249,17 +246,17 @@ describe('UIForgeComboBox', () => {
     it('shows no options message when no matches', async () => {
       const user = userEvent.setup()
       render(<UIForgeComboBox options={basicOptions} searchable noOptionsMessage="No matches" />)
-      
+
       const combobox = screen.getByRole('combobox')
       fireEvent.keyDown(combobox, { key: 'ArrowDown' })
-      
+
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
       })
-      
+
       const input = screen.getByRole('textbox')
       await user.type(input, 'xyz')
-      
+
       await waitFor(() => {
         expect(screen.getByText('No matches')).toBeInTheDocument()
       })
@@ -268,17 +265,17 @@ describe('UIForgeComboBox', () => {
     it('filters hierarchical options recursively', async () => {
       const user = userEvent.setup()
       render(<UIForgeComboBox options={hierarchicalOptions} searchable />)
-      
+
       const combobox = screen.getByRole('combobox')
       fireEvent.keyDown(combobox, { key: 'ArrowDown' })
-      
+
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
       })
-      
+
       const input = screen.getByRole('textbox')
       await user.type(input, '1.1')
-      
+
       await waitFor(() => {
         expect(screen.getByText('Item 1.1')).toBeInTheDocument()
         expect(screen.queryByText('Item 2.1')).not.toBeInTheDocument()
@@ -290,11 +287,11 @@ describe('UIForgeComboBox', () => {
     it('opens on Enter key', async () => {
       const user = userEvent.setup()
       render(<UIForgeComboBox options={basicOptions} searchable={false} />)
-      
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{Enter}')
-      
+
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
       })
@@ -303,33 +300,33 @@ describe('UIForgeComboBox', () => {
     it('closes on Escape key', async () => {
       const user = userEvent.setup()
       const { container } = render(<UIForgeComboBox options={basicOptions} searchable={false} />)
-      
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{ArrowDown}')
-      
+
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
       })
-      
+
       combobox.focus()
       await user.keyboard('{Escape}')
-      
+
       expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
     })
 
     it('navigates options with arrow keys', async () => {
       const user = userEvent.setup()
       render(<UIForgeComboBox options={basicOptions} searchable={false} />)
-      
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{ArrowDown}')
-      
+
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
       })
-      
+
       // First option should be highlighted by default (index 0)
       const options = screen.getAllByRole('option')
       expect(options[0]).toHaveClass('uiforge-combobox-option--highlighted')
@@ -338,39 +335,36 @@ describe('UIForgeComboBox', () => {
     it('selects highlighted option with Enter', async () => {
       const user = userEvent.setup()
       const handleChange = vi.fn()
-      render(
-        <UIForgeComboBox
-          options={basicOptions}
-          onChange={handleChange}
-          searchable={false}
-        />
-      )
-      
+      render(<UIForgeComboBox options={basicOptions} onChange={handleChange} searchable={false} />)
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{ArrowDown}')
-      
+
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
       })
-      
+
       await user.keyboard('{Enter}')
-      
-      expect(handleChange).toHaveBeenCalledWith(1, expect.objectContaining({ value: 1, label: 'Option 1' }))
+
+      expect(handleChange).toHaveBeenCalledWith(
+        1,
+        expect.objectContaining({ value: 1, label: 'Option 1' })
+      )
     })
   })
 
   describe('Clearable', () => {
     it('shows clear button when clearable and has value', () => {
       render(<UIForgeComboBox options={basicOptions} value={1} clearable />)
-      
+
       const clearButton = screen.getByLabelText('Clear selection')
       expect(clearButton).toBeInTheDocument()
     })
 
     it('does not show clear button when no value', () => {
       render(<UIForgeComboBox options={basicOptions} clearable />)
-      
+
       const clearButton = screen.queryByLabelText('Clear selection')
       expect(clearButton).not.toBeInTheDocument()
     })
@@ -378,18 +372,11 @@ describe('UIForgeComboBox', () => {
     it('clears selection on clear button click', async () => {
       const user = userEvent.setup()
       const handleChange = vi.fn()
-      render(
-        <UIForgeComboBox
-          options={basicOptions}
-          value={1}
-          onChange={handleChange}
-          clearable
-        />
-      )
-      
+      render(<UIForgeComboBox options={basicOptions} value={1} onChange={handleChange} clearable />)
+
       const clearButton = screen.getByLabelText('Clear selection')
       await user.click(clearButton)
-      
+
       expect(handleChange).toHaveBeenCalledWith(null, null)
     })
   })
@@ -398,11 +385,11 @@ describe('UIForgeComboBox', () => {
     it('does not open when disabled', async () => {
       const user = userEvent.setup()
       render(<UIForgeComboBox options={basicOptions} disabled />)
-      
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{Enter}')
-      
+
       expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
     })
 
@@ -414,11 +401,11 @@ describe('UIForgeComboBox', () => {
     it('does not respond to keyboard when disabled', async () => {
       const user = userEvent.setup()
       render(<UIForgeComboBox options={basicOptions} disabled />)
-      
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{Enter}')
-      
+
       expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
     })
   })
@@ -428,22 +415,20 @@ describe('UIForgeComboBox', () => {
   describe.skip('Async Search', () => {
     it('calls onSearch callback', async () => {
       const user = userEvent.setup()
-      const onSearch = vi.fn().mockResolvedValue([
-        { value: 1, label: 'Result 1' },
-      ])
-      
+      const onSearch = vi.fn().mockResolvedValue([{ value: 1, label: 'Result 1' }])
+
       render(<UIForgeComboBox onSearch={onSearch} searchable />)
-      
+
       const combobox = screen.getByRole('combobox')
       fireEvent.keyDown(combobox, { key: 'ArrowDown' })
-      
+
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
       })
-      
+
       const input = screen.getByRole('textbox')
       await user.type(input, 'test')
-      
+
       await waitFor(() => {
         expect(onSearch).toHaveBeenCalledWith('test')
       })
@@ -455,19 +440,19 @@ describe('UIForgeComboBox', () => {
         { value: 1, label: 'Async Result 1' },
         { value: 2, label: 'Async Result 2' },
       ])
-      
+
       render(<UIForgeComboBox onSearch={onSearch} searchable />)
-      
+
       const combobox = screen.getByRole('combobox')
       fireEvent.keyDown(combobox, { key: 'ArrowDown' })
-      
+
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
       })
-      
+
       const input = screen.getByRole('textbox')
       await user.type(input, 'test')
-      
+
       await waitFor(() => {
         expect(screen.getByText('Async Result 1')).toBeInTheDocument()
         expect(screen.getByText('Async Result 2')).toBeInTheDocument()
@@ -476,51 +461,57 @@ describe('UIForgeComboBox', () => {
 
     it('shows loading state during async search', async () => {
       const user = userEvent.setup()
-      const onSearch = vi.fn().mockImplementation(
-        () => new Promise(resolve => setTimeout(() => resolve([]), 100))
-      )
-      
+      const onSearch = vi
+        .fn()
+        .mockImplementation(() => new Promise((resolve) => setTimeout(() => resolve([]), 100)))
+
       render(<UIForgeComboBox onSearch={onSearch} searchable />)
-      
+
       const combobox = screen.getByRole('combobox')
       fireEvent.keyDown(combobox, { key: 'ArrowDown' })
-      
+
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
       })
-      
+
       const input = screen.getByRole('textbox')
       await user.type(input, 'test')
-      
+
       // Should show loading state briefly
-      await waitFor(() => {
-        expect(screen.getByText('Loading...')).toBeInTheDocument()
-      }, { timeout: 2000 })
+      await waitFor(
+        () => {
+          expect(screen.getByText('Loading...')).toBeInTheDocument()
+        },
+        { timeout: 2000 }
+      )
     })
 
     it('does not repeatedly call onSearch when input remains focused', async () => {
       const user = userEvent.setup()
       const onSearch = vi.fn().mockResolvedValue([])
       render(<UIForgeComboBox onSearch={onSearch} searchable />)
-      
+
       const combobox = screen.getByRole('combobox')
       fireEvent.keyDown(combobox, { key: 'ArrowDown' })
-      
+
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
       })
-      
+
       const input = screen.getByRole('textbox')
       // Focus without typing
       await user.click(input)
 
       // Allow debounce to finish
-      await waitFor(() => {
-        expect(onSearch).toHaveBeenCalledTimes(1)
-      }, { timeout: 1000 })
+      await waitFor(
+        () => {
+          expect(onSearch).toHaveBeenCalledTimes(1)
+        },
+        { timeout: 1000 }
+      )
 
       // Wait a little longer to make sure no additional calls are made
-      await new Promise(resolve => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 500))
       expect(onSearch).toHaveBeenCalledTimes(1)
     })
 
@@ -528,27 +519,27 @@ describe('UIForgeComboBox', () => {
       const user = userEvent.setup()
       const resolves: Array<(v: any) => void> = []
       const onSearch = vi.fn().mockImplementation((text, signal) => {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           resolves.push(resolve)
         })
       })
 
       render(<UIForgeComboBox onSearch={onSearch} searchable debounceMs={10} />)
-      
+
       const combobox = screen.getByRole('combobox')
       fireEvent.keyDown(combobox, { key: 'ArrowDown' })
-      
+
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
       })
-      
+
       const input = screen.getByRole('textbox')
 
       // Trigger first search
       await user.type(input, 'a')
       // Wait for the first onSearch call to happen
       await waitFor(() => expect(onSearch).toHaveBeenCalledTimes(1))
-      
+
       // Trigger second search (newer) by typing more
       await user.type(input, 'b')
       // Wait for second call
@@ -563,7 +554,7 @@ describe('UIForgeComboBox', () => {
 
       // Resolve first (stale) — it should be aborted and ignored
       resolves[0]([{ value: '1', label: 'Result 1' }])
-      await new Promise(resolve => setTimeout(resolve, 50))
+      await new Promise((resolve) => setTimeout(resolve, 50))
       expect(screen.queryByText('Result 1')).not.toBeInTheDocument()
     })
 
@@ -573,18 +564,24 @@ describe('UIForgeComboBox', () => {
       let clearFn: (() => void) | null = null
       render(
         <div>
-          <UIForgeComboBox onSearch={onSearch} searchable debounceMs={10} enableCache onClearCache={(fn) => (clearFn = fn)} />
+          <UIForgeComboBox
+            onSearch={onSearch}
+            searchable
+            debounceMs={10}
+            enableCache
+            onClearCache={(fn) => (clearFn = fn)}
+          />
           <button>Outside</button>
         </div>
       )
-      
+
       const combobox = screen.getByRole('combobox')
       fireEvent.keyDown(combobox, { key: 'ArrowDown' })
-      
+
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
       })
-      
+
       const input = screen.getByRole('textbox')
       await user.type(input, 'cache')
 
@@ -602,7 +599,7 @@ describe('UIForgeComboBox', () => {
       await user.type(input2, 'cache')
 
       // Should use cache — onSearch should not be called again
-      await new Promise(resolve => setTimeout(resolve, 50))
+      await new Promise((resolve) => setTimeout(resolve, 50))
       expect(onSearch).toHaveBeenCalledTimes(1)
 
       // Clear the cache via the previously provided callback
@@ -612,7 +609,7 @@ describe('UIForgeComboBox', () => {
       await waitFor(() => expect(screen.getByRole('listbox')).toBeInTheDocument())
       const input3 = screen.getByRole('textbox')
       await user.type(input3, 'cache')
-      await new Promise(resolve => setTimeout(resolve, 50))
+      await new Promise((resolve) => setTimeout(resolve, 50))
       expect(onSearch).toHaveBeenCalledTimes(2)
     })
 
@@ -625,14 +622,14 @@ describe('UIForgeComboBox', () => {
           <button>Outside</button>
         </div>
       )
-      
+
       const combobox = screen.getByRole('combobox')
       fireEvent.keyDown(combobox, { key: 'ArrowDown' })
-      
+
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
       })
-      
+
       const input = screen.getByRole('textbox')
       await user.type(input, 'refresh')
 
@@ -649,10 +646,7 @@ describe('UIForgeComboBox', () => {
 
     it('exposes a force refresh API via onForceRefresh', async () => {
       const user = userEvent.setup()
-      const responses = [
-        [{ value: '1', label: 'OldResult' }],
-        [{ value: '2', label: 'NewResult' }],
-      ]
+      const responses = [[{ value: '1', label: 'OldResult' }], [{ value: '2', label: 'NewResult' }]]
       let callCount = 0
       const onSearch = vi.fn().mockImplementation(async () => {
         const res = responses[callCount] || responses[responses.length - 1]
@@ -672,11 +666,11 @@ describe('UIForgeComboBox', () => {
 
       const combobox = screen.getByRole('combobox')
       fireEvent.keyDown(combobox, { key: 'ArrowDown' })
-      
+
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
       })
-      
+
       const input = screen.getByRole('textbox')
       await user.type(input, 'a')
 
@@ -691,12 +685,14 @@ describe('UIForgeComboBox', () => {
   describe('Loading State', () => {
     it('shows loading indicator when loading prop is true', async () => {
       const user = userEvent.setup()
-      const { container } = render(<UIForgeComboBox options={basicOptions} loading searchable={false} />)
-      
+      const { container } = render(
+        <UIForgeComboBox options={basicOptions} loading searchable={false} />
+      )
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{ArrowDown}')
-      
+
       expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
   })
@@ -707,19 +703,15 @@ describe('UIForgeComboBox', () => {
       const renderOption = (option: ComboBoxOption) => (
         <div data-testid="custom-option">Custom: {option.label}</div>
       )
-      
+
       const { container } = render(
-        <UIForgeComboBox
-          options={basicOptions}
-          renderOption={renderOption}
-          searchable={false}
-        />
+        <UIForgeComboBox options={basicOptions} renderOption={renderOption} searchable={false} />
       )
-      
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{ArrowDown}')
-      
+
       expect(screen.getByText('Custom: Option 1')).toBeInTheDocument()
     })
 
@@ -727,15 +719,9 @@ describe('UIForgeComboBox', () => {
       const renderValue = (option: ComboBoxOption | null) => (
         <div data-testid="custom-value">Selected: {option?.label}</div>
       )
-      
-      render(
-        <UIForgeComboBox
-          options={basicOptions}
-          value={1}
-          renderValue={renderValue}
-        />
-      )
-      
+
+      render(<UIForgeComboBox options={basicOptions} value={1} renderValue={renderValue} />)
+
       expect(screen.getByText('Selected: Option 1')).toBeInTheDocument()
     })
   })
@@ -749,16 +735,16 @@ describe('UIForgeComboBox', () => {
           <button>Outside</button>
         </div>
       )
-      
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{ArrowDown}')
-      
+
       expect(screen.getByRole('listbox')).toBeInTheDocument()
-      
+
       const outsideButton = screen.getByText('Outside')
       await user.click(outsideButton)
-      
+
       await waitFor(() => {
         expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
       })
@@ -768,7 +754,7 @@ describe('UIForgeComboBox', () => {
   describe('Accessibility', () => {
     it('has proper ARIA attributes', () => {
       render(<UIForgeComboBox options={basicOptions} />)
-      
+
       const combobox = screen.getByRole('combobox')
       expect(combobox).toHaveAttribute('aria-expanded', 'false')
       expect(combobox).toHaveAttribute('aria-haspopup', 'listbox')
@@ -777,22 +763,24 @@ describe('UIForgeComboBox', () => {
     it('updates aria-expanded when opened', async () => {
       const user = userEvent.setup()
       const { container } = render(<UIForgeComboBox options={basicOptions} searchable={false} />)
-      
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{ArrowDown}')
-      
+
       expect(combobox).toHaveAttribute('aria-expanded', 'true')
     })
 
     it('marks selected option with aria-selected', async () => {
       const user = userEvent.setup()
-      const { container } = render(<UIForgeComboBox options={basicOptions} value={1} searchable={false} />)
-      
+      const { container } = render(
+        <UIForgeComboBox options={basicOptions} value={1} searchable={false} />
+      )
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{ArrowDown}')
-      
+
       const options = screen.getAllByRole('option')
       expect(options[0]).toHaveAttribute('aria-selected', 'true')
       expect(options[1]).toHaveAttribute('aria-selected', 'false')
@@ -800,12 +788,14 @@ describe('UIForgeComboBox', () => {
 
     it('marks disabled options with aria-disabled', async () => {
       const user = userEvent.setup()
-      const { container } = render(<UIForgeComboBox options={hierarchicalOptions} searchable={false} />)
-      
+      const { container } = render(
+        <UIForgeComboBox options={hierarchicalOptions} searchable={false} />
+      )
+
       const combobox = screen.getByRole('combobox')
       combobox.focus()
       await user.keyboard('{ArrowDown}')
-      
+
       const category = screen.getByText('Category 1').closest('[role="option"]')
       expect(category).toHaveAttribute('aria-disabled', 'true')
     })
