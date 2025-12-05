@@ -264,7 +264,8 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
   const optionIndexMap = useMemo(() => {
     const map = new Map<string, number>()
     flatOptionsForRender.forEach((opt) => {
-      const key = `${opt.value}-${opt.label}`
+      // Use JSON.stringify for robust key generation to avoid collisions
+      const key = JSON.stringify({ value: opt.value, label: opt.label })
       const selectableIdx = flatOptions.findIndex(fo => 
         fo.value === opt.value && fo.label === opt.label
       )
@@ -468,7 +469,7 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
             <div className={`${baseClass}-no-options`}>{noOptionsMessage}</div>
           ) : (
             flatOptionsForRender.map((option) => {
-              const optionKey = `${option.value}-${option.label}`
+              const optionKey = JSON.stringify({ value: option.value, label: option.label })
               const selectableIndex = optionIndexMap.get(optionKey) ?? -1
               const isSelected = option.value === value
               const isHighlighted = selectableIndex === highlightedIndex
