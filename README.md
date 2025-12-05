@@ -76,6 +76,7 @@ import { Button } from '@chriscase/uiforge'
 A rich, block-based content editor for flexible layouts and content creation.
 
 **Features:**
+
 - **Block-based editing** - Create, move, and delete content blocks (text, headings, images, quotes, code)
 - **Rich formatting** - WYSIWYG controls for bold, italic, underline, inline code, and more
 - **Drag-and-drop** - Intuitive reordering of content blocks
@@ -85,21 +86,26 @@ A rich, block-based content editor for flexible layouts and content creation.
 - **Reusable component** - Easy integration into any React application
 
 ```tsx
-import { UIForgeBlocksEditor, blocksToHTML, blocksToMarkdown, ContentBlock } from '@chriscase/uiforge'
+import {
+  UIForgeBlocksEditor,
+  blocksToHTML,
+  blocksToMarkdown,
+  ContentBlock,
+} from '@chriscase/uiforge'
 
 function MyEditor() {
   const [blocks, setBlocks] = useState<ContentBlock[]>([])
-  
+
   const handleExport = () => {
     // Export to HTML
     const html = blocksToHTML(blocks)
     console.log(html)
-    
+
     // Export to Markdown
     const markdown = blocksToMarkdown(blocks)
     console.log(markdown)
   }
-  
+
   return (
     <>
       <UIForgeBlocksEditor
@@ -115,16 +121,17 @@ function MyEditor() {
 
 **Props Reference:**
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `initialBlocks` | `ContentBlock[]` | `[]` | Initial blocks to display |
-| `onChange` | `(blocks: ContentBlock[]) => void` | - | Callback when blocks change |
-| `placeholder` | `string` | `"Start typing..."` | Placeholder text for empty editor |
-| `readOnly` | `boolean` | `false` | Whether the editor is read-only |
-| `className` | `string` | - | Additional CSS classes |
-| `maxHeight` | `string` | - | Maximum height of the editor (CSS value) |
+| Prop            | Type                               | Default             | Description                              |
+| --------------- | ---------------------------------- | ------------------- | ---------------------------------------- |
+| `initialBlocks` | `ContentBlock[]`                   | `[]`                | Initial blocks to display                |
+| `onChange`      | `(blocks: ContentBlock[]) => void` | -                   | Callback when blocks change              |
+| `placeholder`   | `string`                           | `"Start typing..."` | Placeholder text for empty editor        |
+| `readOnly`      | `boolean`                          | `false`             | Whether the editor is read-only          |
+| `className`     | `string`                           | -                   | Additional CSS classes                   |
+| `maxHeight`     | `string`                           | -                   | Maximum height of the editor (CSS value) |
 
 **Block Types:**
+
 - `paragraph` - Standard text block
 - `heading1`, `heading2`, `heading3` - Heading blocks
 - `list` - List item
@@ -133,6 +140,7 @@ function MyEditor() {
 - `image` - Image with URL and alt text
 
 **Export Functions:**
+
 - `blocksToHTML(blocks)` - Convert blocks to HTML string
 - `blocksToMarkdown(blocks)` - Convert blocks to Markdown string
 - `blocksToJSON(blocks)` - Convert blocks to JSON string
@@ -192,28 +200,24 @@ function MyGrid() {
 import { UIForgeGrid, GridColumn, GridActionButton } from '@chriscase/uiforge'
 
 const columns: GridColumn<User>[] = [
-  { 
-    key: 'name', 
-    header: 'Name', 
+  {
+    key: 'name',
+    header: 'Name',
     field: 'name',
     editable: true,
-    width: '200px'
+    width: '200px',
   },
-  { 
-    key: 'email', 
-    header: 'Email', 
+  {
+    key: 'email',
+    header: 'Email',
     field: 'email',
-    render: (value) => <a href={`mailto:${value}`}>{value}</a>
+    render: (value) => <a href={`mailto:${value}`}>{value}</a>,
   },
-  { 
-    key: 'status', 
-    header: 'Status', 
+  {
+    key: 'status',
+    header: 'Status',
     field: 'status',
-    render: (value) => (
-      <span className={`status-badge status-${value}`}>
-        {value}
-      </span>
-    )
+    render: (value) => <span className={`status-badge status-${value}`}>{value}</span>,
   },
 ]
 
@@ -222,20 +226,20 @@ const actionButtons: GridActionButton[] = [
     label: 'Export',
     variant: 'primary',
     onClick: (selectedRows) => exportData(selectedRows),
-    requiresSelection: true
+    requiresSelection: true,
   },
   {
     label: 'Delete',
     variant: 'secondary',
     onClick: (selectedRows) => deleteRows(selectedRows),
-    requiresSelection: true
-  }
+    requiresSelection: true,
+  },
 ]
 
 function AdvancedGrid() {
   const [currentPage, setCurrentPage] = useState(0)
   const [pageSize, setPageSize] = useState(25)
-  
+
   return (
     <UIForgeGrid
       columns={columns}
@@ -265,27 +269,235 @@ function AdvancedGrid() {
 
 **Props Reference:**
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `columns` | `GridColumn<T>[]` | required | Column definitions |
-| `data` | `T[]` | required | Data to display |
-| `selectable` | `boolean` | `false` | Enable row selection |
-| `selectedRows` | `Set<string \| number>` | - | Controlled selection state |
-| `getRowKey` | `(row, index) => string \| number` | `(_, i) => i` | Function to get unique key |
-| `onSelectionChange` | `(keys, rows) => void` | - | Selection change handler |
-| `onCellEdit` | `(rowKey, columnKey, newValue, row) => void` | - | Cell edit handler |
-| `searchable` | `boolean` | `false` | Enable search |
-| `searchPlaceholder` | `string` | `"Search..."` | Search input placeholder |
-| `onSearch` | `(searchTerm) => void` | - | Search change handler |
-| `customFilter` | `(row, searchTerm) => boolean` | - | Custom filter function |
-| `pagination` | `GridPaginationConfig` | - | Pagination configuration |
-| `onPageChange` | `(page, pageSize) => void` | - | Page change handler |
-| `onPageSizeChange` | `(pageSize) => void` | - | Page size change handler |
-| `pageSizeOptions` | `number[]` | `[10, 25, 50, 100]` | Available page sizes |
-| `actionButtons` | `GridActionButton[]` | `[]` | Action button configurations |
-| `loading` | `boolean` | `false` | Show loading state |
-| `emptyMessage` | `string` | `"No data available"` | Empty state message |
-| `className` | `string` | - | Additional CSS classes |
+| Prop                | Type                                         | Default               | Description                  |
+| ------------------- | -------------------------------------------- | --------------------- | ---------------------------- |
+| `columns`           | `GridColumn<T>[]`                            | required              | Column definitions           |
+| `data`              | `T[]`                                        | required              | Data to display              |
+| `selectable`        | `boolean`                                    | `false`               | Enable row selection         |
+| `selectedRows`      | `Set<string \| number>`                      | -                     | Controlled selection state   |
+| `getRowKey`         | `(row, index) => string \| number`           | `(_, i) => i`         | Function to get unique key   |
+| `onSelectionChange` | `(keys, rows) => void`                       | -                     | Selection change handler     |
+| `onCellEdit`        | `(rowKey, columnKey, newValue, row) => void` | -                     | Cell edit handler            |
+| `searchable`        | `boolean`                                    | `false`               | Enable search                |
+| `searchPlaceholder` | `string`                                     | `"Search..."`         | Search input placeholder     |
+| `onSearch`          | `(searchTerm) => void`                       | -                     | Search change handler        |
+| `customFilter`      | `(row, searchTerm) => boolean`               | -                     | Custom filter function       |
+| `pagination`        | `GridPaginationConfig`                       | -                     | Pagination configuration     |
+| `onPageChange`      | `(page, pageSize) => void`                   | -                     | Page change handler          |
+| `onPageSizeChange`  | `(pageSize) => void`                         | -                     | Page size change handler     |
+| `pageSizeOptions`   | `number[]`                                   | `[10, 25, 50, 100]`   | Available page sizes         |
+| `actionButtons`     | `GridActionButton[]`                         | `[]`                  | Action button configurations |
+| `loading`           | `boolean`                                    | `false`               | Show loading state           |
+| `emptyMessage`      | `string`                                     | `"No data available"` | Empty state message          |
+| `className`         | `string`                                     | -                     | Additional CSS classes       |
+
+### UIForgeComboBox
+
+A rich, powerful select/combo box component for ReactJS supporting static lists, dynamic server-backed data sources, hierarchical options, and advanced UX features.
+
+**Features:**
+
+- **Dynamic Suggestions** - Filter options as you type with client-side or server-side search
+- **Static Data Support** - Simple dropdown selection from a fixed set of items
+- **Icons per Option** - Display icons alongside option labels for better visual context
+- **Hierarchical/Tree View** - Support for nested, multi-level option structures
+- **Non-selectable Headers** - Group options with disabled header rows or section dividers
+- **Async Callback Support** - Integrate with APIs for query-as-you-type autocomplete
+- **Highly Customizable** - Custom rendering, styling, and behavior
+- **Keyboard Navigation** - Full keyboard support (arrows, Enter, Escape, Tab)
+- **Accessibility** - ARIA attributes and screen reader support
+
+```tsx
+import { UIForgeComboBox, ComboBoxOption } from '@chriscase/uiforge'
+
+// Static dropdown
+const options: ComboBoxOption[] = [
+  { value: 1, label: 'Option 1' },
+  { value: 2, label: 'Option 2' },
+  { value: 3, label: 'Option 3' },
+]
+
+function MyCombo() {
+  const [value, setValue] = useState(null)
+
+  return (
+    <UIForgeComboBox
+      options={options}
+      value={value}
+      onChange={(val, option) => setValue(val)}
+      placeholder="Select an option..."
+    />
+  )
+}
+```
+
+**With Icons:**
+
+```tsx
+const optionsWithIcons: ComboBoxOption[] = [
+  { value: 'home', label: 'Home', icon: '🏠' },
+  { value: 'star', label: 'Favorites', icon: '⭐' },
+  { value: 'settings', label: 'Settings', icon: '⚙️' },
+]
+
+<UIForgeComboBox
+  options={optionsWithIcons}
+  value={value}
+  onChange={(val) => setValue(val)}
+  clearable
+/>
+```
+
+**Hierarchical Options (Tree View):**
+
+```tsx
+const hierarchicalOptions: ComboBoxOption[] = [
+  {
+    value: 'fruits',
+    label: 'Fruits',
+    disabled: true, // Non-selectable header
+    children: [
+      { value: 'apple', label: 'Apple', icon: '🍎' },
+      { value: 'banana', label: 'Banana', icon: '🍌' },
+    ],
+  },
+  {
+    value: 'vegetables',
+    label: 'Vegetables',
+    disabled: true,
+    children: [
+      { value: 'carrot', label: 'Carrot', icon: '🥕' },
+      { value: 'broccoli', label: 'Broccoli', icon: '🥦' },
+    ],
+  },
+]
+
+<UIForgeComboBox
+  options={hierarchicalOptions}
+  value={value}
+  onChange={(val) => setValue(val)}
+/>
+```
+
+**Async/Dynamic Search:**
+
+````tsx
+const handleSearch = async (searchText: string, signal?: AbortSignal) => {
+  // Call your API
+  const response = await fetch(`/api/search?q=${searchText}`)
+  const results = await response.json()
+  return results.map(item => ({
+    value: item.id,
+    label: item.name,
+    icon: item.iconUrl,
+  }))
+}
+
+  <UIForgeComboBox
+  onSearch={handleSearch}
+  value={value}
+  onChange={(val) => setValue(val)}
+  searchable
+  debounceMs={300}
+  placeholder="Search..."
+/>
+
+  **Caching and TTL:**
+
+  ```tsx
+  const [clearCache, setClearCache] = useState<(() => void) | null>(null)
+  const [forceRefresh, setForceRefresh] = useState<(() => void) | null>(null)
+
+  <UIForgeComboBox
+    onSearch={handleSearch}
+    searchable
+    enableCache // default: false
+    cacheTTL={10000} // 10 seconds
+    onClearCache={(fn) => setClearCache(() => fn)}
+    onForceRefresh={(fn) => setForceRefresh(() => fn)}
+   />
+
+  // Clear or force-refresh from parent
+  clearCache && clearCache()
+  forceRefresh && forceRefresh()
+````
+
+````
+
+**Custom Rendering:**
+
+```tsx
+const renderOption = (option: ComboBoxOption) => (
+  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+    {option.icon && <span>{option.icon}</span>}
+    <div>
+      <div style={{ fontWeight: 'bold' }}>{option.label}</div>
+      <div style={{ fontSize: '0.8em', color: '#666' }}>
+        {option.data?.description}
+      </div>
+    </div>
+  </div>
+)
+
+<UIForgeComboBox
+  options={optionsWithDetails}
+  renderOption={renderOption}
+  value={value}
+  onChange={(val) => setValue(val)}
+/>
+````
+
+**Props Reference:**
+
+| Prop               | Type                                        | Default                 | Description                                                                     |
+| ------------------ | ------------------------------------------- | ----------------------- | ------------------------------------------------------------------------------- |
+| `options`          | `ComboBoxOption[]`                          | `[]`                    | Static list of options                                                          |
+| `value`            | `string \| number \| null`                  | -                       | Selected value                                                                  |
+| `onChange`         | `(value, option) => void`                   | -                       | Callback when selection changes                                                 |
+| `onSearch`         | `(searchText) => Promise<ComboBoxOption[]>` | -                       | Async callback for dynamic suggestions                                          |
+| `placeholder`      | `string`                                    | `"Select an option..."` | Placeholder text                                                                |
+| `disabled`         | `boolean`                                   | `false`                 | Whether the combo box is disabled                                               |
+| `clearable`        | `boolean`                                   | `false`                 | Show clear button to deselect                                                   |
+| `className`        | `string`                                    | -                       | Custom class name                                                               |
+| `renderOption`     | `(option) => ReactNode`                     | -                       | Custom option renderer                                                          |
+| `renderValue`      | `(option) => ReactNode`                     | -                       | Custom selected value renderer                                                  |
+| `loading`          | `boolean`                                   | `false`                 | Show loading indicator                                                          |
+| `maxHeight`        | `string`                                    | `"300px"`               | Maximum height for dropdown                                                     |
+| `debounceMs`       | `number`                                    | `300`                   | Debounce delay for async search (ms)                                            |
+| `searchable`       | `boolean`                                   | `true`                  | Enable search/filter input                                                      |
+| `noOptionsMessage` | `string`                                    | `"No options found"`    | Message when no options match                                                   |
+| `ariaLabel`        | `string`                                    | -                       | ARIA label for accessibility                                                    |
+| `enableCache`      | `boolean`                                   | `false`                 | Enable in-memory caching of identical search queries                            |
+| `cacheTTL`         | `number`                                    | -                       | Time-to-live for cache entries in milliseconds (no expiry if omitted)           |
+| `refreshOnOpen`    | `boolean`                                   | `false`                 | Re-fetch results on dropdown open even if search text hasn't changed            |
+| `onClearCache`     | `(clearFn) => void`                         | -                       | Receives a function to clear the internal cache from the parent component       |
+| `onForceRefresh`   | `(forceFn) => void`                         | -                       | Receives a function to force refresh the current search results from the parent |
+
+**ComboBoxOption Interface:**
+
+| Field      | Type               | Description                                        |
+| ---------- | ------------------ | -------------------------------------------------- |
+| `value`    | `string \| number` | Unique value for the option                        |
+| `label`    | `string`           | Display label                                      |
+| `icon`     | `React.ReactNode`  | Optional icon (string/emoji or React component)    |
+| `disabled` | `boolean`          | Whether the option is non-selectable (for headers) |
+| `level`    | `number`           | Nesting level for hierarchical display             |
+| `children` | `ComboBoxOption[]` | Child options for tree structures                  |
+| `data`     | `unknown`          | Optional custom data                               |
+
+**Keyboard Navigation:**
+
+- `↓` / `↑` - Navigate through options
+- `Enter` - Select highlighted option / Toggle dropdown
+- `Escape` - Close dropdown
+- `Tab` - Close dropdown and move focus
+
+**Accessibility:**
+
+- Full ARIA support (`role="combobox"`, `aria-expanded`, `aria-selected`, etc.)
+- Keyboard navigation
+- Screen reader friendly
+- Focus management
 
 ## Development
 
@@ -296,17 +508,20 @@ function AdvancedGrid() {
 ### Getting Started
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/chriscase/UIForge.git
 cd UIForge
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -423,7 +638,6 @@ npm run devcontainer:set-exec
 This is optional — the devcontainer lifecycle commands and prebuild script should run the scripts using `bash` even if they are not executable.
 
 This helps catch environment and installation issues early during PRs.
-
 
 ## License
 
