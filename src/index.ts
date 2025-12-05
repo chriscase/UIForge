@@ -23,13 +23,21 @@ export type {
 export { blocksToHTML, blocksToMarkdown, blocksToJSON } from './components/BlocksEditorUtils'
 
 export { UIForgeComboBox } from './components/ComboBox'
+export type { UIForgeComboBoxProps, ComboBoxOption } from './components/ComboBox'
+
+export { UIForgeActivityStream } from './components/ActivityStream'
 export type {
-  UIForgeComboBoxProps,
-  ComboBoxOption,
-} from './components/ComboBox'
+  UIForgeActivityStreamProps,
+  ActivityEvent,
+  ActivityStreamPagination,
+} from './components/ActivityStream'
+
+// Export icon library
+export * from './icons'
 
 // Export all styles
 import './components/Button.css'
 import './components/Grid.css'
 import './components/BlocksEditor.css'
 import './components/ComboBox.css'
+import './components/ActivityStream.css'

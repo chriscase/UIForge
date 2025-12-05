@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Button } from '../src/components/Button'
 import { UIForgeGrid, GridColumn } from '../src/components/Grid'
 import { UIForgeBlocksEditor, ContentBlock } from '../src/components/BlocksEditor'
 import { blocksToHTML, blocksToMarkdown } from '../src/components/BlocksEditorUtils'
 import { UIForgeComboBox, ComboBoxOption } from '../src/components/ComboBox'
+import { UIForgeActivityStream, ActivityEvent } from '../src/components/ActivityStream'
 import './App.css'
 
 // Sample data for the grid
@@ -116,6 +117,83 @@ function App() {
   const [clearCacheFn, setClearCacheFn] = useState<(() => void) | null>(null)
   const [forceRefreshFn, setForceRefreshFn] = useState<(() => void) | null>(null)
 
+  // ActivityStream state
+  const [activityTheme, setActivityTheme] = useState<'light' | 'dark'>('light')
+  
+  // Create initial activity events once (not on every render)
+  // Note: Using Date.now() here is intentional for demo purposes to show relative timestamps
+  /* eslint-disable react-hooks/purity */
+  const initialActivityEvents = useMemo<ActivityEvent[]>(() => {
+    const now = Date.now()
+    return [
+      {
+        id: 1,
+        type: 'commit',
+        title: 'Pushed 3 commits to main branch',
+        description: 'Updated authentication flow, fixed bug in user profile page, and improved error handling',
+        timestamp: new Date(now - 1000 * 60 * 15), // 15 minutes ago
+        icon: '📝',
+      },
+      {
+        id: 2,
+        type: 'pr',
+        title: 'Opened pull request #245: Add dark mode support',
+        description: 'This PR implements a dark mode toggle across the entire application with CSS variables for easy customization.',
+        timestamp: new Date(now - 1000 * 60 * 60 * 2), // 2 hours ago
+        icon: '🔀',
+      },
+      {
+        id: 3,
+        type: 'issue',
+        title: 'Created issue #156: Button component needs hover animation',
+        timestamp: new Date(now - 1000 * 60 * 60 * 5), // 5 hours ago
+        icon: '🐛',
+      },
+      {
+        id: 4,
+        type: 'merge',
+        title: 'Merged pull request #243: Update dependencies',
+        description: 'Updated React to v19, TypeScript to 5.9, and other dev dependencies to their latest versions.',
+        timestamp: new Date(now - 1000 * 60 * 60 * 24), // 1 day ago
+        icon: '✅',
+      },
+      {
+        id: 5,
+        type: 'star',
+        title: 'Starred repository: react-beautiful-dnd',
+        timestamp: new Date(now - 1000 * 60 * 60 * 24 * 2), // 2 days ago
+        icon: '⭐',
+      },
+      {
+        id: 6,
+        type: 'comment',
+        title: 'Commented on issue #150: Performance improvements',
+        description: 'I tested the new caching strategy and it reduced load times by 40%. Great work!',
+        timestamp: new Date(now - 1000 * 60 * 60 * 24 * 3), // 3 days ago
+        icon: '💬',
+      },
+      {
+        id: 7,
+        type: 'release',
+        title: 'Released version v2.1.0',
+        description: 'New features: Activity Stream component, improved Grid performance, and better TypeScript support.',
+        timestamp: new Date(now - 1000 * 60 * 60 * 24 * 5), // 5 days ago
+        icon: '🎉',
+      },
+      {
+        id: 8,
+        type: 'fork',
+        title: 'Forked repository: awesome-react-components',
+        timestamp: new Date(now - 1000 * 60 * 60 * 24 * 7), // 7 days ago
+        icon: '🍴',
+      },
+    ]
+  }, [])
+  /* eslint-enable react-hooks/purity */
+  
+  const [activityEvents, setActivityEvents] = useState<ActivityEvent[]>(initialActivityEvents)
+  const [activityLoading, setActivityLoading] = useState(false)
+
   // ComboBox options
   const simpleOptions: ComboBoxOption[] = [
     { value: 1, label: 'JavaScript', icon: '🟨' },
@@ -189,6 +267,33 @@ function App() {
     ]
 
     return allOptions.filter((opt) => opt.label.toLowerCase().includes(searchText.toLowerCase()))
+  }
+
+  const handleLoadMoreActivities = () => {
+    setActivityLoading(true)
+    // Simulate API call
+    setTimeout(() => {
+      const moreEvents: ActivityEvent[] = [
+        {
+          id: activityEvents.length + 1,
+          type: 'commit',
+          title: `Pushed commits to feature branch`,
+          description: 'Working on the new feature implementation',
+          timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10),
+          icon: '📝',
+        },
+        {
+          id: activityEvents.length + 2,
+          type: 'deploy',
+          title: 'Deployed to production',
+          description: 'Successfully deployed version 2.0.8 to production servers',
+          timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 12),
+          icon: '🚀',
+        },
+      ]
+      setActivityEvents([...activityEvents, ...moreEvents])
+      setActivityLoading(false)
+    }, 1000)
   }
 
   const columns: GridColumn<User>[] = [
@@ -679,6 +784,101 @@ function App() {
                 clearable
                 searchable
                 refreshOnOpen
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className="demo-section">
+          <h2>UIForgeActivityStream Component</h2>
+          <p style={{ marginBottom: '1rem', color: '#6b7280' }}>
+            A GitHub-inspired activity stream with theming, icons, collapsible content, and infinite scroll.
+          </p>
+
+          <div className="demo-group">
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1rem' }}>
+              <h3 style={{ margin: 0 }}>Interactive Activity Stream</h3>
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginLeft: 'auto' }}>
+                <label htmlFor="activity-theme" style={{ fontSize: '0.875rem', fontWeight: 500 }}>
+                  Theme:
+                </label>
+                <select
+                  id="activity-theme"
+                  value={activityTheme}
+                  onChange={(e) => setActivityTheme(e.target.value as 'light' | 'dark')}
+                  style={{
+                    padding: '0.5rem',
+                    borderRadius: '6px',
+                    border: '1px solid #d1d5db',
+                    fontSize: '0.875rem',
+                  }}
+                >
+                  <option value="light">Light</option>
+                  <option value="dark">Dark</option>
+                </select>
+              </div>
+            </div>
+
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              Click event titles to expand/collapse content. Scroll to bottom to see "Show more" bar.
+            </p>
+
+            <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden' }}>
+              <UIForgeActivityStream
+                events={activityEvents}
+                theme={activityTheme}
+                showLoadMore={true}
+                loading={activityLoading}
+                onLoadMore={handleLoadMoreActivities}
+                maxHeight="600px"
+                showMoreThreshold={150}
+                pagination={{
+                  currentPage: 0,
+                  pageSize: 8,
+                  hasMore: activityEvents.length < 20,
+                }}
+                onToggleExpand={(eventId, expanded) => {
+                  console.log(`Event ${eventId} ${expanded ? 'expanded' : 'collapsed'}`)
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="demo-group" style={{ marginTop: '2rem' }}>
+            <h3>All Events Expanded</h3>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              Display all events in expanded state by default.
+            </p>
+            <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden' }}>
+              <UIForgeActivityStream
+                events={activityEvents.slice(0, 4)}
+                theme={activityTheme}
+                initiallyExpandedAll={true}
+                maxHeight="400px"
+                showLoadMore={false}
+              />
+            </div>
+          </div>
+
+          <div className="demo-group" style={{ marginTop: '2rem' }}>
+            <h3>Empty State</h3>
+            <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden' }}>
+              <UIForgeActivityStream
+                events={[]}
+                theme={activityTheme}
+                emptyMessage="No recent activity found"
+              />
+            </div>
+          </div>
+
+          <div className="demo-group" style={{ marginTop: '2rem' }}>
+            <h3>Loading State</h3>
+            <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden' }}>
+              <UIForgeActivityStream
+                events={activityEvents.slice(0, 3)}
+                theme={activityTheme}
+                loading={true}
+                maxHeight="300px"
               />
             </div>
           </div>
