@@ -377,7 +377,7 @@ const hierarchicalOptions: ComboBoxOption[] = [
 **Async/Dynamic Search:**
 
 ```tsx
-const handleSearch = async (searchText: string) => {
+const handleSearch = async (searchText: string, signal?: AbortSignal) => {
   // Call your API
   const response = await fetch(`/api/search?q=${searchText}`)
   const results = await response.json()
@@ -388,7 +388,7 @@ const handleSearch = async (searchText: string) => {
   }))
 }
 
-<UIForgeComboBox
+  <UIForgeComboBox
   onSearch={handleSearch}
   value={value}
   onChange={(val) => setValue(val)}
@@ -396,6 +396,26 @@ const handleSearch = async (searchText: string) => {
   debounceMs={300}
   placeholder="Search..."
 />
+
+  **Caching and TTL:**
+
+  ```tsx
+  const [clearCache, setClearCache] = useState<(() => void) | null>(null)
+  const [forceRefresh, setForceRefresh] = useState<(() => void) | null>(null)
+
+  <UIForgeComboBox
+    onSearch={handleSearch}
+    searchable
+    enableCache // default: false
+    cacheTTL={10000} // 10 seconds
+    onClearCache={(fn) => setClearCache(() => fn)}
+    onForceRefresh={(fn) => setForceRefresh(() => fn)}
+   />
+
+  // Clear or force-refresh from parent
+  clearCache && clearCache()
+  forceRefresh && forceRefresh()
+  ```
 ```
 
 **Custom Rendering:**
@@ -441,6 +461,11 @@ const renderOption = (option: ComboBoxOption) => (
 | `searchable` | `boolean` | `true` | Enable search/filter input |
 | `noOptionsMessage` | `string` | `"No options found"` | Message when no options match |
 | `ariaLabel` | `string` | - | ARIA label for accessibility |
+| `enableCache` | `boolean` | `false` | Enable in-memory caching of identical search queries |
+| `cacheTTL` | `number` | - | Time-to-live for cache entries in milliseconds (no expiry if omitted) |
+| `refreshOnOpen` | `boolean` | `false` | Re-fetch results on dropdown open even if search text hasn't changed |
+| `onClearCache` | `(clearFn) => void` | - | Receives a function to clear the internal cache from the parent component |
+| `onForceRefresh` | `(forceFn) => void` | - | Receives a function to force refresh the current search results from the parent |
 
 **ComboBoxOption Interface:**
 

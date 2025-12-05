@@ -54,7 +54,8 @@ export interface UIForgeComboBoxProps {
   /**
    * Async callback for dynamic suggestions (receives search text)
    */
-  onSearch?: (searchText: string) => Promise<ComboBoxOption[]>
+  // onSearch optionally accepts an AbortSignal to allow cancellation of inflight requests
+  onSearch?: (searchText: string, signal?: AbortSignal) => Promise<ComboBoxOption[]>
   /**
    * Placeholder text
    */
@@ -96,6 +97,26 @@ export interface UIForgeComboBoxProps {
    */
   searchable?: boolean
   /**
+   * Whether to cache identical search results in-memory (per component instance)
+   */
+  enableCache?: boolean
+  /**
+   * Time-to-live for cached entries in milliseconds (default: no expiration)
+   */
+  cacheTTL?: number
+  /**
+   * Whether to refresh results on dropdown open even if search text hasn't changed
+   */
+  refreshOnOpen?: boolean
+  /**
+   * Callback to clear the internal cache (call this function to clear)
+   */
+  onClearCache?: (clearFn: () => void) => void
+  /**
+   * Callback to receive a function to force refresh current search
+   */
+  onForceRefresh?: (forceFn: () => void) => void
+  /**
    * Message to show when no options match
    */
   noOptionsMessage?: string
@@ -134,6 +155,11 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
   searchable = true,
   noOptionsMessage = 'No options found',
   ariaLabel,
+  enableCache = false,
+  cacheTTL,
+  refreshOnOpen = false,
+  onClearCache,
+  onForceRefresh,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [searchText, setSearchText] = useState('')
@@ -145,6 +171,14 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
   const inputRef = useRef<HTMLInputElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const lastSearchTextRef = useRef<string | null>(null)
+  const onSearchRef = useRef(onSearch)
+  const controllerRef = useRef<AbortController | null>(null)
+  const prevIsOpenRef = useRef<boolean>(false)
+  // Cache stores { data, timestamp } for TTL support
+  const cacheRef = useRef<Map<string, { data: ComboBoxOption[]; timestamp: number }>>(new Map())
+  const enableCacheRef = useRef<boolean>(enableCache)
+  const cacheTTLRef = useRef<number | undefined>(cacheTTL)
 
   // Flatten hierarchical options for easier navigation
   const flattenOptions = useCallback((opts: ComboBoxOption[], level = 0): ComboBoxOption[] => {
@@ -199,18 +233,109 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
     return filterRecursive(opts)
   }, [])
 
+  // Keep a stable ref to onSearch and only trigger fetches when the search text actually changes
+  useEffect(() => {
+    onSearchRef.current = onSearch
+    lastSearchTextRef.current = null
+  }, [onSearch])
+
+  // Keep a stable ref for enableCache value
+  useEffect(() => {
+    enableCacheRef.current = enableCache
+  }, [enableCache])
+
+  // Keep a stable ref for cacheTTL value
+  useEffect(() => {
+    cacheTTLRef.current = cacheTTL
+  }, [cacheTTL])
+
+  // Provide clearCache function to parent via callback
+  useEffect(() => {
+    if (onClearCache) {
+      onClearCache(() => {
+        cacheRef.current.clear()
+      })
+    }
+    if (onForceRefresh) {
+      onForceRefresh(() => {
+        // Simple force refresh: abort and trigger a new search immediately
+        if (!onSearchRef.current) return
+        if (controllerRef.current) controllerRef.current.abort()
+        controllerRef.current = new AbortController()
+        const signal = controllerRef.current.signal
+        setAsyncLoading(true)
+        (async () => {
+          try {
+            const now = Date.now()
+            const cacheKey = searchText
+            const cachedEntry = cacheRef.current.get(cacheKey)
+            const isCacheValid = cachedEntry && (!cacheTTLRef.current || (now - cachedEntry.timestamp < cacheTTLRef.current))
+            let results: ComboBoxOption[]
+            if (enableCacheRef.current && isCacheValid) {
+              results = cachedEntry!.data
+            } else {
+              results = await (onSearchRef.current ? onSearchRef.current(searchText, signal) : onSearch(searchText, signal))
+              if (!signal.aborted && enableCacheRef.current) {
+                cacheRef.current.set(cacheKey, { data: results, timestamp: now })
+              }
+            }
+            if (!signal.aborted) {
+              setFilteredOptions(results)
+              lastSearchTextRef.current = searchText
+            }
+          } catch (err) {
+            console.error(err)
+            setFilteredOptions([])
+          } finally {
+            setAsyncLoading(false)
+          }
+        })()
+      })
+    }
+  }, [onClearCache, onForceRefresh, searchText])
+
   // Handle async search with debounce
   useEffect(() => {
     if (onSearch && isOpen) {
+      // If we've already searched for the same text, don't re-run the search
+      const skipDueToSameText = lastSearchTextRef.current === searchText
+      // If refreshOnOpen is enabled and dropdown is opening, we should still re-run the search
+      const isOpening = !prevIsOpenRef.current && isOpen
+      const allowRefreshOnOpen = refreshOnOpen && isOpening
+      if (skipDueToSameText && !allowRefreshOnOpen) return
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current)
       }
 
       debounceTimerRef.current = setTimeout(async () => {
+            // Abort previous in-flight request
+            if (controllerRef.current) {
+              controllerRef.current.abort()
+            }
+            controllerRef.current = new AbortController()
+            const signal = controllerRef.current.signal
         setAsyncLoading(true)
         try {
-          const results = await onSearch(searchText)
+          // Check cache first
+          let results: ComboBoxOption[] | undefined
+          const cacheKey = searchText
+          const cachedEntry = cacheRef.current.get(cacheKey)
+          const now = Date.now()
+          const isCacheValid = cachedEntry && (
+            !cacheTTLRef.current || (now - cachedEntry.timestamp < cacheTTLRef.current)
+          )
+          if (enableCacheRef.current && isCacheValid) {
+            results = cachedEntry.data
+          } else {
+            results = await (onSearchRef.current ? onSearchRef.current(searchText, signal) : onSearch(searchText, signal))
+            if (!signal.aborted && enableCacheRef.current) {
+              cacheRef.current.set(cacheKey, { data: results, timestamp: now })
+            }
+          }
+          // Skip applying results if the request was aborted
+          if (signal.aborted) return
           setFilteredOptions(results)
+          lastSearchTextRef.current = searchText
         } catch (error) {
           console.error('Error fetching options:', error)
           setFilteredOptions([])
@@ -223,11 +348,17 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
         if (debounceTimerRef.current) {
           clearTimeout(debounceTimerRef.current)
         }
+        // Abort in-flight controller when effect is cleaned up
+        if (controllerRef.current) {
+          controllerRef.current.abort()
+          controllerRef.current = null
+        }
       }
     } else if (!onSearch) {
       setFilteredOptions(filterOptions(options, searchText))
     }
-  }, [searchText, isOpen, onSearch, options, debounceMs, filterOptions])
+    prevIsOpenRef.current = isOpen
+  }, [searchText, isOpen, options, debounceMs, filterOptions, refreshOnOpen])
 
   // Initialize filtered options
   useEffect(() => {
@@ -348,11 +479,19 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
 
   const handleToggle = () => {
     if (disabled) return
-    setIsOpen(!isOpen)
-    if (!isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 0)
-    }
+    setIsOpen(prev => {
+      const newOpen = !prev
+      if (newOpen) setTimeout(() => inputRef.current?.focus(), 0)
+      return newOpen
+    })
   }
+
+  // Reset last search text when dropdown closes so opening it later will re-run the search
+  useEffect(() => {
+    if (!isOpen) {
+      lastSearchTextRef.current = null
+    }
+  }, [isOpen])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value)

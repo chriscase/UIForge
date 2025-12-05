@@ -42,6 +42,9 @@ function App() {
   const [selectedOption, setSelectedOption] = useState<string | number | null>(null)
   const [selectedHierarchical, setSelectedHierarchical] = useState<string | number | null>(null)
   const [asyncValue, setAsyncValue] = useState<string | number | null>(null)
+  const [cachedValue, setCachedValue] = useState<string | number | null>(null)
+  const [clearCacheFn, setClearCacheFn] = useState<(() => void) | null>(null)
+  const [forceRefreshFn, setForceRefreshFn] = useState<(() => void) | null>(null)
 
   // ComboBox options
   const simpleOptions: ComboBoxOption[] = [
@@ -85,10 +88,19 @@ function App() {
     },
   ]
 
-  // Simulate async search
-  const handleAsyncSearch = async (searchText: string): Promise<ComboBoxOption[]> => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 500))
+  // Simulate async search with AbortSignal support
+  const handleAsyncSearch = async (searchText: string, signal?: AbortSignal): Promise<ComboBoxOption[]> => {
+    // Simulate API call with cancellation support
+    await new Promise((resolve, reject) => {
+      const timeoutId = setTimeout(resolve, 500)
+      // If signal is provided, listen for abort
+      if (signal) {
+        signal.addEventListener('abort', () => {
+          clearTimeout(timeoutId)
+          reject(new DOMException('Aborted', 'AbortError'))
+        })
+      }
+    })
     
     const allOptions = [
       { value: 'user1', label: 'Alice Johnson', icon: '👩', data: { email: 'alice@example.com' } },
@@ -507,6 +519,75 @@ function App() {
                 onChange={(val) => setSelectedOption(val)}
                 placeholder="Select a language..."
                 searchable={false}
+              />
+            </div>
+          </div>
+
+          <div className="demo-group" style={{ marginTop: '2rem' }}>
+            <h3>Caching + TTL + Clear Cache</h3>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              Results are cached for 10 seconds. Use the button to manually clear the cache.
+            </p>
+            <div style={{ maxWidth: '400px', marginBottom: '0.5rem' }}>
+              <UIForgeComboBox
+                onSearch={handleAsyncSearch}
+                value={cachedValue}
+                onChange={(val) => setCachedValue(val)}
+                placeholder="Search (cached for 10s)..."
+                clearable
+                searchable
+                enableCache
+                cacheTTL={10000}
+                onClearCache={(fn) => setClearCacheFn(() => fn)}
+                onForceRefresh={(fn) => setForceRefreshFn(() => fn)}
+              />
+            </div>
+            <Button
+              variant="outline"
+              size="small"
+              onClick={() => {
+                if (clearCacheFn) {
+                  clearCacheFn()
+                  alert('Cache cleared!')
+                }
+              }}
+            >
+              Clear Cache
+            </Button>
+            <Button
+              variant="outline"
+              size="small"
+              onClick={() => {
+                if (forceRefreshFn) {
+                  forceRefreshFn()
+                  alert('Refreshed')
+                }
+              }}
+              style={{ marginLeft: '0.5rem' }}
+            >
+              Force Refresh
+            </Button>
+            {cachedValue && (
+              <p style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#374151' }}>
+                Selected user ID: <strong>{cachedValue}</strong>
+              </p>
+            )}
+          </div>
+
+          <div className="demo-group" style={{ marginTop: '2rem' }}>
+            <h3>Refresh On Open</h3>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              Re-fetches results every time the dropdown is opened, even if the search text hasn't changed.
+            </p>
+            <div style={{ maxWidth: '400px' }}>
+              <UIForgeComboBox
+                onSearch={handleAsyncSearch}
+                value={asyncValue}
+                onChange={(val) => setAsyncValue(val)}
+                placeholder="Search (refreshes on open)..."
+                clearable
+                searchable
+                refreshOnOpen
               />
             </div>
           </div>
