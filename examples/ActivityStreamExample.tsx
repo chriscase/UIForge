@@ -360,7 +360,9 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
       </div>
 
       <div className="activity-stream-example__code">
-        <h3>Usage Example</h3>
+        <h3>Usage Examples</h3>
+        
+        <h4>Basic Usage</h4>
         <pre>
           <code>
             {`import { UIForgeActivityStream } from '@chriscase/uiforge'
@@ -383,7 +385,129 @@ const events = [
   showTimeline={true}
   showDateSeparators={true}
   onLoadMore={() => loadMoreEvents()}
+  pagination={{
+    currentPage: 0,
+    pageSize: 20,
+    hasMore: true,
+  }}
 />`}
+          </code>
+        </pre>
+
+        <h4>Custom Icons Example</h4>
+        <pre>
+          <code>
+            {`import { UIForgeActivityStream, ActivityIcons } from '@chriscase/uiforge'
+
+// Using built-in icons
+const events = [
+  {
+    id: 1,
+    type: 'pr',
+    title: 'Created pull request',
+    timestamp: new Date(),
+    // No icon property - will use default PR icon
+  },
+  {
+    id: 2,
+    type: 'custom',
+    title: 'Custom event',
+    timestamp: new Date(),
+    // Provide custom icon as React element
+    icon: <ActivityIcons.star size={16} />,
+  },
+  {
+    id: 3,
+    type: 'deploy',
+    title: 'Deployed to production',
+    timestamp: new Date(),
+    // Use emoji as icon
+    icon: '🚀',
+  },
+]
+
+// Or use custom icon renderer for all events
+<UIForgeActivityStream
+  events={events}
+  renderIcon={(eventType) => {
+    const iconMap = {
+      pr: <ActivityIcons.pr size={16} />,
+      issue: <ActivityIcons.issue size={16} />,
+      commit: <ActivityIcons.commit size={16} />,
+      custom: <span>⚡</span>,
+    }
+    return iconMap[eventType] || <ActivityIcons.issue size={16} />
+  }}
+/>`}
+          </code>
+        </pre>
+
+        <h4>Load More Events Example</h4>
+        <pre>
+          <code>
+            {`import { useState } from 'react'
+import { UIForgeActivityStream, ActivityEvent } from '@chriscase/uiforge'
+
+function MyActivityFeed() {
+  const [events, setEvents] = useState<ActivityEvent[]>([])
+  const [loading, setLoading] = useState(false)
+  const [page, setPage] = useState(0)
+  const [hasMore, setHasMore] = useState(true)
+
+  const loadMoreEvents = async () => {
+    setLoading(true)
+    try {
+      // Fetch more events from your API
+      const response = await fetch(\`/api/events?page=\${page + 1}&pageSize=20\`)
+      const newEvents = await response.json()
+      
+      // Append new events to existing ones
+      setEvents(prevEvents => [...prevEvents, ...newEvents])
+      setPage(prev => prev + 1)
+      
+      // Check if there are more events to load
+      setHasMore(newEvents.length === 20)
+    } catch (error) {
+      console.error('Failed to load events:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <UIForgeActivityStream
+      events={events}
+      loading={loading}
+      onLoadMore={loadMoreEvents}
+      showLoadMore={true}
+      showMoreThreshold={100}
+      pagination={{
+        currentPage: page,
+        pageSize: 20,
+        hasMore: hasMore,
+      }}
+    />
+  )
+}`}
+          </code>
+        </pre>
+
+        <h4>Custom Theme Example</h4>
+        <pre>
+          <code>
+            {`// Custom theme using CSS variables
+<div style={{
+  '--activity-stream-bg': '#fafafa',
+  '--activity-stream-text': '#333333',
+  '--activity-stream-border': '#e0e0e0',
+  '--activity-stream-icon-bg': '#f0f0f0',
+  '--activity-stream-icon-color': '#666666',
+}}>
+  <UIForgeActivityStream
+    events={events}
+    theme="light"
+  />
+</div>`}
           </code>
         </pre>
       </div>

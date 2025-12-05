@@ -109,18 +109,18 @@ export const UnfoldIcon: React.FC<IconProps> = ({
   className = '',
   color = 'currentColor',
 }) => (
-  <svg width={size} height={size} viewBox="0 0 16 16" fill="none" className={className}>
+  <svg width={size} height={size} viewBox="0 0 18 18" fill="none" className={className}>
     {/* Top arrow pointing up with tail */}
     <path
-      d="M8 2L6 4M8 2L10 4M8 2V5"
+      d="M9 3L6.5 5.5M9 3L11.5 5.5M9 3V6"
       stroke={color}
-      strokeWidth="1.5"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
-    {/* Dotted line in middle */}
+    {/* Horizontal dotted line in middle */}
     <path
-      d="M8 6V10"
+      d="M4 9H14"
       stroke={color}
       strokeWidth="1.5"
       strokeLinecap="round"
@@ -128,9 +128,9 @@ export const UnfoldIcon: React.FC<IconProps> = ({
     />
     {/* Bottom arrow pointing down with tail */}
     <path
-      d="M8 14L6 12M8 14L10 12M8 14V11"
+      d="M9 15L6.5 12.5M9 15L11.5 12.5M9 15V12"
       stroke={color}
-      strokeWidth="1.5"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
@@ -142,28 +142,28 @@ export const FoldIcon: React.FC<IconProps> = ({
   className = '',
   color = 'currentColor',
 }) => (
-  <svg width={size} height={size} viewBox="0 0 16 16" fill="none" className={className}>
-    {/* Top arrows pointing inward (up from center) with tail */}
+  <svg width={size} height={size} viewBox="0 0 18 18" fill="none" className={className}>
+    {/* Top arrows pointing inward (toward center) with tail */}
     <path
-      d="M8 5L6 3M8 5L10 3M8 5V2"
+      d="M9 6L6.5 3.5M9 6L11.5 3.5M9 6V3"
       stroke={color}
-      strokeWidth="1.5"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
-    {/* Dotted line in middle */}
+    {/* Horizontal dotted line in middle */}
     <path
-      d="M8 6V10"
+      d="M4 9H14"
       stroke={color}
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeDasharray="1 2"
     />
-    {/* Bottom arrows pointing inward (down from center) with tail */}
+    {/* Bottom arrows pointing inward (toward center) with tail */}
     <path
-      d="M8 11L6 13M8 11L10 13M8 11V14"
+      d="M9 12L6.5 14.5M9 12L11.5 14.5M9 12V15"
       stroke={color}
-      strokeWidth="1.5"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
