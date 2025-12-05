@@ -499,6 +499,146 @@ const renderOption = (option: ComboBoxOption) => (
 - Screen reader friendly
 - Focus management
 
+### UIForgeActivityStream / UIForgeActivityStreamEnhanced
+
+A GitHub-inspired activity stream component for displaying user activities, events, and notifications with intelligent grouping, timeline visualization, and theming support.
+
+**Key Features:**
+
+- **Smart Event Grouping** - Automatically combines consecutive events of the same type
+- **Nested Hierarchical Grouping** - Sub-groups events by repository or context
+- **Timeline Visualization** - Vertical line with markers showing event flow
+- **Date Separators** - Month/year labels between time periods
+- **Monochrome Icons** - Clean, GitHub-style SVG icons for each event type
+- **Expandable Content** - Click grouped events to see individual items
+- **Infinite Scroll** - "Show more" bar for progressive loading
+- **Light/Dark Themes** - Seamless theme switching with CSS variables
+- **Fully Accessible** - Keyboard navigation, ARIA attributes, screen reader support
+- **Responsive Design** - Adapts to mobile and desktop viewports
+
+```tsx
+import { UIForgeActivityStreamEnhanced, ActivityEvent } from '@chriscase/uiforge'
+
+const events: ActivityEvent[] = [
+  {
+    id: 1,
+    type: 'pr',
+    title: 'Added dark mode support',
+    description: 'Implemented comprehensive dark mode theming',
+    timestamp: new Date(),
+    metadata: { repository: 'myapp/frontend' },
+  },
+  {
+    id: 2,
+    type: 'commit',
+    title: 'Fixed authentication bug',
+    timestamp: new Date(),
+    metadata: { repository: 'myapp/backend' },
+  },
+  // ... more events
+]
+
+<UIForgeActivityStreamEnhanced
+  events={events}
+  theme="dark"
+  enableGrouping={true}
+  showTimeline={true}
+  showDateSeparators={true}
+  groupingThreshold={2}
+  onLoadMore={() => loadMoreEvents()}
+  pagination={{ currentPage: 0, pageSize: 20, hasMore: true }}
+/>
+```
+
+**Smart Grouping Example:**
+
+When you have consecutive events of the same type, they're automatically grouped:
+- Individual: "Created pull request #123", "Created pull request #124", "Created pull request #125"
+- Grouped: "Created 3 pull requests in myapp/frontend" (expandable to see individual PRs)
+
+**Nested Grouping Example:**
+
+When grouped events span multiple repositories:
+- Top level: "Created 6 pull requests in 3 repositories"
+  - Sub-group: "Created 2 pull requests in myapp/frontend"
+  - Sub-group: "Created 1 pull request in myapp/docs"
+  - Sub-group: "Created 3 pull requests in myapp/backend"
+
+**Props Reference:**
+
+| Prop                   | Type                        | Default | Description                                    |
+| ---------------------- | --------------------------- | ------- | ---------------------------------------------- |
+| `events`               | `ActivityEvent[]`           | -       | Array of activity events to display            |
+| `theme`                | `'light' \| 'dark'`         | `light` | Theme variant                                  |
+| `enableGrouping`       | `boolean`                   | `true`  | Enable smart event grouping                    |
+| `groupingThreshold`    | `number`                    | `2`     | Minimum consecutive events to trigger grouping |
+| `showTimeline`         | `boolean`                   | `true`  | Show vertical timeline line                    |
+| `showDateSeparators`   | `boolean`                   | `true`  | Show month/year date separators                |
+| `showLoadMore`         | `boolean`                   | `true`  | Show "Show more" bar                           |
+| `loading`              | `boolean`                   | `false` | Display loading indicator                      |
+| `onLoadMore`           | `() => void`                | -       | Callback when "Show more" is clicked           |
+| `pagination`           | `ActivityStreamPagination`  | -       | Pagination configuration                       |
+| `maxHeight`            | `string`                    | -       | Maximum height (CSS value)                     |
+| `showMoreThreshold`    | `number`                    | `100`   | Distance from bottom to show "Show more" (px)  |
+| `initiallyExpandedAll` | `boolean`                   | `false` | Expand all events initially                    |
+| `emptyMessage`         | `string`                    | -       | Empty state message                            |
+| `onToggleExpand`       | `(id, expanded) => void`    | -       | Callback when event is expanded/collapsed      |
+
+**ActivityEvent Interface:**
+
+| Field          | Type                        | Description                                |
+| -------------- | --------------------------- | ------------------------------------------ |
+| `id`           | `string \| number`          | Unique identifier                          |
+| `type`         | `string`                    | Event type (e.g., 'commit', 'pr', 'issue') |
+| `title`        | `string`                    | Event title/description                    |
+| `description`  | `string`                    | Optional detailed description              |
+| `timestamp`    | `Date \| string`            | Event timestamp                            |
+| `icon`         | `React.ReactNode`           | Optional custom icon                       |
+| `metadata`     | `Record<string, unknown>`   | Optional metadata (e.g., repository name)  |
+
+**Supported Event Types (with default icons):**
+
+- `commit` - Code commits
+- `pr` - Pull requests
+- `issue` - Issues
+- `comment` - Comments
+- `star` - Repository stars
+- `fork` - Repository forks
+- `merge` - Merged pull requests
+- `release` - Version releases
+- `deploy` - Deployments
+
+See `examples/ActivityStreamExample.tsx` for a complete interactive demo.
+
+## Theming
+
+UIForge components support comprehensive theming through CSS variables. See [THEMING.md](./THEMING.md) for a complete guide on:
+
+- Light and dark theme support
+- Custom theme creation
+- CSS variable reference
+- System preference detection
+- Advanced customization techniques
+
+Quick example:
+
+```tsx
+import { useState } from 'react'
+
+function App() {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light')
+
+  return (
+    <div>
+      <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
+        Toggle Theme
+      </button>
+      <UIForgeActivityStreamEnhanced events={events} theme={theme} />
+    </div>
+  )
+}
+```
+
 ## Development
 
 ### Prerequisites
