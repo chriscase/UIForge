@@ -28,8 +28,16 @@ export type {
   ComboBoxOption,
 } from './components/ComboBox'
 
+export { UIForgeActivityStream } from './components/ActivityStream'
+export type {
+  UIForgeActivityStreamProps,
+  ActivityEvent,
+  ActivityStreamPagination,
+} from './components/ActivityStream'
+
 // Export all styles
 import './components/Button.css'
 import './components/Grid.css'
 import './components/BlocksEditor.css'
 import './components/ComboBox.css'
+import './components/ActivityStream.css'
