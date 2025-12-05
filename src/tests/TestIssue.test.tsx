@@ -7,6 +7,7 @@
 
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Button } from '../components/Button'
 
 describe('TestIssue - Simple Test Case', () => {
@@ -23,16 +24,17 @@ describe('TestIssue - Simple Test Case', () => {
     expect(button).toBeInTheDocument()
   })
 
-  it('should handle button click events', () => {
+  it('should handle button click events', async () => {
     let clicked = false
     const handleClick = () => {
       clicked = true
     }
 
+    const user = userEvent.setup()
     render(<Button onClick={handleClick}>Click Me</Button>)
     
     const button = screen.getByRole('button', { name: /click me/i })
-    button.click()
+    await user.click(button)
     
     expect(clicked).toBe(true)
   })
