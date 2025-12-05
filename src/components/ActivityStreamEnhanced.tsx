@@ -414,7 +414,34 @@ export const UIForgeActivityStreamEnhanced: React.FC<UIForgeActivityStreamEnhanc
   showDateSeparators = true,
   showTimeline = true,
 }) => {
-  const [expandedEvents, setExpandedEvents] = useState<Set<string>>(new Set())
+  const [expandedEvents, setExpandedEvents] = useState<Set<string>>(() => {
+    if (!initiallyExpandedAll) return new Set()
+
+    const allIds = new Set<string>()
+    const items = enableGrouping
+      ? showDateSeparators
+        ? addDateSeparators(groupEvents(events, groupingThreshold))
+        : groupEvents(events, groupingThreshold)
+      : events.map((e) => ({
+          id: e.id.toString(),
+          type: e.type,
+          count: 1,
+          title: e.title,
+          timestamp: new Date(e.timestamp),
+          icon: e.icon,
+          events: [e],
+        }))
+
+    items.forEach((item) => {
+      if ('events' in item) {
+        allIds.add(item.id)
+        if (item.children) {
+          item.children.forEach((child: GroupedEvent) => allIds.add(child.id))
+        }
+      }
+    })
+    return allIds
+  })
   const [showMoreVisible, setShowMoreVisible] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -437,23 +464,6 @@ export const UIForgeActivityStreamEnhanced: React.FC<UIForgeActivityStreamEnhanc
     const grouped = groupEvents(events, groupingThreshold)
     return showDateSeparators ? addDateSeparators(grouped) : grouped
   }, [events, enableGrouping, groupingThreshold, showDateSeparators])
-
-  // Initialize expanded state
-  useEffect(() => {
-    if (initiallyExpandedAll) {
-      const allIds = new Set<string>()
-      processedItems.forEach((item) => {
-        if ('events' in item) {
-          allIds.add(item.id)
-          if (item.children) {
-            item.children.forEach((child: GroupedEvent) => allIds.add(child.id))
-          }
-        }
-      })
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setExpandedEvents(allIds)
-    }
-  }, [initiallyExpandedAll, processedItems])
 
   // Handle scroll to show/hide "Show more" bar
   const handleScroll = useCallback(() => {
