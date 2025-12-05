@@ -22,7 +22,14 @@ export type {
 
 export { blocksToHTML, blocksToMarkdown, blocksToJSON } from './components/BlocksEditorUtils'
 
+export { UIForgeComboBox } from './components/ComboBox'
+export type {
+  UIForgeComboBoxProps,
+  ComboBoxOption,
+} from './components/ComboBox'
+
 // Export all styles
 import './components/Button.css'
 import './components/Grid.css'
 import './components/BlocksEditor.css'
+import './components/ComboBox.css'
