@@ -143,7 +143,7 @@ export const FoldIcon: React.FC<IconProps> = ({
   color = 'currentColor',
 }) => (
   <svg width={size} height={size} viewBox="0 0 16 16" fill="none" className={className}>
-    {/* Top arrow pointing down with tail */}
+    {/* Top arrows pointing inward (up from center) with tail */}
     <path
       d="M8 5L6 3M8 5L10 3M8 5V2"
       stroke={color}
@@ -159,7 +159,7 @@ export const FoldIcon: React.FC<IconProps> = ({
       strokeLinecap="round"
       strokeDasharray="1 2"
     />
-    {/* Bottom arrow pointing up with tail */}
+    {/* Bottom arrows pointing inward (down from center) with tail */}
     <path
       d="M8 11L6 13M8 11L10 13M8 11V14"
       stroke={color}

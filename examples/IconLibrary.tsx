@@ -18,6 +18,8 @@ import {
 } from '../src/icons'
 import './IconLibrary.css'
 
+const PACKAGE_NAME = '@chriscase/uiforge'
+
 interface IconLibraryProps {
   onNavigate: (path: string) => void
 }
@@ -119,7 +121,7 @@ const IconLibrary: React.FC<IconLibraryProps> = ({ onNavigate }) => {
   const uiIcons = icons.filter((icon) => icon.category === 'ui')
 
   const copyIconCode = (iconName: string) => {
-    const code = `import { ${iconName} } from '@chriscase/uiforge'\n\n<${iconName} size={24} />`
+    const code = `import { ${iconName} } from '${PACKAGE_NAME}'\n\n<${iconName} size={24} />`
     navigator.clipboard.writeText(code)
     setCopiedIcon(iconName)
     setTimeout(() => setCopiedIcon(null), 2000)
@@ -228,7 +230,7 @@ const IconLibrary: React.FC<IconLibraryProps> = ({ onNavigate }) => {
           <div className="usage-content">
             <h3>Import Icons</h3>
             <pre className="code-block">
-              {`import { CommitIcon, PullRequestIcon, ActivityIcons, UIIcons } from '@chriscase/uiforge'
+              {`import { CommitIcon, PullRequestIcon, ActivityIcons, UIIcons } from '${PACKAGE_NAME}'
 
 // Use individual icons
 <CommitIcon size={24} />
