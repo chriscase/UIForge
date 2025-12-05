@@ -143,20 +143,29 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
   onToggleExpand,
 }) => {
   const [expandedEvents, setExpandedEvents] = useState<Set<string | number>>(
-    new Set(
-      initiallyExpandedAll
-        ? events.map((e) => e.id)
-        : events.filter((e) => e.initiallyExpanded).map((e) => e.id)
-    )
+    () =>
+      new Set(
+        initiallyExpandedAll
+          ? events.map((e) => e.id)
+          : events.filter((e) => e.initiallyExpanded).map((e) => e.id)
+      )
   )
   const [showMoreVisible, setShowMoreVisible] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  // Update expanded events when initiallyExpandedAll changes
+  // Update expanded events when initiallyExpandedAll or events change
   useEffect(() => {
     if (initiallyExpandedAll) {
-      setExpandedEvents(new Set(events.map((e) => e.id)))
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setExpandedEvents((prev) => {
+        const newSet = new Set(events.map((e) => e.id))
+        // Only update if the sets are different
+        if (prev.size !== newSet.size || ![...prev].every((id) => newSet.has(id))) {
+          return newSet
+        }
+        return prev
+      })
     }
   }, [initiallyExpandedAll, events])
 
@@ -219,7 +228,7 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
 
   const defaultRenderIcon = (event: ActivityEvent): React.ReactNode => {
     if (event.icon) return event.icon
-    
+
     // Default icons based on event type
     const typeIcons: Record<string, string> = {
       commit: '📝',
@@ -268,9 +277,7 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
               {formatTimestamp(event.timestamp)}
             </div>
             {hasDescription && (
-              <div className="activity-stream__event-toggle">
-                {isExpanded ? '▼' : '▶'}
-              </div>
+              <div className="activity-stream__event-toggle">{isExpanded ? '▼' : '▶'}</div>
             )}
           </div>
           {hasDescription && isExpanded && (

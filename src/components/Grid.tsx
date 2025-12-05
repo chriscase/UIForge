@@ -191,7 +191,10 @@ export const UIForgeGrid = <T extends Record<string, unknown>>({
 }: UIForgeGridProps<T>) => {
   const [internalSelectedRows, setInternalSelectedRows] = useState<Set<string | number>>(new Set())
   const [searchTerm, setSearchTerm] = useState('')
-  const [editingCell, setEditingCell] = useState<{ rowKey: string | number; columnKey: string } | null>(null)
+  const [editingCell, setEditingCell] = useState<{
+    rowKey: string | number
+    columnKey: string
+  } | null>(null)
   const [editValue, setEditValue] = useState<unknown>('')
 
   // Use controlled or uncontrolled selection
@@ -305,10 +308,13 @@ export const UIForgeGrid = <T extends Record<string, unknown>>({
   )
 
   // Handle cell edit start
-  const handleCellEditStart = useCallback((rowKey: string | number, columnKey: string, currentValue: unknown) => {
-    setEditingCell({ rowKey, columnKey })
-    setEditValue(currentValue)
-  }, [])
+  const handleCellEditStart = useCallback(
+    (rowKey: string | number, columnKey: string, currentValue: unknown) => {
+      setEditingCell({ rowKey, columnKey })
+      setEditValue(currentValue)
+    },
+    []
+  )
 
   // Handle cell edit save
   const handleCellEditSave = useCallback(
@@ -391,9 +397,8 @@ export const UIForgeGrid = <T extends Record<string, unknown>>({
             <div className={`${baseClass}__actions`}>
               {actionButtons.map((button, index) => {
                 const isDisabled =
-                  button.disabled ||
-                  (button.requiresSelection && selectedRowKeys.size === 0)
-                
+                  button.disabled || (button.requiresSelection && selectedRowKeys.size === 0)
+
                 return (
                   <button
                     key={index}
@@ -537,7 +542,9 @@ export const UIForgeGrid = <T extends Record<string, unknown>>({
                               role={column.editable ? 'button' : undefined}
                               aria-label={column.editable ? `Edit ${column.header}` : undefined}
                             >
-                              {column.render ? column.render(value, row, actualIndex) : String(value ?? '')}
+                              {column.render
+                                ? column.render(value, row, actualIndex)
+                                : String(value ?? '')}
                             </div>
                           )}
                         </td>
@@ -558,14 +565,17 @@ export const UIForgeGrid = <T extends Record<string, unknown>>({
             {pagination.serverSide && pagination.totalItems !== undefined ? (
               <>
                 Showing {pagination.currentPage * pagination.pageSize + 1} to{' '}
-                {Math.min((pagination.currentPage + 1) * pagination.pageSize, pagination.totalItems)} of{' '}
-                {pagination.totalItems} items
+                {Math.min(
+                  (pagination.currentPage + 1) * pagination.pageSize,
+                  pagination.totalItems
+                )}{' '}
+                of {pagination.totalItems} items
               </>
             ) : (
               <>
                 Showing {pagination.currentPage * pagination.pageSize + 1} to{' '}
-                {Math.min((pagination.currentPage + 1) * pagination.pageSize, filteredData.length)} of{' '}
-                {filteredData.length} items
+                {Math.min((pagination.currentPage + 1) * pagination.pageSize, filteredData.length)}{' '}
+                of {filteredData.length} items
               </>
             )}
           </div>
@@ -589,10 +599,7 @@ export const UIForgeGrid = <T extends Record<string, unknown>>({
 
               if (!showPage) {
                 // Show ellipsis
-                if (
-                  page === pagination.currentPage - 2 ||
-                  page === pagination.currentPage + 2
-                ) {
+                if (page === pagination.currentPage - 2 || page === pagination.currentPage + 2) {
                   return (
                     <span key={page} className={`${baseClass}__pagination-ellipsis`}>
                       ...
@@ -606,9 +613,7 @@ export const UIForgeGrid = <T extends Record<string, unknown>>({
                 <button
                   key={page}
                   className={`${baseClass}__pagination-button ${
-                    page === pagination.currentPage
-                      ? `${baseClass}__pagination-button--active`
-                      : ''
+                    page === pagination.currentPage ? `${baseClass}__pagination-button--active` : ''
                   }`}
                   onClick={() => handlePageChange(page)}
                   aria-label={`Page ${page + 1}`}

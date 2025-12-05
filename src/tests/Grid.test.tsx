@@ -47,13 +47,7 @@ describe('UIForgeGrid', () => {
     })
 
     it('displays empty message when no data', () => {
-      render(
-        <UIForgeGrid
-          columns={basicColumns}
-          data={[]}
-          emptyMessage="No users found"
-        />
-      )
+      render(<UIForgeGrid columns={basicColumns} data={[]} emptyMessage="No users found" />)
 
       expect(screen.getByText('No users found')).toBeInTheDocument()
     })
@@ -66,11 +60,7 @@ describe('UIForgeGrid', () => {
 
     it('applies custom className', () => {
       const { container } = render(
-        <UIForgeGrid
-          columns={basicColumns}
-          data={sampleData}
-          className="custom-grid"
-        />
+        <UIForgeGrid columns={basicColumns} data={sampleData} className="custom-grid" />
       )
 
       const grid = container.querySelector('.uiforge-grid')
@@ -158,7 +148,7 @@ describe('UIForgeGrid', () => {
       )
 
       const masterCheckbox = screen.getByLabelText('Select all rows')
-      
+
       // Select all
       await user.click(masterCheckbox)
       expect(onSelectionChange).toHaveBeenCalledTimes(1)
@@ -166,7 +156,7 @@ describe('UIForgeGrid', () => {
       // Deselect all
       await user.click(masterCheckbox)
       expect(onSelectionChange).toHaveBeenCalledTimes(2)
-      
+
       const [selectedKeys, selectedRows] = onSelectionChange.mock.calls[1]
       expect(selectedKeys.size).toBe(0)
       expect(selectedRows).toHaveLength(0)
@@ -232,9 +222,7 @@ describe('UIForgeGrid', () => {
         },
       ]
 
-      render(
-        <UIForgeGrid columns={columnsWithCustomRender} data={sampleData.slice(0, 1)} />
-      )
+      render(<UIForgeGrid columns={columnsWithCustomRender} data={sampleData.slice(0, 1)} />)
 
       const link = screen.getByRole('link', { name: 'alice@example.com' })
       expect(link).toHaveAttribute('href', 'mailto:alice@example.com')
@@ -254,9 +242,7 @@ describe('UIForgeGrid', () => {
         },
       ]
 
-      render(
-        <UIForgeGrid columns={columnsWithCustomRender} data={sampleData.slice(0, 1)} />
-      )
+      render(<UIForgeGrid columns={columnsWithCustomRender} data={sampleData.slice(0, 1)} />)
 
       expect(customRender).toHaveBeenCalled()
       expect(screen.getByText('Alice Johnson (Developer)')).toBeInTheDocument()
@@ -370,9 +356,7 @@ describe('UIForgeGrid', () => {
 
   describe('Search Functionality', () => {
     it('shows search input when searchable is true', () => {
-      render(
-        <UIForgeGrid columns={basicColumns} data={sampleData} searchable />
-      )
+      render(<UIForgeGrid columns={basicColumns} data={sampleData} searchable />)
 
       expect(screen.getByLabelText('Search')).toBeInTheDocument()
     })
@@ -380,9 +364,7 @@ describe('UIForgeGrid', () => {
     it('filters data based on search term', async () => {
       const user = userEvent.setup()
 
-      render(
-        <UIForgeGrid columns={basicColumns} data={sampleData} searchable />
-      )
+      render(<UIForgeGrid columns={basicColumns} data={sampleData} searchable />)
 
       const searchInput = screen.getByLabelText('Search')
       await user.type(searchInput, 'alice')
@@ -396,12 +378,7 @@ describe('UIForgeGrid', () => {
       const onSearch = vi.fn()
 
       render(
-        <UIForgeGrid
-          columns={basicColumns}
-          data={sampleData}
-          searchable
-          onSearch={onSearch}
-        />
+        <UIForgeGrid columns={basicColumns} data={sampleData} searchable onSearch={onSearch} />
       )
 
       const searchInput = screen.getByLabelText('Search')
@@ -609,13 +586,7 @@ describe('UIForgeGrid', () => {
         { label: 'Delete', onClick: vi.fn(), variant: 'secondary' as const },
       ]
 
-      render(
-        <UIForgeGrid
-          columns={basicColumns}
-          data={sampleData}
-          actionButtons={actionButtons}
-        />
-      )
+      render(<UIForgeGrid columns={basicColumns} data={sampleData} actionButtons={actionButtons} />)
 
       expect(screen.getByText('Export')).toBeInTheDocument()
       expect(screen.getByText('Delete')).toBeInTheDocument()
@@ -651,9 +622,7 @@ describe('UIForgeGrid', () => {
     })
 
     it('disables button when requiresSelection is true and no rows selected', () => {
-      const actionButtons = [
-        { label: 'Delete', onClick: vi.fn(), requiresSelection: true },
-      ]
+      const actionButtons = [{ label: 'Delete', onClick: vi.fn(), requiresSelection: true }]
 
       render(
         <UIForgeGrid
@@ -670,9 +639,7 @@ describe('UIForgeGrid', () => {
 
     it('enables button when requiresSelection is true and rows are selected', async () => {
       const user = userEvent.setup()
-      const actionButtons = [
-        { label: 'Delete', onClick: vi.fn(), requiresSelection: true },
-      ]
+      const actionButtons = [{ label: 'Delete', onClick: vi.fn(), requiresSelection: true }]
 
       render(
         <UIForgeGrid
@@ -697,13 +664,7 @@ describe('UIForgeGrid', () => {
     it('respects disabled prop', () => {
       const actionButtons = [{ label: 'Action', onClick: vi.fn(), disabled: true }]
 
-      render(
-        <UIForgeGrid
-          columns={basicColumns}
-          data={sampleData}
-          actionButtons={actionButtons}
-        />
-      )
+      render(<UIForgeGrid columns={basicColumns} data={sampleData} actionButtons={actionButtons} />)
 
       const button = screen.getByText('Action')
       expect(button).toBeDisabled()
@@ -743,9 +704,7 @@ describe('UIForgeGrid', () => {
     it('combines selection and action buttons', async () => {
       const user = userEvent.setup()
       const onClick = vi.fn()
-      const actionButtons = [
-        { label: 'Process Selected', onClick, requiresSelection: true },
-      ]
+      const actionButtons = [{ label: 'Process Selected', onClick, requiresSelection: true }]
 
       render(
         <UIForgeGrid
@@ -774,13 +733,7 @@ describe('UIForgeGrid', () => {
 
   describe('Accessibility', () => {
     it('has proper ARIA labels for checkboxes', () => {
-      render(
-        <UIForgeGrid
-          columns={basicColumns}
-          data={sampleData.slice(0, 2)}
-          selectable
-        />
-      )
+      render(<UIForgeGrid columns={basicColumns} data={sampleData.slice(0, 2)} selectable />)
 
       expect(screen.getByLabelText('Select all rows')).toBeInTheDocument()
       expect(screen.getByLabelText('Select row 1')).toBeInTheDocument()
@@ -835,7 +788,7 @@ describe('UIForgeGrid', () => {
       )
 
       const nameCell = screen.getByText('Alice Johnson')
-      
+
       // Should be focusable
       nameCell.focus()
       expect(nameCell).toHaveFocus()

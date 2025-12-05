@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Button } from '../src/components/Button'
 import { UIForgeGrid, GridColumn } from '../src/components/Grid'
 import { UIForgeBlocksEditor, ContentBlock } from '../src/components/BlocksEditor'
@@ -119,69 +119,79 @@ function App() {
 
   // ActivityStream state
   const [activityTheme, setActivityTheme] = useState<'light' | 'dark'>('light')
-  const [activityEvents, setActivityEvents] = useState<ActivityEvent[]>([
-    {
-      id: 1,
-      type: 'commit',
-      title: 'Pushed 3 commits to main branch',
-      description: 'Updated authentication flow, fixed bug in user profile page, and improved error handling',
-      timestamp: new Date(Date.now() - 1000 * 60 * 15), // 15 minutes ago
-      icon: '📝',
-    },
-    {
-      id: 2,
-      type: 'pr',
-      title: 'Opened pull request #245: Add dark mode support',
-      description: 'This PR implements a dark mode toggle across the entire application with CSS variables for easy customization.',
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
-      icon: '🔀',
-    },
-    {
-      id: 3,
-      type: 'issue',
-      title: 'Created issue #156: Button component needs hover animation',
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5), // 5 hours ago
-      icon: '🐛',
-    },
-    {
-      id: 4,
-      type: 'merge',
-      title: 'Merged pull request #243: Update dependencies',
-      description: 'Updated React to v19, TypeScript to 5.9, and other dev dependencies to their latest versions.',
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24), // 1 day ago
-      icon: '✅',
-    },
-    {
-      id: 5,
-      type: 'star',
-      title: 'Starred repository: react-beautiful-dnd',
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2), // 2 days ago
-      icon: '⭐',
-    },
-    {
-      id: 6,
-      type: 'comment',
-      title: 'Commented on issue #150: Performance improvements',
-      description: 'I tested the new caching strategy and it reduced load times by 40%. Great work!',
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3), // 3 days ago
-      icon: '💬',
-    },
-    {
-      id: 7,
-      type: 'release',
-      title: 'Released version v2.1.0',
-      description: 'New features: Activity Stream component, improved Grid performance, and better TypeScript support.',
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5), // 5 days ago
-      icon: '🎉',
-    },
-    {
-      id: 8,
-      type: 'fork',
-      title: 'Forked repository: awesome-react-components',
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7), // 7 days ago
-      icon: '🍴',
-    },
-  ])
+  
+  // Create initial activity events once (not on every render)
+  // Note: Using Date.now() here is intentional for demo purposes to show relative timestamps
+  /* eslint-disable react-hooks/purity */
+  const initialActivityEvents = useMemo<ActivityEvent[]>(() => {
+    const now = Date.now()
+    return [
+      {
+        id: 1,
+        type: 'commit',
+        title: 'Pushed 3 commits to main branch',
+        description: 'Updated authentication flow, fixed bug in user profile page, and improved error handling',
+        timestamp: new Date(now - 1000 * 60 * 15), // 15 minutes ago
+        icon: '📝',
+      },
+      {
+        id: 2,
+        type: 'pr',
+        title: 'Opened pull request #245: Add dark mode support',
+        description: 'This PR implements a dark mode toggle across the entire application with CSS variables for easy customization.',
+        timestamp: new Date(now - 1000 * 60 * 60 * 2), // 2 hours ago
+        icon: '🔀',
+      },
+      {
+        id: 3,
+        type: 'issue',
+        title: 'Created issue #156: Button component needs hover animation',
+        timestamp: new Date(now - 1000 * 60 * 60 * 5), // 5 hours ago
+        icon: '🐛',
+      },
+      {
+        id: 4,
+        type: 'merge',
+        title: 'Merged pull request #243: Update dependencies',
+        description: 'Updated React to v19, TypeScript to 5.9, and other dev dependencies to their latest versions.',
+        timestamp: new Date(now - 1000 * 60 * 60 * 24), // 1 day ago
+        icon: '✅',
+      },
+      {
+        id: 5,
+        type: 'star',
+        title: 'Starred repository: react-beautiful-dnd',
+        timestamp: new Date(now - 1000 * 60 * 60 * 24 * 2), // 2 days ago
+        icon: '⭐',
+      },
+      {
+        id: 6,
+        type: 'comment',
+        title: 'Commented on issue #150: Performance improvements',
+        description: 'I tested the new caching strategy and it reduced load times by 40%. Great work!',
+        timestamp: new Date(now - 1000 * 60 * 60 * 24 * 3), // 3 days ago
+        icon: '💬',
+      },
+      {
+        id: 7,
+        type: 'release',
+        title: 'Released version v2.1.0',
+        description: 'New features: Activity Stream component, improved Grid performance, and better TypeScript support.',
+        timestamp: new Date(now - 1000 * 60 * 60 * 24 * 5), // 5 days ago
+        icon: '🎉',
+      },
+      {
+        id: 8,
+        type: 'fork',
+        title: 'Forked repository: awesome-react-components',
+        timestamp: new Date(now - 1000 * 60 * 60 * 24 * 7), // 7 days ago
+        icon: '🍴',
+      },
+    ]
+  }, [])
+  /* eslint-enable react-hooks/purity */
+  
+  const [activityEvents, setActivityEvents] = useState<ActivityEvent[]>(initialActivityEvents)
   const [activityLoading, setActivityLoading] = useState(false)
 
   // ComboBox options

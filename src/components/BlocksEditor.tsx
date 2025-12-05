@@ -4,7 +4,7 @@ import './BlocksEditor.css'
 /**
  * Block types supported by the editor
  */
-export type BlockType = 
+export type BlockType =
   | 'paragraph'
   | 'heading1'
   | 'heading2'
@@ -98,18 +98,18 @@ const createBlock = (type: BlockType = 'paragraph'): ContentBlock => ({
 
 /**
  * UIForgeBlocksEditor - A rich, block-based content editor
- * 
+ *
  * Enables users to format and position content with flexible layouts.
  * Supports multiple block types, drag-and-drop, WYSIWYG formatting,
  * and content export to JSON, HTML, or markdown.
- * 
+ *
  * @example
  * ```tsx
  * import { UIForgeBlocksEditor } from '@chriscase/uiforge'
- * 
+ *
  * function MyEditor() {
  *   const [blocks, setBlocks] = useState([])
- *   
+ *
  *   return (
  *     <UIForgeBlocksEditor
  *       initialBlocks={blocks}
@@ -145,19 +145,17 @@ export const UIForgeBlocksEditor: React.FC<UIForgeBlocksEditorProps> = ({
 
   // Update block content
   const updateBlock = useCallback((id: string, updates: Partial<ContentBlock>) => {
-    setBlocks(prev => prev.map(block => 
-      block.id === id ? { ...block, ...updates } : block
-    ))
+    setBlocks((prev) => prev.map((block) => (block.id === id ? { ...block, ...updates } : block)))
   }, [])
 
   // Add a new block
   const addBlock = useCallback((type: BlockType = 'paragraph', afterId?: string) => {
     const newBlock = createBlock(type)
-    setBlocks(prev => {
+    setBlocks((prev) => {
       if (!afterId) {
         return [...prev, newBlock]
       }
-      const index = prev.findIndex(b => b.id === afterId)
+      const index = prev.findIndex((b) => b.id === afterId)
       const newBlocks = [...prev]
       newBlocks.splice(index + 1, 0, newBlock)
       return newBlocks
@@ -167,19 +165,19 @@ export const UIForgeBlocksEditor: React.FC<UIForgeBlocksEditorProps> = ({
 
   // Delete a block
   const deleteBlock = useCallback((id: string) => {
-    setBlocks(prev => {
-      const filtered = prev.filter(block => block.id !== id)
+    setBlocks((prev) => {
+      const filtered = prev.filter((block) => block.id !== id)
       return filtered.length > 0 ? filtered : [createBlock()]
     })
   }, [])
 
   // Move block (drag and drop)
   const moveBlock = useCallback((fromId: string, toId: string) => {
-    setBlocks(prev => {
-      const fromIndex = prev.findIndex(b => b.id === fromId)
-      const toIndex = prev.findIndex(b => b.id === toId)
+    setBlocks((prev) => {
+      const fromIndex = prev.findIndex((b) => b.id === fromId)
+      const toIndex = prev.findIndex((b) => b.id === toId)
       if (fromIndex === -1 || toIndex === -1) return prev
-      
+
       const newBlocks = [...prev]
       const [movedBlock] = newBlocks.splice(fromIndex, 1)
       newBlocks.splice(toIndex, 0, movedBlock)
@@ -188,11 +186,14 @@ export const UIForgeBlocksEditor: React.FC<UIForgeBlocksEditorProps> = ({
   }, [])
 
   // Handle drag start
-  const handleDragStart = useCallback((e: React.DragEvent, id: string) => {
-    if (readOnly) return
-    setDraggedBlockId(id)
-    e.dataTransfer.effectAllowed = 'move'
-  }, [readOnly])
+  const handleDragStart = useCallback(
+    (e: React.DragEvent, id: string) => {
+      if (readOnly) return
+      setDraggedBlockId(id)
+      e.dataTransfer.effectAllowed = 'move'
+    },
+    [readOnly]
+  )
 
   // Handle drag over
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -201,13 +202,16 @@ export const UIForgeBlocksEditor: React.FC<UIForgeBlocksEditorProps> = ({
   }, [])
 
   // Handle drop
-  const handleDrop = useCallback((e: React.DragEvent, targetId: string) => {
-    e.preventDefault()
-    if (draggedBlockId && draggedBlockId !== targetId) {
-      moveBlock(draggedBlockId, targetId)
-    }
-    setDraggedBlockId(null)
-  }, [draggedBlockId, moveBlock])
+  const handleDrop = useCallback(
+    (e: React.DragEvent, targetId: string) => {
+      e.preventDefault()
+      if (draggedBlockId && draggedBlockId !== targetId) {
+        moveBlock(draggedBlockId, targetId)
+      }
+      setDraggedBlockId(null)
+    },
+    [draggedBlockId, moveBlock]
+  )
 
   // Handle drag end
   const handleDragEnd = useCallback(() => {
@@ -215,75 +219,82 @@ export const UIForgeBlocksEditor: React.FC<UIForgeBlocksEditorProps> = ({
   }, [])
 
   // Toggle text format
-  const toggleFormat = useCallback((formatType: keyof TextFormat) => {
-    if (!selectedBlockId) return
-    
-    setBlocks(prev => prev.map(block => {
-      if (block.id === selectedBlockId) {
-        const currentFormat = block.format || {}
-        return {
-          ...block,
-          format: {
-            ...currentFormat,
-            [formatType]: !currentFormat[formatType],
-          },
-        }
-      }
-      return block
-    }))
-  }, [selectedBlockId])
+  const toggleFormat = useCallback(
+    (formatType: keyof TextFormat) => {
+      if (!selectedBlockId) return
+
+      setBlocks((prev) =>
+        prev.map((block) => {
+          if (block.id === selectedBlockId) {
+            const currentFormat = block.format || {}
+            return {
+              ...block,
+              format: {
+                ...currentFormat,
+                [formatType]: !currentFormat[formatType],
+              },
+            }
+          }
+          return block
+        })
+      )
+    },
+    [selectedBlockId]
+  )
 
   // Change block type
-  const changeBlockType = useCallback((id: string, type: BlockType) => {
-    updateBlock(id, { type })
-  }, [updateBlock])
+  const changeBlockType = useCallback(
+    (id: string, type: BlockType) => {
+      updateBlock(id, { type })
+    },
+    [updateBlock]
+  )
 
   // Handle keyboard shortcuts
-  const handleKeyDown = useCallback((e: React.KeyboardEvent, blockId: string) => {
-    if (readOnly) return
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent, blockId: string) => {
+      if (readOnly) return
 
-    // Cmd/Ctrl + B for bold
-    if ((e.metaKey || e.ctrlKey) && e.key === 'b') {
-      e.preventDefault()
-      toggleFormat('bold')
-    }
-    // Cmd/Ctrl + I for italic
-    else if ((e.metaKey || e.ctrlKey) && e.key === 'i') {
-      e.preventDefault()
-      toggleFormat('italic')
-    }
-    // Cmd/Ctrl + U for underline
-    else if ((e.metaKey || e.ctrlKey) && e.key === 'u') {
-      e.preventDefault()
-      toggleFormat('underline')
-    }
-    // Enter to create new block
-    else if (e.key === 'Enter' && !e.shiftKey) {
-      const block = blocks.find(b => b.id === blockId)
-      if (block && block.type !== 'code') {
+      // Cmd/Ctrl + B for bold
+      if ((e.metaKey || e.ctrlKey) && e.key === 'b') {
         e.preventDefault()
-        addBlock('paragraph', blockId)
+        toggleFormat('bold')
       }
-    }
-    // Backspace on empty block to delete
-    else if (e.key === 'Backspace') {
-      const block = blocks.find(b => b.id === blockId)
-      if (block && !block.content && blocks.length > 1) {
+      // Cmd/Ctrl + I for italic
+      else if ((e.metaKey || e.ctrlKey) && e.key === 'i') {
         e.preventDefault()
-        deleteBlock(blockId)
+        toggleFormat('italic')
       }
-    }
-  }, [readOnly, blocks, toggleFormat, addBlock, deleteBlock])
+      // Cmd/Ctrl + U for underline
+      else if ((e.metaKey || e.ctrlKey) && e.key === 'u') {
+        e.preventDefault()
+        toggleFormat('underline')
+      }
+      // Enter to create new block
+      else if (e.key === 'Enter' && !e.shiftKey) {
+        const block = blocks.find((b) => b.id === blockId)
+        if (block && block.type !== 'code') {
+          e.preventDefault()
+          addBlock('paragraph', blockId)
+        }
+      }
+      // Backspace on empty block to delete
+      else if (e.key === 'Backspace') {
+        const block = blocks.find((b) => b.id === blockId)
+        if (block && !block.content && blocks.length > 1) {
+          e.preventDefault()
+          deleteBlock(blockId)
+        }
+      }
+    },
+    [readOnly, blocks, toggleFormat, addBlock, deleteBlock]
+  )
 
   return (
-    <div 
-      className={`uiforge-blocks-editor ${className}`}
-      ref={editorRef}
-      style={{ maxHeight }}
-    >
+    <div className={`uiforge-blocks-editor ${className}`} ref={editorRef} style={{ maxHeight }}>
       {!readOnly && showToolbar && selectedBlockId && (
         <Toolbar
-          selectedBlock={blocks.find(b => b.id === selectedBlockId)}
+          selectedBlock={blocks.find((b) => b.id === selectedBlockId)}
           onFormatToggle={toggleFormat}
           onBlockTypeChange={(type) => changeBlockType(selectedBlockId, type)}
         />
@@ -313,9 +324,7 @@ export const UIForgeBlocksEditor: React.FC<UIForgeBlocksEditorProps> = ({
         ))}
       </div>
 
-      {!readOnly && (
-        <BlockMenu onAddBlock={addBlock} />
-      )}
+      {!readOnly && <BlockMenu onAddBlock={addBlock} />}
     </div>
   )
 }
@@ -329,11 +338,7 @@ interface ToolbarProps {
   onBlockTypeChange: (type: BlockType) => void
 }
 
-const Toolbar: React.FC<ToolbarProps> = ({
-  selectedBlock,
-  onFormatToggle,
-  onBlockTypeChange,
-}) => {
+const Toolbar: React.FC<ToolbarProps> = ({ selectedBlock, onFormatToggle, onBlockTypeChange }) => {
   if (!selectedBlock) return null
 
   const format = selectedBlock.format || {}
@@ -445,7 +450,9 @@ const Block: React.FC<BlockProps> = ({
     `uiforge-blocks-editor__block--${block.type}`,
     isSelected ? 'uiforge-blocks-editor__block--selected' : '',
     isDragging ? 'uiforge-blocks-editor__block--dragging' : '',
-  ].filter(Boolean).join(' ')
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   const textClasses = [
     'uiforge-blocks-editor__block-text',
@@ -453,7 +460,9 @@ const Block: React.FC<BlockProps> = ({
     block.format?.italic ? 'uiforge-blocks-editor__block-text--italic' : '',
     block.format?.underline ? 'uiforge-blocks-editor__block-text--underline' : '',
     block.format?.code ? 'uiforge-blocks-editor__block-text--code' : '',
-  ].filter(Boolean).join(' ')
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   const handleContentChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     onChange({ content: e.target.value })
@@ -480,7 +489,7 @@ const Block: React.FC<BlockProps> = ({
             placeholder={placeholder || 'Heading 1'}
           />
         )
-      
+
       case 'heading2':
         return (
           <input
@@ -490,7 +499,7 @@ const Block: React.FC<BlockProps> = ({
             placeholder={placeholder || 'Heading 2'}
           />
         )
-      
+
       case 'heading3':
         return (
           <input
@@ -500,7 +509,7 @@ const Block: React.FC<BlockProps> = ({
             placeholder={placeholder || 'Heading 3'}
           />
         )
-      
+
       case 'code':
         return (
           <textarea
@@ -510,7 +519,7 @@ const Block: React.FC<BlockProps> = ({
             rows={4}
           />
         )
-      
+
       case 'quote':
         return (
           <textarea
@@ -520,7 +529,7 @@ const Block: React.FC<BlockProps> = ({
             rows={2}
           />
         )
-      
+
       case 'image':
         return (
           <div className="uiforge-blocks-editor__image-block">
@@ -541,15 +550,15 @@ const Block: React.FC<BlockProps> = ({
               readOnly={readOnly}
             />
             {block.imageUrl && (
-              <img 
-                src={block.imageUrl} 
-                alt={block.imageAlt || 'Block image'} 
+              <img
+                src={block.imageUrl}
+                alt={block.imageAlt || 'Block image'}
                 className="uiforge-blocks-editor__image-preview"
               />
             )}
           </div>
         )
-      
+
       default:
         return (
           <textarea
@@ -594,10 +603,8 @@ const Block: React.FC<BlockProps> = ({
           </button>
         </div>
       )}
-      
-      <div className="uiforge-blocks-editor__block-content">
-        {renderInput()}
-      </div>
+
+      <div className="uiforge-blocks-editor__block-content">{renderInput()}</div>
     </div>
   )
 }

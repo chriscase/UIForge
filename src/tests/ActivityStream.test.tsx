@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, within } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { UIForgeActivityStream, ActivityEvent } from '../components/ActivityStream'
 
@@ -36,7 +36,7 @@ describe('UIForgeActivityStream', () => {
   describe('Basic rendering', () => {
     it('renders activity stream with events', () => {
       render(<UIForgeActivityStream events={mockEvents} />)
-      
+
       expect(screen.getByText('Updated README.md')).toBeInTheDocument()
       expect(screen.getByText('Fixed bug in login form')).toBeInTheDocument()
       expect(screen.getByText('Merged pull request #123')).toBeInTheDocument()
@@ -44,31 +44,27 @@ describe('UIForgeActivityStream', () => {
 
     it('renders empty state when no events provided', () => {
       render(<UIForgeActivityStream events={[]} />)
-      
+
       expect(screen.getByText('No activity to display')).toBeInTheDocument()
     })
 
     it('renders custom empty message', () => {
-      render(
-        <UIForgeActivityStream events={[]} emptyMessage="No activities found" />
-      )
-      
+      render(<UIForgeActivityStream events={[]} emptyMessage="No activities found" />)
+
       expect(screen.getByText('No activities found')).toBeInTheDocument()
     })
 
     it('applies light theme by default', () => {
       const { container } = render(<UIForgeActivityStream events={mockEvents} />)
-      
+
       const activityStream = container.querySelector('.activity-stream')
       expect(activityStream).toHaveClass('activity-stream--light')
       expect(activityStream).toHaveAttribute('data-theme', 'light')
     })
 
     it('applies dark theme when specified', () => {
-      const { container } = render(
-        <UIForgeActivityStream events={mockEvents} theme="dark" />
-      )
-      
+      const { container } = render(<UIForgeActivityStream events={mockEvents} theme="dark" />)
+
       const activityStream = container.querySelector('.activity-stream')
       expect(activityStream).toHaveClass('activity-stream--dark')
       expect(activityStream).toHaveAttribute('data-theme', 'dark')
@@ -78,7 +74,7 @@ describe('UIForgeActivityStream', () => {
       const { container } = render(
         <UIForgeActivityStream events={mockEvents} className="custom-class" />
       )
-      
+
       const activityStream = container.querySelector('.activity-stream')
       expect(activityStream).toHaveClass('custom-class')
     })
@@ -87,7 +83,7 @@ describe('UIForgeActivityStream', () => {
   describe('Event icons', () => {
     it('renders custom icons when provided', () => {
       render(<UIForgeActivityStream events={mockEvents} />)
-      
+
       const icons = screen.getAllByText('📝')
       expect(icons.length).toBeGreaterThan(0)
     })
@@ -101,9 +97,9 @@ describe('UIForgeActivityStream', () => {
           timestamp: new Date(),
         },
       ]
-      
+
       render(<UIForgeActivityStream events={eventsWithoutIcons} />)
-      
+
       expect(screen.getByText('📝')).toBeInTheDocument()
     })
 
@@ -111,14 +107,9 @@ describe('UIForgeActivityStream', () => {
       const customRenderIcon = (event: ActivityEvent) => (
         <span data-testid="custom-icon">{event.type}</span>
       )
-      
-      render(
-        <UIForgeActivityStream
-          events={mockEvents}
-          renderIcon={customRenderIcon}
-        />
-      )
-      
+
+      render(<UIForgeActivityStream events={mockEvents} renderIcon={customRenderIcon} />)
+
       const customIcons = screen.getAllByTestId('custom-icon')
       expect(customIcons).toHaveLength(mockEvents.length)
       expect(customIcons[0]).toHaveTextContent('commit')
@@ -128,14 +119,14 @@ describe('UIForgeActivityStream', () => {
   describe('Expand/collapse functionality', () => {
     it('renders initially collapsed events without descriptions visible', () => {
       render(<UIForgeActivityStream events={mockEvents} />)
-      
+
       // First event should be collapsed (not initially expanded)
       expect(screen.queryByText('Added installation instructions')).not.toBeInTheDocument()
     })
 
     it('renders initially expanded events with descriptions visible', () => {
       render(<UIForgeActivityStream events={mockEvents} />)
-      
+
       // Third event has initiallyExpanded: true
       expect(screen.getByText('Added new feature')).toBeInTheDocument()
     })
@@ -143,77 +134,91 @@ describe('UIForgeActivityStream', () => {
     it('expands event when clicked', async () => {
       const user = userEvent.setup()
       render(<UIForgeActivityStream events={mockEvents} />)
-      
-      const eventTitle = screen.getByText('Updated README.md')
-      
+
+      // Find the event container by its data attribute, then click the header
+      const { container } = render(<UIForgeActivityStream events={mockEvents} />)
+      const eventElement = container.querySelector('[data-event-id="1"]')
+      const eventHeader = eventElement?.querySelector(
+        '.activity-stream__event-header'
+      ) as HTMLElement
+
       expect(screen.queryByText('Added installation instructions')).not.toBeInTheDocument()
-      
-      await user.click(eventTitle)
-      
+
+      await user.click(eventHeader)
+
       expect(screen.getByText('Added installation instructions')).toBeInTheDocument()
     })
 
     it('collapses event when clicked again', async () => {
       const user = userEvent.setup()
-      render(<UIForgeActivityStream events={mockEvents} />)
-      
-      const eventTitle = screen.getByText('Updated README.md')
-      
-      await user.click(eventTitle)
+      const { container } = render(<UIForgeActivityStream events={mockEvents} />)
+
+      const eventElement = container.querySelector('[data-event-id="1"]')
+      const eventHeader = eventElement?.querySelector(
+        '.activity-stream__event-header'
+      ) as HTMLElement
+
+      await user.click(eventHeader)
       expect(screen.getByText('Added installation instructions')).toBeInTheDocument()
-      
-      await user.click(eventTitle)
+
+      await user.click(eventHeader)
       expect(screen.queryByText('Added installation instructions')).not.toBeInTheDocument()
     })
 
     it('expands event with Enter key', async () => {
       const user = userEvent.setup()
-      render(<UIForgeActivityStream events={mockEvents} />)
-      
-      const eventTitle = screen.getByText('Updated README.md')
-      eventTitle.focus()
-      
+      const { container } = render(<UIForgeActivityStream events={mockEvents} />)
+
+      const eventElement = container.querySelector('[data-event-id="1"]')
+      const eventHeader = eventElement?.querySelector(
+        '.activity-stream__event-header'
+      ) as HTMLElement
+
+      eventHeader.focus()
+
       await user.keyboard('{Enter}')
-      
+
       expect(screen.getByText('Added installation instructions')).toBeInTheDocument()
     })
 
     it('expands event with Space key', async () => {
       const user = userEvent.setup()
-      render(<UIForgeActivityStream events={mockEvents} />)
-      
-      const eventTitle = screen.getByText('Updated README.md')
-      eventTitle.focus()
-      
+      const { container } = render(<UIForgeActivityStream events={mockEvents} />)
+
+      const eventElement = container.querySelector('[data-event-id="1"]')
+      const eventHeader = eventElement?.querySelector(
+        '.activity-stream__event-header'
+      ) as HTMLElement
+
+      eventHeader.focus()
+
       await user.keyboard(' ')
-      
+
       expect(screen.getByText('Added installation instructions')).toBeInTheDocument()
     })
 
     it('calls onToggleExpand callback when event is toggled', async () => {
       const user = userEvent.setup()
       const onToggleExpand = vi.fn()
-      render(
-        <UIForgeActivityStream
-          events={mockEvents}
-          onToggleExpand={onToggleExpand}
-        />
+      const { container } = render(
+        <UIForgeActivityStream events={mockEvents} onToggleExpand={onToggleExpand} />
       )
-      
-      const eventTitle = screen.getByText('Updated README.md')
-      
-      await user.click(eventTitle)
+
+      const eventElement = container.querySelector('[data-event-id="1"]')
+      const eventHeader = eventElement?.querySelector(
+        '.activity-stream__event-header'
+      ) as HTMLElement
+
+      await user.click(eventHeader)
       expect(onToggleExpand).toHaveBeenCalledWith(1, true)
-      
-      await user.click(eventTitle)
+
+      await user.click(eventHeader)
       expect(onToggleExpand).toHaveBeenCalledWith(1, false)
     })
 
     it('expands all events when initiallyExpandedAll is true', () => {
-      render(
-        <UIForgeActivityStream events={mockEvents} initiallyExpandedAll={true} />
-      )
-      
+      render(<UIForgeActivityStream events={mockEvents} initiallyExpandedAll={true} />)
+
       expect(screen.getByText('Added installation instructions')).toBeInTheDocument()
       expect(screen.getByText('Added new feature')).toBeInTheDocument()
     })
@@ -227,9 +232,9 @@ describe('UIForgeActivityStream', () => {
         title: 'Recent commit',
         timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
       }
-      
+
       render(<UIForgeActivityStream events={[recentEvent]} />)
-      
+
       expect(screen.getByText('30m ago')).toBeInTheDocument()
     })
 
@@ -240,9 +245,9 @@ describe('UIForgeActivityStream', () => {
         title: 'Hour old commit',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5), // 5 hours ago
       }
-      
+
       render(<UIForgeActivityStream events={[hourOldEvent]} />)
-      
+
       expect(screen.getByText('5h ago')).toBeInTheDocument()
     })
 
@@ -253,9 +258,9 @@ describe('UIForgeActivityStream', () => {
         title: 'Day old commit',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3), // 3 days ago
       }
-      
+
       render(<UIForgeActivityStream events={[dayOldEvent]} />)
-      
+
       expect(screen.getByText('3d ago')).toBeInTheDocument()
     })
   })
@@ -263,13 +268,13 @@ describe('UIForgeActivityStream', () => {
   describe('Loading state', () => {
     it('displays loading indicator when loading is true', () => {
       render(<UIForgeActivityStream events={mockEvents} loading={true} />)
-      
+
       expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('does not display loading indicator when loading is false', () => {
       render(<UIForgeActivityStream events={mockEvents} loading={false} />)
-      
+
       expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
     })
   })
@@ -278,26 +283,18 @@ describe('UIForgeActivityStream', () => {
     it('renders load more button when showLoadMore is true', () => {
       const onLoadMore = vi.fn()
       render(
-        <UIForgeActivityStream
-          events={mockEvents}
-          showLoadMore={true}
-          onLoadMore={onLoadMore}
-        />
+        <UIForgeActivityStream events={mockEvents} showLoadMore={true} onLoadMore={onLoadMore} />
       )
-      
+
       expect(screen.getByText('Show more')).toBeInTheDocument()
     })
 
     it('does not render load more button when showLoadMore is false', () => {
       const onLoadMore = vi.fn()
       render(
-        <UIForgeActivityStream
-          events={mockEvents}
-          showLoadMore={false}
-          onLoadMore={onLoadMore}
-        />
+        <UIForgeActivityStream events={mockEvents} showLoadMore={false} onLoadMore={onLoadMore} />
       )
-      
+
       expect(screen.queryByText('Show more')).not.toBeInTheDocument()
     })
 
@@ -305,16 +302,12 @@ describe('UIForgeActivityStream', () => {
       const user = userEvent.setup()
       const onLoadMore = vi.fn()
       render(
-        <UIForgeActivityStream
-          events={mockEvents}
-          showLoadMore={true}
-          onLoadMore={onLoadMore}
-        />
+        <UIForgeActivityStream events={mockEvents} showLoadMore={true} onLoadMore={onLoadMore} />
       )
-      
+
       const loadMoreButton = screen.getByText('Show more')
       await user.click(loadMoreButton)
-      
+
       expect(onLoadMore).toHaveBeenCalledTimes(1)
     })
 
@@ -322,16 +315,12 @@ describe('UIForgeActivityStream', () => {
       const user = userEvent.setup()
       const onLoadMore = vi.fn()
       render(
-        <UIForgeActivityStream
-          events={mockEvents}
-          showLoadMore={true}
-          onLoadMore={onLoadMore}
-        />
+        <UIForgeActivityStream events={mockEvents} showLoadMore={true} onLoadMore={onLoadMore} />
       )
-      
+
       const loadMoreButton = screen.getByText('Show more')
       loadMoreButton.focus()
-      
+
       await user.keyboard('{Enter}')
       expect(onLoadMore).toHaveBeenCalledTimes(1)
     })
@@ -346,7 +335,7 @@ describe('UIForgeActivityStream', () => {
           pagination={{ currentPage: 0, pageSize: 10, hasMore: false }}
         />
       )
-      
+
       expect(screen.queryByText('Show more')).not.toBeInTheDocument()
     })
 
@@ -360,7 +349,7 @@ describe('UIForgeActivityStream', () => {
           onLoadMore={onLoadMore}
         />
       )
-      
+
       expect(screen.queryByText('Show more')).not.toBeInTheDocument()
     })
   })
@@ -370,14 +359,9 @@ describe('UIForgeActivityStream', () => {
       const customRenderEvent = (event: ActivityEvent) => (
         <div data-testid="custom-event">{event.title}</div>
       )
-      
-      render(
-        <UIForgeActivityStream
-          events={mockEvents}
-          renderEvent={customRenderEvent}
-        />
-      )
-      
+
+      render(<UIForgeActivityStream events={mockEvents} renderEvent={customRenderEvent} />)
+
       const customEvents = screen.getAllByTestId('custom-event')
       expect(customEvents).toHaveLength(mockEvents.length)
     })
@@ -385,34 +369,36 @@ describe('UIForgeActivityStream', () => {
 
   describe('Accessibility', () => {
     it('has proper ARIA attributes for expandable events', () => {
-      render(<UIForgeActivityStream events={mockEvents} />)
-      
-      const expandableTitle = screen.getByText('Updated README.md')
-      expect(expandableTitle).toHaveAttribute('role', 'button')
-      expect(expandableTitle).toHaveAttribute('tabindex', '0')
-      expect(expandableTitle).toHaveAttribute('aria-expanded', 'false')
+      const { container } = render(<UIForgeActivityStream events={mockEvents} />)
+
+      const eventElement = container.querySelector('[data-event-id="1"]')
+      const expandableHeader = eventElement?.querySelector(
+        '.activity-stream__event-header'
+      ) as HTMLElement
+      expect(expandableHeader).toHaveAttribute('role', 'button')
+      expect(expandableHeader).toHaveAttribute('tabindex', '0')
+      expect(expandableHeader).toHaveAttribute('aria-expanded', 'false')
     })
 
     it('updates aria-expanded when event is expanded', async () => {
       const user = userEvent.setup()
-      render(<UIForgeActivityStream events={mockEvents} />)
-      
-      const expandableTitle = screen.getByText('Updated README.md')
-      
-      await user.click(expandableTitle)
-      expect(expandableTitle).toHaveAttribute('aria-expanded', 'true')
+      const { container } = render(<UIForgeActivityStream events={mockEvents} />)
+
+      const eventElement = container.querySelector('[data-event-id="1"]')
+      const expandableHeader = eventElement?.querySelector(
+        '.activity-stream__event-header'
+      ) as HTMLElement
+
+      await user.click(expandableHeader)
+      expect(expandableHeader).toHaveAttribute('aria-expanded', 'true')
     })
 
     it('has proper ARIA label for load more button', () => {
       const onLoadMore = vi.fn()
       render(
-        <UIForgeActivityStream
-          events={mockEvents}
-          showLoadMore={true}
-          onLoadMore={onLoadMore}
-        />
+        <UIForgeActivityStream events={mockEvents} showLoadMore={true} onLoadMore={onLoadMore} />
       )
-      
+
       const loadMoreButton = screen.getByText('Show more')
       expect(loadMoreButton).toHaveAttribute('aria-label', 'Load more activities')
     })
@@ -426,19 +412,20 @@ describe('UIForgeActivityStream', () => {
           timestamp: new Date(),
         },
       ]
-      
-      render(<UIForgeActivityStream events={eventWithoutDescription} />)
-      
-      const title = screen.getByText('Simple event')
-      expect(title).not.toHaveAttribute('role', 'button')
-      expect(title).not.toHaveAttribute('tabindex')
+
+      const { container } = render(<UIForgeActivityStream events={eventWithoutDescription} />)
+
+      const eventElement = container.querySelector('[data-event-id="1"]')
+      const header = eventElement?.querySelector('.activity-stream__event-header') as HTMLElement
+      expect(header).not.toHaveAttribute('role', 'button')
+      expect(header).not.toHaveAttribute('tabindex')
     })
   })
 
   describe('Data attributes', () => {
     it('adds data attributes to events', () => {
       const { container } = render(<UIForgeActivityStream events={mockEvents} />)
-      
+
       const events = container.querySelectorAll('.activity-stream__event')
       expect(events[0]).toHaveAttribute('data-event-id', '1')
       expect(events[0]).toHaveAttribute('data-event-type', 'commit')
