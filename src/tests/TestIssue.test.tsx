@@ -1,11 +1,11 @@
 /**
  * Test Issue - Demo Test Case
- * 
+ *
  * This is a minimal demo test file created as a test issue.
  * It demonstrates that the test infrastructure is working correctly
  * with basic examples. This file can be used as a reference for
  * understanding the testing setup or can be removed if not needed.
- * 
+ *
  * Note: Comprehensive Button tests already exist in Button.test.tsx
  */
 
@@ -23,7 +23,7 @@ describe('TestIssue - Demo Test Suite', () => {
 
   it('should demonstrate basic component rendering', () => {
     render(<Button>Demo Button</Button>)
-    
+
     // Verify the button is rendered with the correct text
     const button = screen.getByRole('button', { name: /demo button/i })
     expect(button).toBeInTheDocument()
@@ -38,10 +38,10 @@ describe('TestIssue - Demo Test Suite', () => {
 
     const user = userEvent.setup()
     render(<Button onClick={handleClick}>Interactive Demo</Button>)
-    
+
     const button = screen.getByRole('button', { name: /interactive demo/i })
     await user.click(button)
-    
+
     expect(clicked).toBe(true)
   })
 })
