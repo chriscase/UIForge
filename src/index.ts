@@ -32,9 +32,13 @@ export type {
   ActivityStreamPagination,
 } from './components/ActivityStream'
 
+export { UIForgeActivityStreamEnhanced } from './components/ActivityStreamEnhanced'
+export type { UIForgeActivityStreamEnhancedProps } from './components/ActivityStreamEnhanced'
+
 // Export all styles
 import './components/Button.css'
 import './components/Grid.css'
 import './components/BlocksEditor.css'
 import './components/ComboBox.css'
 import './components/ActivityStream.css'
+import './components/ActivityStreamEnhanced.css'
