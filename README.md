@@ -6,6 +6,8 @@ A rich user interface library for ReactJS developers written by a seasoned user 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2F19-61dafb)](https://reactjs.org/)
 
+> **📦 Package Name Change**: The package has been renamed from `@chriscase/uiforge` to `@appforgeapps/uiforge`. If you're upgrading from an older version, please see the [Migration Guide](./MIGRATION_GUIDE.md).
+
 > **⚠️ Early Stage Project**: UIForge is a very new project under active development. The API is subject to rapid changes and breaking changes may occur frequently as we refine the components and their interfaces. We recommend pinning to specific versions in production and reviewing the CHANGELOG before upgrading.
 
 ## Features
