@@ -33,11 +33,20 @@
   },
   "keywords": [
     "react",
-    "components",
+    "react-components",
     "ui",
+    "ui-library",
+    "ui-components",
     "typescript",
-    "library",
-    "ui-components"
+    "component-library",
+    "design-system",
+    "grid",
+    "combobox",
+    "activity-stream",
+    "blocks-editor",
+    "video",
+    "reactjs",
+    "frontend"
   ],
   "author": "chriscase",
   "license": "MIT",
@@ -71,15 +80,13 @@
     "globals": "^16.5.0",
     "jsdom": "^27.2.0",
     "prettier": "^3.7.4",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.48.1",
     "vite": "^7.2.6",
     "vite-plugin-dts": "^4.5.4",
     "vitest": "^4.0.15"
-  },
-  "dependencies": {
-    "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0"
   },
   "publishConfig": {
     "access": "public"

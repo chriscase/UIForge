@@ -6,6 +6,8 @@ A rich user interface library for ReactJS developers written by a seasoned user 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2F19-61dafb)](https://reactjs.org/)
 
+> **⚠️ Early Stage Project**: UIForge is a very new project under active development. The API is subject to rapid changes and breaking changes may occur frequently as we refine the components and their interfaces. We recommend pinning to specific versions in production and reviewing the CHANGELOG before upgrading.
+
 ## Features
 
 - 🎨 **Beautiful Components** - Carefully crafted, customizable UI components
@@ -18,85 +20,298 @@ A rich user interface library for ReactJS developers written by a seasoned user 
 
 ## Installation
 
-### From NPM (Coming Soon)
+### From NPM (Recommended)
+
+Install UIForge from NPM:
 
 ```bash
 npm install @chriscase/uiforge
 ```
 
-or with yarn:
+Or with yarn:
 
 ```bash
 yarn add @chriscase/uiforge
 ```
 
-or with pnpm:
+Or with pnpm:
 
 ```bash
 pnpm add @chriscase/uiforge
 ```
 
-### Direct from GitHub (Recommended for Development)
+### Using UIForge in Your Project
 
-You can install UIForge directly from the GitHub repository. This is perfect for development workflows where you want the latest changes or are working across multiple related projects.
+After installation, you'll need to import both the components and the CSS styles in your application.
 
-#### Install a specific branch, tag, or commit:
+#### Method 1: Import in your main entry file (Recommended)
 
-```bash
-# Install from main branch
-npm install chriscase/UIForge
+This is the most common approach - import the styles once in your application's entry point:
 
-# Install from a specific branch
-npm install chriscase/UIForge#feature-branch
+```tsx
+// src/main.tsx or src/index.tsx
+import '@chriscase/uiforge/styles.css'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
 
-# Install from a specific tag
-npm install chriscase/UIForge#v0.1.0
-
-# Install from a specific commit
-npm install chriscase/UIForge#commit-hash
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+)
 ```
 
-#### Using in package.json:
+Then import and use components in your app:
 
-Add this to your `package.json` dependencies:
+```tsx
+// src/App.tsx
+import { Button, UIForgeGrid, UIForgeComboBox } from '@chriscase/uiforge'
+
+function App() {
+  return (
+    <div>
+      <h1>My Application</h1>
+      <Button variant="primary" onClick={() => alert('Hello!')}>
+        Click Me
+      </Button>
+    </div>
+  )
+}
+
+export default App
+```
+
+#### Method 2: Import styles in your component file
+
+If you prefer, you can import the styles directly in the component file where you use UIForge components:
+
+```tsx
+// src/components/MyComponent.tsx
+import '@chriscase/uiforge/styles.css'
+import { Button } from '@chriscase/uiforge'
+
+export function MyComponent() {
+  return <Button variant="primary">Click Me</Button>
+}
+```
+
+#### Method 3: Import in your global CSS file
+
+You can also import UIForge styles in your main CSS file:
+
+```css
+/* src/index.css or src/App.css */
+@import '@chriscase/uiforge/styles.css';
+
+/* Your other styles */
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+```
+
+### TypeScript Configuration
+
+UIForge is written in TypeScript and includes full type definitions. If you're using TypeScript, the types will be automatically picked up. Ensure your `tsconfig.json` includes:
 
 ```json
 {
-  "dependencies": {
-    "@chriscase/uiforge": "github:chriscase/UIForge#main"
+  "compilerOptions": {
+    "moduleResolution": "bundler",  // or "node16" / "nodenext"
+    "jsx": "react-jsx",
+    "esModuleInterop": true
   }
 }
 ```
 
-Then run:
+### Bundler Configuration
 
-```bash
-npm install
+UIForge works with all modern bundlers. Here are specific notes for common setups:
+
+#### Vite
+
+No additional configuration needed. Just import and use:
+
+```tsx
+import { Button } from '@chriscase/uiforge'
+import '@chriscase/uiforge/styles.css'
 ```
 
-#### Important Notes for GitHub Installation:
+#### Next.js (App Router)
 
-1. **Build artifacts are included**: The `dist` folder with pre-built files is included in the repository, so you don't need to build the library after installation.
+For Next.js 13+ with the App Router, import styles in your root layout:
 
-2. **Automatic updates**: To get the latest changes from the repository:
+```tsx
+// app/layout.tsx
+import '@chriscase/uiforge/styles.css'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'My App',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  )
+}
+```
+
+Then use components in your pages:
+
+```tsx
+// app/page.tsx
+import { Button } from '@chriscase/uiforge'
+
+export default function Home() {
+  return <Button variant="primary">Click Me</Button>
+}
+```
+
+#### Next.js (Pages Router)
+
+For Next.js with the Pages Router, import styles in `_app.tsx`:
+
+```tsx
+// pages/_app.tsx
+import '@chriscase/uiforge/styles.css'
+import type { AppProps } from 'next/app'
+
+export default function App({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />
+}
+```
+
+#### Create React App
+
+Import styles in your `index.tsx` or `App.tsx`:
+
+```tsx
+// src/index.tsx
+import '@chriscase/uiforge/styles.css'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+
+const root = ReactDOM.createRoot(document.getElementById('root')!)
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+)
+```
+
+#### Webpack
+
+If using a custom Webpack setup, ensure you have CSS loaders configured:
+
+```bash
+npm install --save-dev style-loader css-loader
+```
+
+Then in your webpack.config.js:
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
+  },
+}
+```
+
+### Verifying Installation
+
+To verify UIForge is properly installed, you can check:
+
+1. **Package is installed:**
    ```bash
-   npm update @chriscase/uiforge
+   npm list @chriscase/uiforge
    ```
 
-3. **Working with local changes**: If you're developing UIForge locally and want to test it in another project:
-   ```bash
-   # In your UIForge directory
-   npm run build
-   npm link
-   
-   # In your other project
-   npm link @chriscase/uiforge
+2. **Types are available** (TypeScript projects):
+   ```tsx
+   import type { ButtonProps } from '@chriscase/uiforge'
+   // If this imports without errors, types are working
    ```
 
-4. **Private repositories**: If UIForge becomes private, you'll need to:
-   - Set up SSH keys with GitHub
-   - Use SSH URL format: `"@chriscase/uiforge": "git+ssh://git@github.com:chriscase/UIForge.git#main"`
-   - Or use a personal access token: `"@chriscase/uiforge": "git+https://<token>@github.com/chriscase/UIForge.git#main"`
+3. **Create a simple test component:**
+   ```tsx
+   import { Button } from '@chriscase/uiforge'
+   import '@chriscase/uiforge/styles.css'
+
+   export function Test() {
+     return <Button variant="primary">Test</Button>
+   }
+   ```
+
+### Troubleshooting
+
+**Issue: "Cannot find module '@chriscase/uiforge'"**
+- Run `npm install` to ensure dependencies are installed
+- Check that `@chriscase/uiforge` is in your `package.json` dependencies
+- Try deleting `node_modules` and `package-lock.json`, then run `npm install` again
+
+**Issue: Styles not loading**
+- Ensure you've imported the CSS: `import '@chriscase/uiforge/styles.css'`
+- Check that your bundler supports CSS imports
+- For Webpack, ensure css-loader and style-loader are configured
+
+**Issue: TypeScript errors**
+- Ensure TypeScript 4.7+ is installed
+- Check that your `tsconfig.json` has proper module resolution settings
+- Try running `npm install @types/react @types/react-dom` if not already installed
+
+### Alternative: Install from GitHub
+
+For development or to use the latest unreleased features, you can install directly from GitHub. Note that GitHub installations require building the project after installation.
+
+```bash
+npm install github:chriscase/UIForge
+```
+
+Or specify a specific branch, tag, or commit:
+
+```bash
+npm install github:chriscase/UIForge#main
+npm install github:chriscase/UIForge#v0.1.0
+```
+
+**Important for GitHub installations:**
+
+After installing from GitHub, you'll need to build the project:
+
+```bash
+cd node_modules/@chriscase/uiforge
+npm install
+npm run build
+```
+
+Or use a `postinstall` script in your project to automate this:
+
+```json
+{
+  "scripts": {
+    "postinstall": "cd node_modules/@chriscase/uiforge && npm install && npm run build"
+  }
+}
+```
+
+**Recommendation:** Use NPM installation for production projects. GitHub installation is primarily intended for:
+- Contributing to UIForge development
+- Testing unreleased features
+- Debugging issues with the latest code
 
 ## Usage
 
@@ -122,7 +337,7 @@ Here's a complete example of setting up UIForge in a React + TypeScript + Vite p
 **1. Install UIForge:**
 
 ```bash
-npm install github:chriscase/UIForge#main react react-dom
+npm install @chriscase/uiforge react react-dom
 ```
 
 **2. Import components and styles in your app:**
@@ -176,7 +391,7 @@ UIForge requires React 18+ or React 19+ as peer dependencies:
 ```json
 {
   "dependencies": {
-    "@chriscase/uiforge": "github:chriscase/UIForge#main",
+    "@chriscase/uiforge": "^0.1.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   }
@@ -984,17 +1199,20 @@ npm run build
 
 The built files will be in the `dist` directory.
 
-## Publishing to NPM
+### Development with GitHub Tools
 
-To publish a new version:
+This repository is optimized for development using:
 
-1. Update the version in `package.json`
-2. Build the library: `npm run build`
-3. Publish: `npm publish`
+- **GitHub Codespaces** - One-click cloud development environment
+- **GitHub Copilot** - AI-powered code completion
+
+Simply open this repository in GitHub Codespaces to get started immediately with all dependencies pre-installed!
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines.
+
+Quick start:
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
@@ -1002,67 +1220,9 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## Development with GitHub Tools
+## For Maintainers
 
-This repository is optimized for development using:
-
-- **GitHub Codespaces** - One-click development environment
-- **GitHub Copilot** - AI-powered code completion
-- **Copilot Cloud Agents** - Automated code assistance
-
-Simply open this repository in GitHub Codespaces to get started immediately!
-
-### Codespaces / Dev Container details
-
-This repository contains a `.devcontainer` folder that configures a dev container with Node.js and TypeScript tooling preinstalled.
-
-- When you open the repo in GitHub Codespaces (or via `Remote - Containers` / devcontainer in VS Code), the container will automatically install dependencies on first creation and each subsequent start/attach using `.devcontainer/install-deps.sh`.
-- The installer script uses the lockfile to choose the appropriate package manager: it prefers `pnpm` (`pnpm-lock.yaml`) then `yarn` (`yarn.lock`) then `npm` (`package-lock.json`), and defaults to `npm` if no lockfile is present. The script will try to use `pnpm`/`yarn` when the lockfile exists and will fall back to `npm` when those tools are unavailable in the container.
-- The installer uses `npm ci`, `pnpm install --frozen-lockfile` or `yarn install` (appropriate for the package manager), and caches a hash of the lockfile to skip re-running an install when dependencies haven't changed.
-- To force a fresh install, remove `node_modules` and `.devcontainer/.deps_hash` and then restart the Dev Container/Codespace.
-
-You can also manually verify installation from within the Codespace/dev container:
-
-```bash
-# Explicitly invoke the scripts using bash to avoid permission errors if the files are not executable
-bash .devcontainer/verify-deps.sh
-```
-
-### Automated verification on PRs
-
-This repository includes a GitHub workflow (`.github/workflows/verify-devcontainer-deps.yml`) that runs on pull requests. The workflow will:
-
-- Checkout the code and set up Node.js
-- Run the repository's devcontainer install script (`.devcontainer/install-deps.sh`) to make sure dependencies install correctly
-- Verify dependencies are installed (`.devcontainer/verify-deps.sh`)
-- Run the test suite (`npm test`) to ensure the project builds and tests pass after installation
-
-### Codespaces Prebuilds
-
-This repository enables Codespaces prebuilds (see `.github/codespaces.yml`) and the prebuild will run `.devcontainer/prebuild.sh` to prepare the environment before a developer opens the Codespace. The prebuild script installs dependencies, verifies they are present, and optionally runs a quick test.
-
-Note: The prebuild script also ensures devcontainer scripts are executable (uses `chmod +x .devcontainer/*.sh`) so you don't need to manually change permissions.
-
-### Making the scripts executable in Git (optional)
-
-If you'd like the scripts to be executable in the repo (so they can run directly), there is a helper script to set the executable bit and commit the change for you: `scripts/set-exec-devcontainer-scripts.sh`.
-
-You can run it directly:
-
-```bash
-# This will set the exec bits and commit the change if necessary
-bash scripts/set-exec-devcontainer-scripts.sh
-```
-
-Or via npm:
-
-```bash
-npm run devcontainer:set-exec
-```
-
-This is optional — the devcontainer lifecycle commands and prebuild script should run the scripts using `bash` even if they are not executable.
-
-This helps catch environment and installation issues early during PRs.
+If you're a maintainer looking to publish releases or manage the project, please see [MAINTAINER_INSTRUCTIONS.md](./MAINTAINER_INSTRUCTIONS.md) for comprehensive publishing and maintenance workflows.
 
 ## License
 
