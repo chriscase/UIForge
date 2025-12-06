@@ -282,8 +282,6 @@ export const UIForgeVideoPreview: React.FC<UIForgeVideoPreviewProps> = ({
         type: 'button' as const,
         onClick: handleClick,
         onKeyDown: handleKeyDown,
-        role: 'button',
-        tabIndex: 0,
       }
     : {}
 

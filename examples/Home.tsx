@@ -166,6 +166,22 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             }
             onNavigate={onNavigate}
           />
+
+          <ComponentCard
+            name="Video"
+            description="Video components for embedding YouTube and Vimeo videos with interactive overlays"
+            icon="🎥"
+            path="/video"
+            preview={
+              <div className="preview-video">
+                <div className="preview-video-player">
+                  <div className="preview-video-overlay">▶️</div>
+                </div>
+                <div className="preview-video-title">Video Title</div>
+              </div>
+            }
+            onNavigate={onNavigate}
+          />
         </section>
       </main>
 

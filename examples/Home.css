@@ -252,6 +252,35 @@
   opacity: 0.8;
 }
 
+.preview-video {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.preview-video-player {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-video-overlay {
+  font-size: 2rem;
+  opacity: 0.9;
+}
+
+.preview-video-title {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
 .home-footer {
   text-align: center;
   padding: 2rem;

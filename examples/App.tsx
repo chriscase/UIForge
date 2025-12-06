@@ -5,6 +5,7 @@ import { UIForgeBlocksEditor, ContentBlock } from '../src/components/BlocksEdito
 import { blocksToHTML, blocksToMarkdown } from '../src/components/BlocksEditorUtils'
 import { UIForgeComboBox, ComboBoxOption } from '../src/components/ComboBox'
 import { UIForgeActivityStream, ActivityEvent } from '../src/components/ActivityStream'
+import { UIForgeVideo, UIForgeVideoPreview } from '../src/components/Video'
 import './App.css'
 
 // Sample data for the grid
@@ -119,6 +120,9 @@ function App() {
 
   // ActivityStream state
   const [activityTheme, setActivityTheme] = useState<'light' | 'dark'>('light')
+  
+  // Video state
+  const [videoLogs, setVideoLogs] = useState<string[]>([])
   
   // Create initial activity events once (not on every render)
   // Note: Using Date.now() here is intentional for demo purposes to show relative timestamps
@@ -420,6 +424,13 @@ function App() {
     const content =
       exportFormat === 'html' ? blocksToHTML(editorBlocks) : blocksToMarkdown(editorBlocks)
     setExportedContent(content)
+  }
+
+  const handleVideoPlay = (videoId: string, provider: 'youtube' | 'vimeo') => {
+    const timestamp = new Date().toLocaleTimeString()
+    const logEntry = `[${timestamp}] Video played: ${videoId} (${provider})`
+    setVideoLogs((prev) => [logEntry, ...prev])
+    console.log(logEntry)
   }
 
   return (
@@ -882,6 +893,91 @@ function App() {
               />
             </div>
           </div>
+        </section>
+
+        <section className="demo-section">
+          <h2>UIForgeVideo Component</h2>
+          <p style={{ marginBottom: '1rem', color: '#6b7280' }}>
+            Video components for embedding YouTube and Vimeo videos with interactive overlays.
+          </p>
+
+          <div className="demo-group">
+            <h3>YouTube Video Example</h3>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              Click the overlay to start playing the video. The onPlay callback tracks video interactions.
+            </p>
+            <UIForgeVideo
+              title="Introduction to React"
+              description="Learn the fundamentals of React in this comprehensive tutorial"
+              youtubeId="SqcY0GlETPk"
+              onPlay={handleVideoPlay}
+            />
+          </div>
+
+          <div className="demo-group" style={{ marginTop: '2rem' }}>
+            <h3>Vimeo Video Example</h3>
+            <UIForgeVideo
+              title="Beautiful Nature Footage"
+              description="Stunning visuals from around the world"
+              vimeoId="76979871"
+              onPlay={handleVideoPlay}
+            />
+          </div>
+
+          <div className="demo-group" style={{ marginTop: '2rem' }}>
+            <h3>Video Previews</h3>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+              Compact preview components for video lists and catalogs.
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <UIForgeVideoPreview
+                title="Getting Started Tutorial"
+                icon={<span style={{ fontSize: '20px' }}>🎓</span>}
+                onClick={() => alert('Tutorial clicked')}
+              />
+              <UIForgeVideoPreview
+                title="Advanced Techniques"
+                icon={<span style={{ fontSize: '20px' }}>🚀</span>}
+                onClick={() => alert('Advanced clicked')}
+              />
+              <UIForgeVideoPreview
+                title="Live Demo Recording"
+                icon={<span style={{ fontSize: '20px' }}>📺</span>}
+                onClick={() => alert('Demo clicked')}
+              />
+              <UIForgeVideoPreview
+                title="Q&A Session"
+                onClick={() => alert('Q&A clicked')}
+              />
+            </div>
+          </div>
+
+          {videoLogs.length > 0 && (
+            <div className="demo-group" style={{ marginTop: '2rem' }}>
+              <h3>Video Play Event Log</h3>
+              <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+                The onPlay callback fires when a video starts playing:
+              </p>
+              <div
+                style={{
+                  backgroundColor: '#1f2937',
+                  color: '#f9fafb',
+                  padding: '1rem',
+                  borderRadius: '6px',
+                  maxHeight: '200px',
+                  overflow: 'auto',
+                  fontFamily: 'Monaco, Courier New, monospace',
+                  fontSize: '0.75rem',
+                }}
+              >
+                {videoLogs.map((log, index) => (
+                  <div key={index} style={{ marginBottom: '0.25rem' }}>
+                    {log}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </section>
       </main>
 

@@ -336,7 +336,9 @@ describe('UIForgeVideoPreview', () => {
     it('is keyboard accessible when interactive', () => {
       render(<UIForgeVideoPreview title="Preview Video" onClick={() => {}} />)
       const button = screen.getByRole('button')
-      expect(button).toHaveAttribute('tabIndex', '0')
+      // Native button elements are focusable by default, no need for tabIndex
+      expect(button).toBeInTheDocument()
+      expect(button.tagName).toBe('BUTTON')
     })
 
     it('has no role when not interactive', () => {
