@@ -273,7 +273,7 @@ To verify UIForge is properly installed, you can check:
 
 ### Alternative: Install from GitHub
 
-For development or to use the latest unreleased features, you can install directly from GitHub:
+For development or to use the latest unreleased features, you can install directly from GitHub. Note that GitHub installations require building the project after installation.
 
 ```bash
 npm install github:chriscase/UIForge
@@ -285,6 +285,31 @@ Or specify a specific branch, tag, or commit:
 npm install github:chriscase/UIForge#main
 npm install github:chriscase/UIForge#v0.1.0
 ```
+
+**Important for GitHub installations:**
+
+After installing from GitHub, you'll need to build the project:
+
+```bash
+cd node_modules/@chriscase/uiforge
+npm install
+npm run build
+```
+
+Or use a `postinstall` script in your project to automate this:
+
+```json
+{
+  "scripts": {
+    "postinstall": "cd node_modules/@chriscase/uiforge && npm install && npm run build"
+  }
+}
+```
+
+**Recommendation:** Use NPM installation for production projects. GitHub installation is primarily intended for:
+- Contributing to UIForge development
+- Testing unreleased features
+- Debugging issues with the latest code
 
 ## Usage
 
