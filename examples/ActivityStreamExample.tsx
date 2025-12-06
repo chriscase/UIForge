@@ -16,6 +16,7 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
   const [showTimeline, setShowTimeline] = useState(true)
   const [showDateSeparators, setShowDateSeparators] = useState(true)
   const [loading, setLoading] = useState(false)
+  const [scale, setScale] = useState<number>(1)
 
   // Generate sample user activity data
   /* eslint-disable react-hooks/purity */
@@ -236,6 +237,35 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
 
       <div className="activity-stream-example__controls">
         <div className="activity-stream-example__control-group">
+          <label>Density:</label>
+          <div className="density-toggle">
+            <button
+              aria-pressed={scale === 0.75}
+              className={`density-button ${scale === 0.75 ? 'density-button--active' : ''}`}
+              onClick={() => setScale(0.75)}
+            >
+              Compact
+            </button>
+            <button
+              aria-pressed={scale === 1}
+              className={`density-button ${scale === 1 ? 'density-button--active' : ''}`}
+              onClick={() => setScale(1)}
+            >
+              Default
+            </button>
+            <button
+              aria-pressed={scale === 1.25}
+              className={`density-button ${scale === 1.25 ? 'density-button--active' : ''}`}
+              onClick={() => setScale(1.25)}
+            >
+              Spacious
+            </button>
+          </div>
+          <div style={{ marginLeft: 8, fontSize: 13, color: theme === 'dark' ? '#8b949e' : '#57606a' }}>
+            Scale: {scale}
+          </div>
+        </div>
+        <div className="activity-stream-example__control-group">
           <label htmlFor="theme-select">Theme:</label>
           <select
             id="theme-select"
@@ -309,6 +339,7 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
               loading={loading}
               onLoadMore={handleLoadMore}
               maxHeight="600px"
+              scale={scale}
               pagination={{
                 currentPage: 0,
                 pageSize: 15,

@@ -148,6 +148,11 @@ export interface UIForgeActivityStreamProps {
    * Whether to show the timeline line
    */
   showTimeline?: boolean
+  /**
+   * Global scale factor (density) for spacing and icon sizes in the stream.
+   * Set to values like 0.8 for compact, 1 for default, 1.2 for spacious.
+   */
+  scale?: number
 }
 
 /**
@@ -369,6 +374,7 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
   groupingThreshold = 2,
   showDateSeparators = true,
   showTimeline = true,
+  scale = 1,
 }) => {
   const [expandedEvents, setExpandedEvents] = useState<Set<string>>(() => {
     if (!initiallyExpandedAll) return new Set()
@@ -542,13 +548,16 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
   const baseClass = 'activity-stream'
   const themeClass = `${baseClass}--${theme}`
   const timelineClass = showTimeline ? `${baseClass}--with-timeline` : ''
-  const classes = `${baseClass} ${themeClass} ${timelineClass} ${className}`.trim()
+  let classes = `${baseClass} ${themeClass} ${timelineClass} ${className}`.trim()
+  if (scale && scale < 1) classes = `${classes} ${baseClass}--compact`
+  if (scale && scale > 1) classes = `${classes} ${baseClass}--spacious`
 
   const containerStyle = maxHeight ? { maxHeight } : undefined
+  const scaleStyle = { ['--activity-stream-scale' as any]: scale }
 
   return (
     <div ref={containerRef} className={classes} data-theme={theme}>
-      <div ref={scrollRef} className="activity-stream__container" style={containerStyle}>
+      <div ref={scrollRef} className="activity-stream__container" style={{ ...(containerStyle as React.CSSProperties), ...(scaleStyle as React.CSSProperties) }}>
         {processedItems.length === 0 ? (
           <div className="activity-stream__empty">{emptyMessage}</div>
         ) : (

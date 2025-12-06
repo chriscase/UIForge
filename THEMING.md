@@ -90,6 +90,47 @@ The ActivityStream component uses the following CSS variables:
 }
 ```
 
+## Spacing & Density Scale
+
+The ActivityStream component supports a density scale that allows you to quickly make the stream more compact or more spacious by changing a single variable.
+
+Key variables:
+- `--activity-stream-scale` (number) — multiplies spacing and icon sizes across the component. Defaults to `1`.
+- `.activity-stream--compact` — utility class that sets `--activity-stream-scale: 0.8`.
+- `.activity-stream--spacious` — utility class with larger base spacings.
+
+You can set the scale using a CSS class, inline style, or via a wrapping element. This will hot-reload in typical dev servers that support CSS hot module replacement.
+
+Examples:
+
+Make the stream more compact using the compact utility class:
+
+```html
+<div class="activity-stream activity-stream--compact">
+  <UIForgeActivityStreamEnhanced events={events} />
+</div>
+```
+
+Or control it via CSS custom property directly (inline or a stylesheet):
+
+```html
+<div style="--activity-stream-scale: 0.75">
+  <UIForgeActivityStreamEnhanced events={events} />
+</div>
+```
+
+You can also set `scale` directly on the React component (convenience prop added):
+
+```tsx
+<UIForgeActivityStreamEnhanced events={events} scale={0.85} />
+```
+
+If your dev workspace supports hot reload (Vite / CRA / Next.js), updating the CSS variable should reflect the density change immediately without restarting the server.
+
+Tips:
+- Use `--activity-stream-scale` values in the range `0.6` to `1.25` for sensible density changes (subjective; tune for your app).
+- If you need a different default density, set `--activity-stream-scale` at a higher level (e.g., `:root` or a theme class) so all ActivityStream instances inherit it.
+
 ## Custom Theming
 
 ### Creating a Custom Theme
@@ -110,6 +151,7 @@ You can create your own theme by overriding CSS variables:
 
 ```tsx
 <div className="activity-stream-enhanced--custom">
+
   <UIForgeActivityStreamEnhanced 
     events={events}
     className="activity-stream-enhanced--custom"
