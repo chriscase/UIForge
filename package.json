@@ -12,7 +12,7 @@
       "import": "./dist/uiforge.js",
       "require": "./dist/uiforge.cjs"
     },
-    "./styles.css": "./dist/style.css"
+    "./styles.css": "./dist/uiforge.css"
   },
   "files": [
     "dist"
