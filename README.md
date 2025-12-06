@@ -2,6 +2,7 @@
 
 A rich user interface library for ReactJS developers written by a seasoned user interface developer who loves working with ReactJS.
 
+[![npm version](https://img.shields.io/npm/v/@chriscase/uiforge.svg)](https://www.npmjs.com/package/@chriscase/uiforge)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2F19-61dafb)](https://reactjs.org/)
@@ -18,85 +19,273 @@ A rich user interface library for ReactJS developers written by a seasoned user 
 
 ## Installation
 
-### From NPM (Coming Soon)
+### From NPM (Recommended)
+
+Install UIForge from NPM:
 
 ```bash
 npm install @chriscase/uiforge
 ```
 
-or with yarn:
+Or with yarn:
 
 ```bash
 yarn add @chriscase/uiforge
 ```
 
-or with pnpm:
+Or with pnpm:
 
 ```bash
 pnpm add @chriscase/uiforge
 ```
 
-### Direct from GitHub (Recommended for Development)
+### Using UIForge in Your Project
 
-You can install UIForge directly from the GitHub repository. This is perfect for development workflows where you want the latest changes or are working across multiple related projects.
+After installation, you'll need to import both the components and the CSS styles in your application.
 
-#### Install a specific branch, tag, or commit:
+#### Method 1: Import in your main entry file (Recommended)
 
-```bash
-# Install from main branch
-npm install chriscase/UIForge
+This is the most common approach - import the styles once in your application's entry point:
 
-# Install from a specific branch
-npm install chriscase/UIForge#feature-branch
+```tsx
+// src/main.tsx or src/index.tsx
+import '@chriscase/uiforge/styles.css'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
 
-# Install from a specific tag
-npm install chriscase/UIForge#v0.1.0
-
-# Install from a specific commit
-npm install chriscase/UIForge#commit-hash
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+)
 ```
 
-#### Using in package.json:
+Then import and use components in your app:
 
-Add this to your `package.json` dependencies:
+```tsx
+// src/App.tsx
+import { Button, UIForgeGrid, UIForgeComboBox } from '@chriscase/uiforge'
+
+function App() {
+  return (
+    <div>
+      <h1>My Application</h1>
+      <Button variant="primary" onClick={() => alert('Hello!')}>
+        Click Me
+      </Button>
+    </div>
+  )
+}
+
+export default App
+```
+
+#### Method 2: Import styles in your component file
+
+If you prefer, you can import the styles directly in the component file where you use UIForge components:
+
+```tsx
+// src/components/MyComponent.tsx
+import '@chriscase/uiforge/styles.css'
+import { Button } from '@chriscase/uiforge'
+
+export function MyComponent() {
+  return <Button variant="primary">Click Me</Button>
+}
+```
+
+#### Method 3: Import in your global CSS file
+
+You can also import UIForge styles in your main CSS file:
+
+```css
+/* src/index.css or src/App.css */
+@import '@chriscase/uiforge/styles.css';
+
+/* Your other styles */
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+```
+
+### TypeScript Configuration
+
+UIForge is written in TypeScript and includes full type definitions. If you're using TypeScript, the types will be automatically picked up. Ensure your `tsconfig.json` includes:
 
 ```json
 {
-  "dependencies": {
-    "@chriscase/uiforge": "github:chriscase/UIForge#main"
+  "compilerOptions": {
+    "moduleResolution": "bundler",  // or "node16" / "nodenext"
+    "jsx": "react-jsx",
+    "esModuleInterop": true
   }
 }
 ```
 
-Then run:
+### Bundler Configuration
 
-```bash
-npm install
+UIForge works with all modern bundlers. Here are specific notes for common setups:
+
+#### Vite
+
+No additional configuration needed. Just import and use:
+
+```tsx
+import { Button } from '@chriscase/uiforge'
+import '@chriscase/uiforge/styles.css'
 ```
 
-#### Important Notes for GitHub Installation:
+#### Next.js (App Router)
 
-1. **Build artifacts are included**: The `dist` folder with pre-built files is included in the repository, so you don't need to build the library after installation.
+For Next.js 13+ with the App Router, import styles in your root layout:
 
-2. **Automatic updates**: To get the latest changes from the repository:
+```tsx
+// app/layout.tsx
+import '@chriscase/uiforge/styles.css'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'My App',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  )
+}
+```
+
+Then use components in your pages:
+
+```tsx
+// app/page.tsx
+import { Button } from '@chriscase/uiforge'
+
+export default function Home() {
+  return <Button variant="primary">Click Me</Button>
+}
+```
+
+#### Next.js (Pages Router)
+
+For Next.js with the Pages Router, import styles in `_app.tsx`:
+
+```tsx
+// pages/_app.tsx
+import '@chriscase/uiforge/styles.css'
+import type { AppProps } from 'next/app'
+
+export default function App({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />
+}
+```
+
+#### Create React App
+
+Import styles in your `index.tsx` or `App.tsx`:
+
+```tsx
+// src/index.tsx
+import '@chriscase/uiforge/styles.css'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+
+const root = ReactDOM.createRoot(document.getElementById('root')!)
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+)
+```
+
+#### Webpack
+
+If using a custom Webpack setup, ensure you have CSS loaders configured:
+
+```bash
+npm install --save-dev style-loader css-loader
+```
+
+Then in your webpack.config.js:
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
+  },
+}
+```
+
+### Verifying Installation
+
+To verify UIForge is properly installed, you can check:
+
+1. **Package is installed:**
    ```bash
-   npm update @chriscase/uiforge
+   npm list @chriscase/uiforge
    ```
 
-3. **Working with local changes**: If you're developing UIForge locally and want to test it in another project:
-   ```bash
-   # In your UIForge directory
-   npm run build
-   npm link
-   
-   # In your other project
-   npm link @chriscase/uiforge
+2. **Types are available** (TypeScript projects):
+   ```tsx
+   import type { ButtonProps } from '@chriscase/uiforge'
+   // If this imports without errors, types are working
    ```
 
-4. **Private repositories**: If UIForge becomes private, you'll need to:
-   - Set up SSH keys with GitHub
-   - Use SSH URL format: `"@chriscase/uiforge": "git+ssh://git@github.com:chriscase/UIForge.git#main"`
-   - Or use a personal access token: `"@chriscase/uiforge": "git+https://<token>@github.com/chriscase/UIForge.git#main"`
+3. **Create a simple test component:**
+   ```tsx
+   import { Button } from '@chriscase/uiforge'
+   import '@chriscase/uiforge/styles.css'
+
+   export function Test() {
+     return <Button variant="primary">Test</Button>
+   }
+   ```
+
+### Troubleshooting
+
+**Issue: "Cannot find module '@chriscase/uiforge'"**
+- Run `npm install` to ensure dependencies are installed
+- Check that `@chriscase/uiforge` is in your `package.json` dependencies
+- Try deleting `node_modules` and `package-lock.json`, then run `npm install` again
+
+**Issue: Styles not loading**
+- Ensure you've imported the CSS: `import '@chriscase/uiforge/styles.css'`
+- Check that your bundler supports CSS imports
+- For Webpack, ensure css-loader and style-loader are configured
+
+**Issue: TypeScript errors**
+- Ensure TypeScript 4.7+ is installed
+- Check that your `tsconfig.json` has proper module resolution settings
+- Try running `npm install @types/react @types/react-dom` if not already installed
+
+### Alternative: Install from GitHub
+
+For development or to use the latest unreleased features, you can install directly from GitHub:
+
+```bash
+npm install github:chriscase/UIForge
+```
+
+Or specify a specific branch, tag, or commit:
+
+```bash
+npm install github:chriscase/UIForge#main
+npm install github:chriscase/UIForge#v0.1.0
+```
 
 ## Usage
 
@@ -122,7 +311,7 @@ Here's a complete example of setting up UIForge in a React + TypeScript + Vite p
 **1. Install UIForge:**
 
 ```bash
-npm install github:chriscase/UIForge#main react react-dom
+npm install @chriscase/uiforge react react-dom
 ```
 
 **2. Import components and styles in your app:**
@@ -176,7 +365,7 @@ UIForge requires React 18+ or React 19+ as peer dependencies:
 ```json
 {
   "dependencies": {
-    "@chriscase/uiforge": "github:chriscase/UIForge#main",
+    "@chriscase/uiforge": "^0.1.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   }
@@ -984,85 +1173,475 @@ npm run build
 
 The built files will be in the `dist` directory.
 
+### Development with GitHub Tools
+
+This repository is optimized for development using:
+
+- **GitHub Codespaces** - One-click cloud development environment
+- **GitHub Copilot** - AI-powered code completion
+
+Simply open this repository in GitHub Codespaces to get started immediately with all dependencies pre-installed!
+
 ## Publishing to NPM
 
-To publish a new version:
+This section provides comprehensive instructions for maintainers who want to publish UIForge to NPM. It covers the entire publishing workflow, from initial setup to post-release verification.
 
+### Initial Setup (One-Time)
+
+Before you can publish to NPM, you need to set up your NPM account and access:
+
+#### 1. Create an NPM Account
+
+If you don't have an NPM account:
+
+1. Go to [npmjs.com](https://www.npmjs.com/)
+2. Click "Sign Up"
+3. Follow the registration process
+4. Verify your email address
+
+#### 2. Enable Two-Factor Authentication (Required)
+
+NPM requires 2FA for publishing packages:
+
+1. Log in to [npmjs.com](https://www.npmjs.com/)
+2. Go to your account settings
+3. Navigate to "Two-Factor Authentication"
+4. Enable 2FA (choose "Authorization and Publishing" or "Authorization Only")
+5. Save your backup codes in a secure location
+
+#### 3. Log In to NPM from Command Line
+
+```bash
+npm login
+```
+
+You'll be prompted for:
+- Username
+- Password
+- Email
+- One-time password (if 2FA is enabled)
+
+Verify you're logged in:
+
+```bash
+npm whoami
+```
+
+This should display your NPM username.
+
+#### 4. Verify Package Name Availability
+
+The package name `@chriscase/uiforge` is a scoped package under the `@chriscase` scope. Ensure:
+
+1. You have access to publish under this scope
+2. The package name is available (or you own it)
+
+Check package info:
+
+```bash
+npm view @chriscase/uiforge
+```
+
+If the package doesn't exist yet, this will return an error (which is expected for first publication).
+
+#### 5. Configure Package Access
+
+For scoped packages, you need to set public access in `package.json`:
+
+```json
+{
+  "publishConfig": {
+    "access": "public"
+  }
+}
+```
+
+This is already configured in UIForge.
+
+### Pre-Publishing Checklist
+
+Before publishing a new version, verify the following:
+
+#### 1. Code Quality
+
+```bash
+# Run linter
+npm run lint
+
+# Fix any auto-fixable issues
+npm run lint:fix
+
+# Check code formatting
+npm run format:check
+
+# Fix formatting issues
+npm run format
+```
+
+#### 2. Tests Pass
+
+```bash
+# Run all tests
+npm test -- --run
+
+# Generate coverage report (optional)
+npm run test:coverage
+```
+
+Ensure all tests pass with no failures.
+
+#### 3. Build Successfully
+
+```bash
+# Clean previous build
+rm -rf dist/
+
+# Build the library
+npm run build
+```
+
+Verify the `dist/` directory contains:
+- `uiforge.js` (ESM bundle)
+- `uiforge.cjs` (CommonJS bundle)
+- `uiforge.css` (Styles)
+- `index.d.ts` (TypeScript declarations)
+
+#### 4. Update Documentation
+
+1. **Update CHANGELOG.md**: Document all changes in this release
+   ```markdown
+   ## [0.2.0] - 2025-01-15
+   
+   ### Added
+   - New UIForgeModal component
+   - Support for custom themes
+   
+   ### Fixed
+   - Button hover state in dark mode
+   
+   ### Changed
+   - Updated peer dependencies
+   ```
+
+2. **Update README.md**: If you added new components or features, update the README with usage examples
+
+3. **Review package.json**: Ensure all fields are up-to-date
+   - `version`: Will be updated in next step
+   - `description`: Should be current
+   - `keywords`: Should reflect all major features
+   - `repository`, `bugs`, `homepage`: Should be correct
+
+### Version Numbering
+
+UIForge follows [Semantic Versioning](https://semver.org/) (SemVer):
+
+- **MAJOR** version (e.g., 1.0.0 → 2.0.0): Breaking changes
+- **MINOR** version (e.g., 1.0.0 → 1.1.0): New features, backward compatible
+- **PATCH** version (e.g., 1.0.0 → 1.0.1): Bug fixes, backward compatible
+
+#### Choosing the Right Version
+
+- **Patch Release** (0.1.0 → 0.1.1):
+  - Bug fixes
+  - Documentation updates
+  - Performance improvements (no API changes)
+  - Internal refactoring
+
+- **Minor Release** (0.1.0 → 0.2.0):
+  - New components
+  - New features/props on existing components
+  - New utility functions
+  - Deprecations (but not removals)
+
+- **Major Release** (0.1.0 → 1.0.0):
+  - Removing deprecated features
+  - Changing component APIs (props, behavior)
+  - Updating peer dependencies with breaking changes
+  - Significant architectural changes
+
+### Publishing Steps
+
+#### Step 1: Update Version
+
+Use npm's built-in version command:
+
+```bash
+# For a patch release (bug fixes)
+npm version patch
+
+# For a minor release (new features, backward compatible)
+npm version minor
+
+# For a major release (breaking changes)
+npm version major
+```
+
+This command will:
 1. Update the version in `package.json`
-2. Build the library: `npm run build`
-3. Publish: `npm publish`
+2. Create a git commit with message "vX.Y.Z"
+3. Create a git tag "vX.Y.Z"
+
+If you need more control, you can specify the exact version:
+
+```bash
+npm version 0.2.0
+```
+
+Or update manually:
+1. Edit `package.json` and change the `version` field
+2. Commit the change: `git commit -am "Release v0.2.0"`
+3. Create a tag: `git tag v0.2.0`
+
+#### Step 2: Final Build and Test
+
+```bash
+# Clean and rebuild
+rm -rf dist/
+npm run build
+
+# Run tests one more time
+npm test -- --run
+```
+
+#### Step 3: Test the Package Locally (Optional but Recommended)
+
+Before publishing to NPM, test the package in a local project:
+
+```bash
+# In UIForge directory, create a package tarball
+npm pack
+```
+
+This creates a file like `chriscase-uiforge-0.2.0.tgz`.
+
+Then in a test project:
+
+```bash
+# Install from the tarball
+npm install /path/to/chriscase-uiforge-0.2.0.tgz
+
+# Test that imports work
+# Test that styles load
+# Test that TypeScript types work
+```
+
+#### Step 4: Publish to NPM
+
+```bash
+# Dry run to see what would be published (optional)
+npm publish --dry-run
+
+# Actually publish
+npm publish
+```
+
+If you have 2FA enabled (recommended), you'll be prompted for your one-time password.
+
+The `prepublishOnly` script in `package.json` will automatically run `npm run build` before publishing, ensuring the latest build is included.
+
+#### Step 5: Push Tags to GitHub
+
+```bash
+# Push the version commit
+git push origin main
+
+# Push the version tag
+git push origin --tags
+
+# Or push both at once
+git push origin main --tags
+```
+
+#### Step 6: Create GitHub Release
+
+1. Go to [github.com/chriscase/UIForge/releases](https://github.com/chriscase/UIForge/releases)
+2. Click "Draft a new release"
+3. Choose the tag you just created (e.g., v0.2.0)
+4. Set the release title (e.g., "v0.2.0")
+5. Copy the relevant section from CHANGELOG.md into the description
+6. Click "Publish release"
+
+Alternatively, use the GitHub CLI:
+
+```bash
+gh release create v0.2.0 --title "v0.2.0" --notes "$(cat CHANGELOG.md | sed -n '/## \[0.2.0\]/,/## \[/p' | sed '$ d')"
+```
+
+### Post-Publishing Verification
+
+After publishing, verify everything worked correctly:
+
+#### 1. Check NPM Package Page
+
+Visit [npmjs.com/package/@chriscase/uiforge](https://www.npmjs.com/package/@chriscase/uiforge)
+
+Verify:
+- Version number is correct
+- README displays properly
+- Package size is reasonable
+- All files are included
+
+#### 2. Test Installation in a Fresh Project
+
+```bash
+# Create a test project
+npx create-vite@latest test-uiforge --template react-ts
+cd test-uiforge
+
+# Install UIForge
+npm install @chriscase/uiforge
+
+# Add a quick test
+# Edit src/App.tsx to import and use a component
+npm run dev
+```
+
+#### 3. Check TypeScript Types
+
+In your test project:
+
+```tsx
+import { Button, ButtonProps } from '@chriscase/uiforge'
+
+// TypeScript should provide autocomplete and type checking
+const props: ButtonProps = {
+  variant: 'primary',
+  children: 'Test'
+}
+```
+
+#### 4. Verify on unpkg.com
+
+Your package should be available on unpkg CDN:
+
+- Main file: `https://unpkg.com/@chriscase/uiforge@latest/dist/uiforge.js`
+- CSS: `https://unpkg.com/@chriscase/uiforge@latest/dist/uiforge.css`
+- Types: `https://unpkg.com/@chriscase/uiforge@latest/dist/index.d.ts`
+
+#### 5. Update Documentation Sites
+
+If you have example projects or documentation sites:
+
+1. Update their `package.json` to use the new version
+2. Test that everything still works
+3. Deploy updated documentation
+
+### Troubleshooting
+
+#### Issue: "You do not have permission to publish"
+
+**Solution:**
+- Verify you're logged in: `npm whoami`
+- Check you have access to the `@chriscase` scope
+- For scoped packages, ensure `publishConfig.access` is set to `"public"` in package.json
+
+#### Issue: "Version X.Y.Z already exists"
+
+**Solution:**
+- You cannot republish the same version
+- Increment the version number: `npm version patch`
+- Or if you made a mistake, unpublish (only works within 72 hours): `npm unpublish @chriscase/uiforge@X.Y.Z`
+
+#### Issue: "Package size exceeds recommended limit"
+
+**Solution:**
+- Check what's being included: `npm publish --dry-run`
+- Ensure `.npmignore` excludes unnecessary files
+- Verify `files` field in `package.json` only includes `dist/`
+- Check for large files in `dist/` (optimize if needed)
+
+#### Issue: "prepublishOnly script failed"
+
+**Solution:**
+- Run `npm run build` manually to see the error
+- Fix any build errors
+- Ensure all dependencies are installed: `npm install`
+
+### Rolling Back a Release
+
+If you need to unpublish a version (use with caution):
+
+```bash
+# Unpublish a specific version (only within 72 hours)
+npm unpublish @chriscase/uiforge@X.Y.Z
+
+# To deprecate a version instead (preferred)
+npm deprecate @chriscase/uiforge@X.Y.Z "This version has critical bugs, please upgrade"
+```
+
+**Note:** Unpublishing is discouraged as it can break projects depending on that version. Prefer publishing a patch version with fixes instead.
+
+### Automation (Advanced)
+
+For automated publishing, consider setting up:
+
+#### GitHub Actions for Publishing
+
+Create `.github/workflows/publish.yml`:
+
+```yaml
+name: Publish to NPM
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
+      - run: npm test -- --run
+      - run: npm run build
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+```
+
+To use this:
+1. Create an NPM access token (with Automation type)
+2. Add it to GitHub Secrets as `NPM_TOKEN`
+3. Create a GitHub release to trigger publishing
+
+### Best Practices
+
+1. **Always test before publishing** - Run tests and build locally
+2. **Use semantic versioning** - Follow SemVer strictly
+3. **Keep CHANGELOG.md updated** - Document all changes
+4. **Test in real projects** - Use `npm pack` and test locally first
+5. **Announce releases** - Post about significant releases on social media, blogs, etc.
+6. **Monitor issues** - Watch for bug reports after publishing
+7. **Version carefully** - Once published, versions are permanent
+8. **Use GitHub Releases** - Keep GitHub releases in sync with NPM versions
+9. **Document breaking changes** - Make migration guides for major versions
+10. **Keep dependencies updated** - Regularly update peer dependencies
+
+### Publishing Schedule
+
+Consider establishing a regular release schedule:
+
+- **Patch releases**: As needed for critical bugs (within days)
+- **Minor releases**: Monthly or quarterly for new features
+- **Major releases**: Annually or when significant breaking changes accumulate
+
+This helps users anticipate updates and plan migrations.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines.
+
+Quick start:
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-## Development with GitHub Tools
-
-This repository is optimized for development using:
-
-- **GitHub Codespaces** - One-click development environment
-- **GitHub Copilot** - AI-powered code completion
-- **Copilot Cloud Agents** - Automated code assistance
-
-Simply open this repository in GitHub Codespaces to get started immediately!
-
-### Codespaces / Dev Container details
-
-This repository contains a `.devcontainer` folder that configures a dev container with Node.js and TypeScript tooling preinstalled.
-
-- When you open the repo in GitHub Codespaces (or via `Remote - Containers` / devcontainer in VS Code), the container will automatically install dependencies on first creation and each subsequent start/attach using `.devcontainer/install-deps.sh`.
-- The installer script uses the lockfile to choose the appropriate package manager: it prefers `pnpm` (`pnpm-lock.yaml`) then `yarn` (`yarn.lock`) then `npm` (`package-lock.json`), and defaults to `npm` if no lockfile is present. The script will try to use `pnpm`/`yarn` when the lockfile exists and will fall back to `npm` when those tools are unavailable in the container.
-- The installer uses `npm ci`, `pnpm install --frozen-lockfile` or `yarn install` (appropriate for the package manager), and caches a hash of the lockfile to skip re-running an install when dependencies haven't changed.
-- To force a fresh install, remove `node_modules` and `.devcontainer/.deps_hash` and then restart the Dev Container/Codespace.
-
-You can also manually verify installation from within the Codespace/dev container:
-
-```bash
-# Explicitly invoke the scripts using bash to avoid permission errors if the files are not executable
-bash .devcontainer/verify-deps.sh
-```
-
-### Automated verification on PRs
-
-This repository includes a GitHub workflow (`.github/workflows/verify-devcontainer-deps.yml`) that runs on pull requests. The workflow will:
-
-- Checkout the code and set up Node.js
-- Run the repository's devcontainer install script (`.devcontainer/install-deps.sh`) to make sure dependencies install correctly
-- Verify dependencies are installed (`.devcontainer/verify-deps.sh`)
-- Run the test suite (`npm test`) to ensure the project builds and tests pass after installation
-
-### Codespaces Prebuilds
-
-This repository enables Codespaces prebuilds (see `.github/codespaces.yml`) and the prebuild will run `.devcontainer/prebuild.sh` to prepare the environment before a developer opens the Codespace. The prebuild script installs dependencies, verifies they are present, and optionally runs a quick test.
-
-Note: The prebuild script also ensures devcontainer scripts are executable (uses `chmod +x .devcontainer/*.sh`) so you don't need to manually change permissions.
-
-### Making the scripts executable in Git (optional)
-
-If you'd like the scripts to be executable in the repo (so they can run directly), there is a helper script to set the executable bit and commit the change for you: `scripts/set-exec-devcontainer-scripts.sh`.
-
-You can run it directly:
-
-```bash
-# This will set the exec bits and commit the change if necessary
-bash scripts/set-exec-devcontainer-scripts.sh
-```
-
-Or via npm:
-
-```bash
-npm run devcontainer:set-exec
-```
-
-This is optional — the devcontainer lifecycle commands and prebuild script should run the scripts using `bash` even if they are not executable.
-
-This helps catch environment and installation issues early during PRs.
 
 ## License
 
