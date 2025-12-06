@@ -464,6 +464,14 @@ export declare interface UIForgeActivityStreamProps {
      * Set to values like 0.8 for compact, 1 for default, 1.2 for spacious.
      */
     scale?: number;
+    /**
+     * Custom icon renderer
+     */
+    renderIcon?: (event: ActivityEvent) => default_2.ReactNode;
+    /**
+     * Custom event renderer
+     */
+    renderEvent?: (event: ActivityEvent) => default_2.ReactNode;
 }
 
 /**

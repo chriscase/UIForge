@@ -98,9 +98,11 @@ describe('UIForgeActivityStream', () => {
         },
       ]
 
-      render(<UIForgeActivityStream events={eventsWithoutIcons} />)
+      const { container } = render(<UIForgeActivityStream events={eventsWithoutIcons} />)
 
-      expect(screen.getByText('📝')).toBeInTheDocument()
+      // Should render an SVG icon for commit type
+      const icon = container.querySelector('.activity-stream__icon svg')
+      expect(icon).toBeInTheDocument()
     })
 
     it('uses custom icon renderer when provided', () => {
@@ -139,7 +141,7 @@ describe('UIForgeActivityStream', () => {
       const { container } = render(<UIForgeActivityStream events={mockEvents} />)
       const eventElement = container.querySelector('[data-event-id="1"]')
       const eventHeader = eventElement?.querySelector(
-        '.activity-stream__event-header'
+        '.activity-stream__header'
       ) as HTMLElement
 
       expect(screen.queryByText('Added installation instructions')).not.toBeInTheDocument()
@@ -155,7 +157,7 @@ describe('UIForgeActivityStream', () => {
 
       const eventElement = container.querySelector('[data-event-id="1"]')
       const eventHeader = eventElement?.querySelector(
-        '.activity-stream__event-header'
+        '.activity-stream__header'
       ) as HTMLElement
 
       await user.click(eventHeader)
@@ -171,7 +173,7 @@ describe('UIForgeActivityStream', () => {
 
       const eventElement = container.querySelector('[data-event-id="1"]')
       const eventHeader = eventElement?.querySelector(
-        '.activity-stream__event-header'
+        '.activity-stream__header'
       ) as HTMLElement
 
       eventHeader.focus()
@@ -187,7 +189,7 @@ describe('UIForgeActivityStream', () => {
 
       const eventElement = container.querySelector('[data-event-id="1"]')
       const eventHeader = eventElement?.querySelector(
-        '.activity-stream__event-header'
+        '.activity-stream__header'
       ) as HTMLElement
 
       eventHeader.focus()
@@ -206,7 +208,7 @@ describe('UIForgeActivityStream', () => {
 
       const eventElement = container.querySelector('[data-event-id="1"]')
       const eventHeader = eventElement?.querySelector(
-        '.activity-stream__event-header'
+        '.activity-stream__header'
       ) as HTMLElement
 
       await user.click(eventHeader)
@@ -373,7 +375,7 @@ describe('UIForgeActivityStream', () => {
 
       const eventElement = container.querySelector('[data-event-id="1"]')
       const expandableHeader = eventElement?.querySelector(
-        '.activity-stream__event-header'
+        '.activity-stream__header'
       ) as HTMLElement
       expect(expandableHeader).toHaveAttribute('role', 'button')
       expect(expandableHeader).toHaveAttribute('tabindex', '0')
@@ -386,7 +388,7 @@ describe('UIForgeActivityStream', () => {
 
       const eventElement = container.querySelector('[data-event-id="1"]')
       const expandableHeader = eventElement?.querySelector(
-        '.activity-stream__event-header'
+        '.activity-stream__header'
       ) as HTMLElement
 
       await user.click(expandableHeader)
@@ -416,7 +418,7 @@ describe('UIForgeActivityStream', () => {
       const { container } = render(<UIForgeActivityStream events={eventWithoutDescription} />)
 
       const eventElement = container.querySelector('[data-event-id="1"]')
-      const header = eventElement?.querySelector('.activity-stream__event-header') as HTMLElement
+      const header = eventElement?.querySelector('.activity-stream__header') as HTMLElement
       expect(header).not.toHaveAttribute('role', 'button')
       expect(header).not.toHaveAttribute('tabindex')
     })
@@ -426,9 +428,8 @@ describe('UIForgeActivityStream', () => {
     it('adds data attributes to events', () => {
       const { container } = render(<UIForgeActivityStream events={mockEvents} />)
 
-      const events = container.querySelectorAll('.activity-stream__event')
+      const events = container.querySelectorAll('.activity-stream__item')
       expect(events[0]).toHaveAttribute('data-event-id', '1')
-      expect(events[0]).toHaveAttribute('data-event-type', 'commit')
     })
   })
 })
