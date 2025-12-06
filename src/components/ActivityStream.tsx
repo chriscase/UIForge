@@ -552,7 +552,7 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
   if (scale && scale > 1) classes = `${classes} ${baseClass}--spacious`
 
   const containerStyle = maxHeight ? { maxHeight } : undefined
-  const scaleStyle = { ['--activity-stream-scale' as any]: scale }
+  const scaleStyle = { '--activity-stream-scale': scale } as React.CSSProperties
 
   return (
     <div ref={containerRef} className={classes} data-theme={theme}>
