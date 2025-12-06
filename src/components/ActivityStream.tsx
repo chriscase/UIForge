@@ -153,6 +153,14 @@ export interface UIForgeActivityStreamProps {
    * Set to values like 0.8 for compact, 1 for default, 1.2 for spacious.
    */
   scale?: number
+  /**
+   * Custom icon renderer
+   */
+  renderIcon?: (event: ActivityEvent) => React.ReactNode
+  /**
+   * Custom event renderer
+   */
+  renderEvent?: (event: ActivityEvent) => React.ReactNode
 }
 
 /**
@@ -374,10 +382,10 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
   showDateSeparators = true,
   showTimeline = true,
   scale = 1,
+  renderIcon,
+  renderEvent,
 }) => {
   const [expandedEvents, setExpandedEvents] = useState<Set<string>>(() => {
-    if (!initiallyExpandedAll) return new Set()
-
     const allIds = new Set<string>()
     const items = enableGrouping
       ? showDateSeparators
@@ -396,9 +404,22 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
     items.forEach((item) => {
       if ('events' in item && item.type !== 'date-separator') {
         const groupedItem = item as GroupedEvent
-        allIds.add(groupedItem.id)
+        // Add to expanded if initiallyExpandedAll or if any event has initiallyExpanded
+        if (
+          initiallyExpandedAll ||
+          groupedItem.events.some((e) => e.initiallyExpanded)
+        ) {
+          allIds.add(groupedItem.id)
+        }
         if (groupedItem.children) {
-          groupedItem.children.forEach((child: GroupedEvent) => allIds.add(child.id))
+          groupedItem.children.forEach((child: GroupedEvent) => {
+            if (
+              initiallyExpandedAll ||
+              child.events.some((e) => e.initiallyExpanded)
+            ) {
+              allIds.add(child.id)
+            }
+          })
         }
       }
     })
@@ -450,7 +471,7 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
   }, [handleScroll])
 
   const toggleExpand = useCallback(
-    (eventId: string) => {
+    (eventId: string, originalId: string | number) => {
       setExpandedEvents((prev) => {
         const newSet = new Set(prev)
         const isExpanded = newSet.has(eventId)
@@ -459,7 +480,7 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
         } else {
           newSet.add(eventId)
         }
-        onToggleExpand?.(eventId, !isExpanded)
+        onToggleExpand?.(originalId, !isExpanded)
         return newSet
       })
     },
@@ -470,31 +491,53 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
     const isExpanded = expandedEvents.has(item.id)
     const hasChildren = item.children && item.children.length > 0
     const hasMultipleEvents = item.count > 1
+    const hasDescription = item.count === 1 && item.events[0]?.description
+    const isExpandable = hasMultipleEvents || hasChildren || hasDescription
+    const originalId = item.count === 1 && item.events.length === 1 ? item.events[0].id : item.id
+
+    // If renderEvent is provided and this is a single event, use custom renderer
+    if (renderEvent && item.count === 1 && item.events.length === 1) {
+      return (
+        <div
+          key={item.id}
+          className={`activity-stream__item ${isChild ? 'activity-stream__item--child' : ''}`}
+          data-event-id={item.id}
+        >
+          {showTimeline && !isChild && <div className="activity-stream__timeline-marker" />}
+          {renderEvent(item.events[0])}
+        </div>
+      )
+    }
 
     return (
       <div
         key={item.id}
         className={`activity-stream__item ${isChild ? 'activity-stream__item--child' : ''}`}
+        data-event-id={item.id}
       >
         {showTimeline && !isChild && <div className="activity-stream__timeline-marker" />}
-        <div className="activity-stream__icon">{item.icon || getDefaultIcon(item.type)}</div>
+        <div className="activity-stream__icon">
+          {renderIcon && item.events.length === 1
+            ? renderIcon(item.events[0])
+            : item.icon || getDefaultIcon(item.type)}
+        </div>
         <div className="activity-stream__content">
           <div
-            className={`activity-stream__header ${hasMultipleEvents || hasChildren ? 'activity-stream__header--clickable' : ''}`}
-            onClick={() => (hasMultipleEvents || hasChildren) && toggleExpand(item.id)}
+            className={`activity-stream__header ${isExpandable ? 'activity-stream__header--clickable' : ''}`}
+            onClick={() => isExpandable && toggleExpand(item.id, originalId)}
             onKeyDown={(e) => {
-              if ((hasMultipleEvents || hasChildren) && (e.key === 'Enter' || e.key === ' ')) {
+              if (isExpandable && (e.key === 'Enter' || e.key === ' ')) {
                 e.preventDefault()
-                toggleExpand(item.id)
+                toggleExpand(item.id, originalId)
               }
             }}
-            role={hasMultipleEvents || hasChildren ? 'button' : undefined}
-            tabIndex={hasMultipleEvents || hasChildren ? 0 : undefined}
-            aria-expanded={hasMultipleEvents || hasChildren ? isExpanded : undefined}
+            role={isExpandable ? 'button' : undefined}
+            tabIndex={isExpandable ? 0 : undefined}
+            aria-expanded={isExpandable ? isExpanded : undefined}
           >
             <div className="activity-stream__title">{item.title}</div>
             <div className="activity-stream__timestamp">{formatTimestamp(item.timestamp)}</div>
-            {(hasMultipleEvents || hasChildren) && (
+            {isExpandable && (
               <div className="activity-stream__toggle">
                 {isExpanded ? <UIIcons.fold size={16} /> : <UIIcons.unfold size={16} />}
               </div>
@@ -509,14 +552,20 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
 
           {isExpanded && !hasChildren && item.events.length > 1 && (
             <div className="activity-stream__events-list">
-              {item.events.map((event) => (
-                <div key={event.id} className="activity-stream__event-item">
-                  <div className="activity-stream__event-title">{event.title}</div>
-                  {event.description && (
-                    <div className="activity-stream__event-description">{event.description}</div>
-                  )}
-                </div>
-              ))}
+              {item.events.map((event) =>
+                renderEvent ? (
+                  <div key={event.id} className="activity-stream__event-item">
+                    {renderEvent(event)}
+                  </div>
+                ) : (
+                  <div key={event.id} className="activity-stream__event-item">
+                    <div className="activity-stream__event-title">{event.title}</div>
+                    {event.description && (
+                      <div className="activity-stream__event-description">{event.description}</div>
+                    )}
+                  </div>
+                )
+              )}
             </div>
           )}
 
@@ -552,7 +601,7 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
   if (scale && scale > 1) classes = `${classes} ${baseClass}--spacious`
 
   const containerStyle = maxHeight ? { maxHeight } : undefined
-  const scaleStyle = { ['--activity-stream-scale' as any]: scale }
+  const scaleStyle = { '--activity-stream-scale': scale } as React.CSSProperties
 
   return (
     <div ref={containerRef} className={classes} data-theme={theme}>

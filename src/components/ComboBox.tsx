@@ -264,7 +264,8 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
         if (controllerRef.current) controllerRef.current.abort()
         controllerRef.current = new AbortController()
         const signal = controllerRef.current.signal
-        setAsyncLoading(true)(async () => {
+        setAsyncLoading(true)
+        ;(async () => {
           try {
             const now = Date.now()
             const cacheKey = searchText
@@ -278,7 +279,7 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
             } else {
               results = await (onSearchRef.current
                 ? onSearchRef.current(searchText, signal)
-                : onSearch(searchText, signal))
+                : onSearch?.(searchText, signal) ?? [])
               if (!signal.aborted && enableCacheRef.current) {
                 cacheRef.current.set(cacheKey, { data: results, timestamp: now })
               }

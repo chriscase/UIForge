@@ -18,6 +18,8 @@ A rich user interface library for ReactJS developers written by a seasoned user 
 
 ## Installation
 
+### From NPM (Coming Soon)
+
 ```bash
 npm install @chriscase/uiforge
 ```
@@ -34,10 +36,75 @@ or with pnpm:
 pnpm add @chriscase/uiforge
 ```
 
+### Direct from GitHub (Recommended for Development)
+
+You can install UIForge directly from the GitHub repository. This is perfect for development workflows where you want the latest changes or are working across multiple related projects.
+
+#### Install a specific branch, tag, or commit:
+
+```bash
+# Install from main branch
+npm install chriscase/UIForge
+
+# Install from a specific branch
+npm install chriscase/UIForge#feature-branch
+
+# Install from a specific tag
+npm install chriscase/UIForge#v0.1.0
+
+# Install from a specific commit
+npm install chriscase/UIForge#commit-hash
+```
+
+#### Using in package.json:
+
+Add this to your `package.json` dependencies:
+
+```json
+{
+  "dependencies": {
+    "@chriscase/uiforge": "github:chriscase/UIForge#main"
+  }
+}
+```
+
+Then run:
+
+```bash
+npm install
+```
+
+#### Important Notes for GitHub Installation:
+
+1. **Build artifacts are included**: The `dist` folder with pre-built files is included in the repository, so you don't need to build the library after installation.
+
+2. **Automatic updates**: To get the latest changes from the repository:
+   ```bash
+   npm update @chriscase/uiforge
+   ```
+
+3. **Working with local changes**: If you're developing UIForge locally and want to test it in another project:
+   ```bash
+   # In your UIForge directory
+   npm run build
+   npm link
+   
+   # In your other project
+   npm link @chriscase/uiforge
+   ```
+
+4. **Private repositories**: If UIForge becomes private, you'll need to:
+   - Set up SSH keys with GitHub
+   - Use SSH URL format: `"@chriscase/uiforge": "git+ssh://git@github.com:chriscase/UIForge.git#main"`
+   - Or use a personal access token: `"@chriscase/uiforge": "git+https://<token>@github.com/chriscase/UIForge.git#main"`
+
 ## Usage
+
+### Basic Example
 
 ```tsx
 import { Button } from '@chriscase/uiforge'
+import '@chriscase/uiforge/styles.css' // Import styles
 
 function App() {
   return (
@@ -46,6 +113,120 @@ function App() {
     </Button>
   )
 }
+```
+
+### Complete Setup Example
+
+Here's a complete example of setting up UIForge in a React + TypeScript + Vite project:
+
+**1. Install UIForge:**
+
+```bash
+npm install github:chriscase/UIForge#main react react-dom
+```
+
+**2. Import components and styles in your app:**
+
+```tsx
+// src/App.tsx
+import { useState } from 'react'
+import { 
+  Button, 
+  UIForgeGrid, 
+  UIForgeComboBox,
+  UIForgeActivityStream 
+} from '@chriscase/uiforge'
+import '@chriscase/uiforge/styles.css'
+
+function App() {
+  const [selectedValue, setSelectedValue] = useState(null)
+
+  const options = [
+    { value: 1, label: 'Option 1', icon: '🏠' },
+    { value: 2, label: 'Option 2', icon: '⭐' },
+    { value: 3, label: 'Option 3', icon: '⚙️' },
+  ]
+
+  return (
+    <div className="app">
+      <h1>UIForge Demo</h1>
+      
+      <Button variant="primary" onClick={() => alert('Clicked!')}>
+        Click Me
+      </Button>
+
+      <UIForgeComboBox
+        options={options}
+        value={selectedValue}
+        onChange={(val) => setSelectedValue(val)}
+        placeholder="Select an option..."
+        clearable
+      />
+    </div>
+  )
+}
+
+export default App
+```
+
+**3. Ensure peer dependencies are satisfied:**
+
+UIForge requires React 18+ or React 19+ as peer dependencies:
+
+```json
+{
+  "dependencies": {
+    "@chriscase/uiforge": "github:chriscase/UIForge#main",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  }
+}
+```
+
+### TypeScript Support
+
+UIForge is written in TypeScript and includes full type definitions. TypeScript will automatically pick up the types when you import components:
+
+```tsx
+import { Button, ButtonProps, UIForgeComboBox, ComboBoxOption } from '@chriscase/uiforge'
+
+// Type inference works automatically
+const options: ComboBoxOption[] = [
+  { value: 1, label: 'Item 1' },
+  { value: 2, label: 'Item 2' },
+]
+
+// Component props are fully typed
+const MyButton: React.FC<ButtonProps> = (props) => {
+  return <Button {...props} />
+}
+```
+
+### Importing Styles
+
+UIForge components require CSS to be imported. You have several options:
+
+**Option 1: Import in your main entry file (recommended)**
+
+```tsx
+// src/main.tsx or src/index.tsx
+import '@chriscase/uiforge/styles.css'
+import App from './App'
+```
+
+**Option 2: Import in your component file**
+
+```tsx
+// src/App.tsx
+import '@chriscase/uiforge/styles.css'
+import { Button } from '@chriscase/uiforge'
+```
+
+**Option 3: Import in your global CSS file**
+
+```css
+/* src/index.css */
+@import '@chriscase/uiforge/styles.css';
 ```
 
 ## Components
