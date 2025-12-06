@@ -721,6 +721,112 @@ export declare interface UIForgeGridProps<T = Record<string, unknown>> {
     emptyMessage?: string;
 }
 
+/**
+ * UIForgeVideo - A video component with overlay that supports YouTube and Vimeo embeds
+ *
+ * Features:
+ * - Displays video title and optional description
+ * - Supports YouTube and Vimeo video embeds
+ * - Shows thumbnail with overlay icon before playing
+ * - Emits event when video is clicked to play
+ * - Lazy loads the video player on interaction
+ *
+ * @example
+ * ```tsx
+ * <UIForgeVideo
+ *   title="Introduction to React"
+ *   description="Learn React basics in this tutorial"
+ *   youtubeId="dQw4w9WgXcQ"
+ *   onPlay={(videoId, provider) => {
+ *     console.log(`Playing ${provider} video: ${videoId}`)
+ *   }}
+ * />
+ * ```
+ */
+export declare const UIForgeVideo: default_2.FC<UIForgeVideoProps>;
+
+/**
+ * UIForgeVideoPreview - A compact video preview component with title and icon
+ *
+ * Features:
+ * - Displays video title
+ * - Shows small video icon
+ * - Clickable for navigation or actions
+ *
+ * @example
+ * ```tsx
+ * <UIForgeVideoPreview
+ *   title="Introduction to React"
+ *   onClick={() => navigate('/video/123')}
+ * />
+ * ```
+ */
+export declare const UIForgeVideoPreview: default_2.FC<UIForgeVideoPreviewProps>;
+
+/**
+ * Props for the UIForgeVideoPreview component
+ */
+export declare interface UIForgeVideoPreviewProps {
+    /**
+     * Video title
+     */
+    title: string;
+    /**
+     * Optional icon to display next to the title
+     */
+    icon?: default_2.ReactNode;
+    /**
+     * Custom className for styling
+     */
+    className?: string;
+    /**
+     * Click handler
+     */
+    onClick?: () => void;
+}
+
+/**
+ * Props for the UIForgeVideo component
+ */
+export declare interface UIForgeVideoProps {
+    /**
+     * Video title
+     */
+    title: string;
+    /**
+     * Video description
+     */
+    description?: string;
+    /**
+     * YouTube video ID (e.g., "dQw4w9WgXcQ" from https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+     */
+    youtubeId?: string;
+    /**
+     * Vimeo video ID (e.g., "123456789" from https://vimeo.com/123456789)
+     */
+    vimeoId?: string;
+    /**
+     * Custom thumbnail URL (optional, will use provider's default if not specified)
+     */
+    thumbnailUrl?: string;
+    /**
+     * Callback fired when the video overlay is clicked and playback begins
+     */
+    onPlay?: (videoId: string, provider: 'youtube' | 'vimeo') => void;
+    /**
+     * Custom className for styling
+     */
+    className?: string;
+    /**
+     * Custom overlay icon (defaults to play icon)
+     */
+    overlayIcon?: default_2.ReactNode;
+    /**
+     * Aspect ratio of the video player (default: "16/9")
+     */
+    aspectRatio?: string;
+}
+
 export declare const UIIcons: {
     unfold: default_2.FC<IconProps>;
     fold: default_2.FC<IconProps>;

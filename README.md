@@ -2,7 +2,6 @@
 
 A rich user interface library for ReactJS developers written by a seasoned user interface developer who loves working with ReactJS.
 
-[![npm version](https://img.shields.io/npm/v/@chriscase/uiforge.svg)](https://www.npmjs.com/package/@chriscase/uiforge)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2F19-61dafb)](https://reactjs.org/)
@@ -1525,6 +1524,16 @@ If you have example projects or documentation sites:
 1. Update their `package.json` to use the new version
 2. Test that everything still works
 3. Deploy updated documentation
+
+#### 6. Add NPM Badge (After First Publication)
+
+After the first successful publication to NPM, add the NPM version badge to the README:
+
+```markdown
+[![npm version](https://img.shields.io/npm/v/@chriscase/uiforge.svg)](https://www.npmjs.com/package/@chriscase/uiforge)
+```
+
+Add this badge at the top of the README alongside the other badges (License, TypeScript, React).
 
 ### Troubleshooting
 
