@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **BREAKING**: Package name changed from `@chriscase/uiforge` to `@appforgeapps/uiforge` to enable continued npm publishing
+  - All imports must be updated from `@chriscase/uiforge` to `@appforgeapps/uiforge`
+  - Package install command changed to `npm install @appforgeapps/uiforge`
+  - This change was necessary due to lost access to the @chriscase npm scope
+
 ### Added
 - Initial project setup with Vite, React, and TypeScript
 - Button component with variants (primary, secondary, outline)

@@ -6,6 +6,8 @@ A rich user interface library for ReactJS developers written by a seasoned user 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2F19-61dafb)](https://reactjs.org/)
 
+> **📦 Package Name Change**: The package has been renamed from `@chriscase/uiforge` to `@appforgeapps/uiforge`. If you're upgrading from an older version, please see the [Migration Guide](./MIGRATION_GUIDE.md).
+
 > **⚠️ Early Stage Project**: UIForge is a very new project under active development. The API is subject to rapid changes and breaking changes may occur frequently as we refine the components and their interfaces. We recommend pinning to specific versions in production and reviewing the CHANGELOG before upgrading.
 
 ## Features
@@ -25,19 +27,19 @@ A rich user interface library for ReactJS developers written by a seasoned user 
 Install UIForge from NPM:
 
 ```bash
-npm install @chriscase/uiforge
+npm install @appforgeapps/uiforge
 ```
 
 Or with yarn:
 
 ```bash
-yarn add @chriscase/uiforge
+yarn add @appforgeapps/uiforge
 ```
 
 Or with pnpm:
 
 ```bash
-pnpm add @chriscase/uiforge
+pnpm add @appforgeapps/uiforge
 ```
 
 ### Using UIForge in Your Project
@@ -50,7 +52,7 @@ This is the most common approach - import the styles once in your application's 
 
 ```tsx
 // src/main.tsx or src/index.tsx
-import '@chriscase/uiforge/styles.css'
+import '@appforgeapps/uiforge/styles.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
@@ -66,7 +68,7 @@ Then import and use components in your app:
 
 ```tsx
 // src/App.tsx
-import { Button, UIForgeGrid, UIForgeComboBox } from '@chriscase/uiforge'
+import { Button, UIForgeGrid, UIForgeComboBox } from '@appforgeapps/uiforge'
 
 function App() {
   return (
@@ -88,8 +90,8 @@ If you prefer, you can import the styles directly in the component file where yo
 
 ```tsx
 // src/components/MyComponent.tsx
-import '@chriscase/uiforge/styles.css'
-import { Button } from '@chriscase/uiforge'
+import '@appforgeapps/uiforge/styles.css'
+import { Button } from '@appforgeapps/uiforge'
 
 export function MyComponent() {
   return <Button variant="primary">Click Me</Button>
@@ -102,7 +104,7 @@ You can also import UIForge styles in your main CSS file:
 
 ```css
 /* src/index.css or src/App.css */
-@import '@chriscase/uiforge/styles.css';
+@import '@appforgeapps/uiforge/styles.css';
 
 /* Your other styles */
 body {
@@ -134,8 +136,8 @@ UIForge works with all modern bundlers. Here are specific notes for common setup
 No additional configuration needed. Just import and use:
 
 ```tsx
-import { Button } from '@chriscase/uiforge'
-import '@chriscase/uiforge/styles.css'
+import { Button } from '@appforgeapps/uiforge'
+import '@appforgeapps/uiforge/styles.css'
 ```
 
 #### Next.js (App Router)
@@ -144,7 +146,7 @@ For Next.js 13+ with the App Router, import styles in your root layout:
 
 ```tsx
 // app/layout.tsx
-import '@chriscase/uiforge/styles.css'
+import '@appforgeapps/uiforge/styles.css'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -168,7 +170,7 @@ Then use components in your pages:
 
 ```tsx
 // app/page.tsx
-import { Button } from '@chriscase/uiforge'
+import { Button } from '@appforgeapps/uiforge'
 
 export default function Home() {
   return <Button variant="primary">Click Me</Button>
@@ -181,7 +183,7 @@ For Next.js with the Pages Router, import styles in `_app.tsx`:
 
 ```tsx
 // pages/_app.tsx
-import '@chriscase/uiforge/styles.css'
+import '@appforgeapps/uiforge/styles.css'
 import type { AppProps } from 'next/app'
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -195,7 +197,7 @@ Import styles in your `index.tsx` or `App.tsx`:
 
 ```tsx
 // src/index.tsx
-import '@chriscase/uiforge/styles.css'
+import '@appforgeapps/uiforge/styles.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
@@ -237,19 +239,19 @@ To verify UIForge is properly installed, you can check:
 
 1. **Package is installed:**
    ```bash
-   npm list @chriscase/uiforge
+   npm list @appforgeapps/uiforge
    ```
 
 2. **Types are available** (TypeScript projects):
    ```tsx
-   import type { ButtonProps } from '@chriscase/uiforge'
+   import type { ButtonProps } from '@appforgeapps/uiforge'
    // If this imports without errors, types are working
    ```
 
 3. **Create a simple test component:**
    ```tsx
-   import { Button } from '@chriscase/uiforge'
-   import '@chriscase/uiforge/styles.css'
+   import { Button } from '@appforgeapps/uiforge'
+   import '@appforgeapps/uiforge/styles.css'
 
    export function Test() {
      return <Button variant="primary">Test</Button>
@@ -258,13 +260,13 @@ To verify UIForge is properly installed, you can check:
 
 ### Troubleshooting
 
-**Issue: "Cannot find module '@chriscase/uiforge'"**
+**Issue: "Cannot find module '@appforgeapps/uiforge'"**
 - Run `npm install` to ensure dependencies are installed
-- Check that `@chriscase/uiforge` is in your `package.json` dependencies
+- Check that `@appforgeapps/uiforge` is in your `package.json` dependencies
 - Try deleting `node_modules` and `package-lock.json`, then run `npm install` again
 
 **Issue: Styles not loading**
-- Ensure you've imported the CSS: `import '@chriscase/uiforge/styles.css'`
+- Ensure you've imported the CSS: `import '@appforgeapps/uiforge/styles.css'`
 - Check that your bundler supports CSS imports
 - For Webpack, ensure css-loader and style-loader are configured
 
@@ -293,7 +295,7 @@ npm install github:chriscase/UIForge#v0.1.0
 After installing from GitHub, you'll need to build the project:
 
 ```bash
-cd node_modules/@chriscase/uiforge
+cd node_modules/@appforgeapps/uiforge
 npm install
 npm run build
 ```
@@ -303,7 +305,7 @@ Or use a `postinstall` script in your project to automate this:
 ```json
 {
   "scripts": {
-    "postinstall": "cd node_modules/@chriscase/uiforge && npm install && npm run build"
+    "postinstall": "cd node_modules/@appforgeapps/uiforge && npm install && npm run build"
   }
 }
 ```
@@ -318,8 +320,8 @@ Or use a `postinstall` script in your project to automate this:
 ### Basic Example
 
 ```tsx
-import { Button } from '@chriscase/uiforge'
-import '@chriscase/uiforge/styles.css' // Import styles
+import { Button } from '@appforgeapps/uiforge'
+import '@appforgeapps/uiforge/styles.css' // Import styles
 
 function App() {
   return (
@@ -337,7 +339,7 @@ Here's a complete example of setting up UIForge in a React + TypeScript + Vite p
 **1. Install UIForge:**
 
 ```bash
-npm install @chriscase/uiforge react react-dom
+npm install @appforgeapps/uiforge react react-dom
 ```
 
 **2. Import components and styles in your app:**
@@ -350,8 +352,8 @@ import {
   UIForgeGrid, 
   UIForgeComboBox,
   UIForgeActivityStream 
-} from '@chriscase/uiforge'
-import '@chriscase/uiforge/styles.css'
+} from '@appforgeapps/uiforge'
+import '@appforgeapps/uiforge/styles.css'
 
 function App() {
   const [selectedValue, setSelectedValue] = useState(null)
@@ -391,7 +393,7 @@ UIForge requires React 18+ or React 19+ as peer dependencies:
 ```json
 {
   "dependencies": {
-    "@chriscase/uiforge": "^0.1.0",
+    "@appforgeapps/uiforge": "^0.1.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   }
@@ -403,7 +405,7 @@ UIForge requires React 18+ or React 19+ as peer dependencies:
 UIForge is written in TypeScript and includes full type definitions. TypeScript will automatically pick up the types when you import components:
 
 ```tsx
-import { Button, ButtonProps, UIForgeComboBox, ComboBoxOption } from '@chriscase/uiforge'
+import { Button, ButtonProps, UIForgeComboBox, ComboBoxOption } from '@appforgeapps/uiforge'
 
 // Type inference works automatically
 const options: ComboBoxOption[] = [
@@ -425,7 +427,7 @@ UIForge components require CSS to be imported. You have several options:
 
 ```tsx
 // src/main.tsx or src/index.tsx
-import '@chriscase/uiforge/styles.css'
+import '@appforgeapps/uiforge/styles.css'
 import App from './App'
 ```
 
@@ -433,15 +435,15 @@ import App from './App'
 
 ```tsx
 // src/App.tsx
-import '@chriscase/uiforge/styles.css'
-import { Button } from '@chriscase/uiforge'
+import '@appforgeapps/uiforge/styles.css'
+import { Button } from '@appforgeapps/uiforge'
 ```
 
 **Option 3: Import in your global CSS file**
 
 ```css
 /* src/index.css */
-@import '@chriscase/uiforge/styles.css';
+@import '@appforgeapps/uiforge/styles.css';
 ```
 
 ## Components
@@ -451,7 +453,7 @@ import { Button } from '@chriscase/uiforge'
 A customizable button component with multiple variants and sizes.
 
 ```tsx
-import { Button } from '@chriscase/uiforge'
+import { Button } from '@appforgeapps/uiforge'
 
 // Variants
 <Button variant="primary">Primary</Button>
@@ -487,7 +489,7 @@ import {
   blocksToHTML,
   blocksToMarkdown,
   ContentBlock,
-} from '@chriscase/uiforge'
+} from '@appforgeapps/uiforge'
 
 function MyEditor() {
   const [blocks, setBlocks] = useState<ContentBlock[]>([])
@@ -546,7 +548,7 @@ function MyEditor() {
 A feature-rich data grid component with selection, editing, search, pagination, and custom actions.
 
 ```tsx
-import { UIForgeGrid, GridColumn } from '@chriscase/uiforge'
+import { UIForgeGrid, GridColumn } from '@appforgeapps/uiforge'
 
 interface User {
   id: number
@@ -593,7 +595,7 @@ function MyGrid() {
 **Advanced Example:**
 
 ```tsx
-import { UIForgeGrid, GridColumn, GridActionButton } from '@chriscase/uiforge'
+import { UIForgeGrid, GridColumn, GridActionButton } from '@appforgeapps/uiforge'
 
 const columns: GridColumn<User>[] = [
   {
@@ -704,7 +706,7 @@ A rich, powerful select/combo box component for ReactJS supporting static lists,
 - **Accessibility** - ARIA attributes and screen reader support
 
 ```tsx
-import { UIForgeComboBox, ComboBoxOption } from '@chriscase/uiforge'
+import { UIForgeComboBox, ComboBoxOption } from '@appforgeapps/uiforge'
 
 // Static dropdown
 const options: ComboBoxOption[] = [
@@ -913,7 +915,7 @@ A GitHub-inspired activity stream component for displaying user activities, even
 - **Responsive Design** - Adapts to mobile and desktop viewports
 
 ```tsx
-import { UIForgeActivityStreamEnhanced, ActivityEvent } from '@chriscase/uiforge'
+import { UIForgeActivityStreamEnhanced, ActivityEvent } from '@appforgeapps/uiforge'
 
 const events: ActivityEvent[] = [
   {
@@ -1028,7 +1030,7 @@ Video components for embedding YouTube and Vimeo videos with interactive overlay
 - **Lightweight** - Perfect for video lists and catalogs
 
 ```tsx
-import { UIForgeVideo, UIForgeVideoPreview } from '@chriscase/uiforge'
+import { UIForgeVideo, UIForgeVideoPreview } from '@appforgeapps/uiforge'
 
 // YouTube video with event tracking
 <UIForgeVideo

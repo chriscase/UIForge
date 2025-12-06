@@ -394,7 +394,7 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
         <h4>Basic Usage</h4>
         <pre>
           <code>
-            {`import { UIForgeActivityStream } from '@chriscase/uiforge'
+            {`import { UIForgeActivityStream } from '@appforgeapps/uiforge'
 
 const events = [
   {
@@ -426,7 +426,7 @@ const events = [
         <h4>Custom Icons Example</h4>
         <pre>
           <code>
-            {`import { UIForgeActivityStream, ActivityIcons } from '@chriscase/uiforge'
+            {`import { UIForgeActivityStream, ActivityIcons } from '@appforgeapps/uiforge'
 
 // Using built-in icons
 const events = [
@@ -475,7 +475,7 @@ const events = [
         <pre>
           <code>
             {`import { useState } from 'react'
-import { UIForgeActivityStream, ActivityEvent } from '@chriscase/uiforge'
+import { UIForgeActivityStream, ActivityEvent } from '@appforgeapps/uiforge'
 
 function MyActivityFeed() {
   const [events, setEvents] = useState<ActivityEvent[]>([])

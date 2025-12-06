@@ -53,7 +53,7 @@ import {
 } from '../src/icons'
 import './IconLibrary.css'
 
-const PACKAGE_NAME = '@chriscase/uiforge'
+const PACKAGE_NAME = '@appforgeapps/uiforge'
 
 interface IconLibraryProps {
   onNavigate: (path: string) => void

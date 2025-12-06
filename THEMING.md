@@ -17,7 +17,7 @@ All UIForge components support light and dark themes out of the box. The theme i
 Most UIForge components accept a `theme` prop:
 
 ```tsx
-import { UIForgeActivityStreamEnhanced } from '@chriscase/uiforge'
+import { UIForgeActivityStreamEnhanced } from '@appforgeapps/uiforge'
 
 // Light theme (default)
 <UIForgeActivityStreamEnhanced
