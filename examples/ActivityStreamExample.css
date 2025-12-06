@@ -2,8 +2,8 @@
   min-height: 100vh;
   background-color: #f6f8fa;
   padding: 32px 16px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica,
-    Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
 }
 
 .activity-stream-example.dark-theme {
@@ -351,8 +351,8 @@
 }
 
 .activity-stream-example__code code {
-  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
-    'Liberation Mono', monospace;
+  font-family:
+    ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
   font-size: 12px;
   line-height: 1.6;
   color: #24292f;

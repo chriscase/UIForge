@@ -35,34 +35,90 @@
   --activity-stream-timeline-marker-size-base: 10px;
 
   /* Computed (scaled) values - used throughout the CSS */
-  --activity-stream-item-padding-y: calc(var(--activity-stream-item-padding-y-base) * var(--activity-stream-scale));
-  --activity-stream-item-padding-x: calc(var(--activity-stream-item-padding-x-base) * var(--activity-stream-scale));
-  --activity-stream-item-gap: calc(var(--activity-stream-item-gap-base) * var(--activity-stream-scale));
-  --activity-stream-content-gap: calc(var(--activity-stream-content-gap-base) * var(--activity-stream-scale));
-  --activity-stream-header-gap: calc(var(--activity-stream-header-gap-base) * var(--activity-stream-scale));
-  --activity-stream-title-line-height: calc(var(--activity-stream-title-line-height-base) * var(--activity-stream-scale));
-  --activity-stream-timestamp-margin-top: calc(var(--activity-stream-timestamp-margin-top-base) * var(--activity-stream-scale));
-  --activity-stream-toggle-margin-left: calc(var(--activity-stream-toggle-margin-left-base) * var(--activity-stream-scale));
-  --activity-stream-description-padding-y: calc(var(--activity-stream-description-padding-y-base) * var(--activity-stream-scale));
-  --activity-stream-description-padding-x: calc(var(--activity-stream-description-padding-x-base) * var(--activity-stream-scale));
-  --activity-stream-child-gap: calc(var(--activity-stream-child-gap-base) * var(--activity-stream-scale));
-  --activity-stream-child-margin-top: calc(var(--activity-stream-child-margin-top-base) * var(--activity-stream-scale));
-  --activity-stream-child-padding-left: calc(var(--activity-stream-child-padding-left-base) * var(--activity-stream-scale));
-  --activity-stream-events-gap: calc(var(--activity-stream-events-gap-base) * var(--activity-stream-scale));
-  --activity-stream-event-item-padding-y: calc(var(--activity-stream-event-item-padding-y-base) * var(--activity-stream-scale));
-  --activity-stream-event-title-margin-bottom: calc(var(--activity-stream-event-title-margin-bottom-base) * var(--activity-stream-scale));
-  --activity-stream-date-separator-gap: calc(var(--activity-stream-date-separator-gap-base) * var(--activity-stream-scale));
-  --activity-stream-date-separator-padding-top: calc(var(--activity-stream-date-separator-padding-top-base) * var(--activity-stream-scale));
-  --activity-stream-date-separator-padding-right: calc(var(--activity-stream-date-separator-padding-right-base) * var(--activity-stream-scale));
-  --activity-stream-date-separator-padding-bottom: calc(var(--activity-stream-date-separator-padding-bottom-base) * var(--activity-stream-scale));
-  --activity-stream-date-label-padding-right: calc(var(--activity-stream-date-label-padding-right-base) * var(--activity-stream-scale));
-  --activity-stream-icon-size: calc(var(--activity-stream-icon-size-base) * var(--activity-stream-scale));
-  --activity-stream-icon-svg-size: calc(var(--activity-stream-icon-svg-size-base) * var(--activity-stream-scale));
-  --activity-stream-timeline-left: calc(var(--activity-stream-timeline-left-base) * var(--activity-stream-scale));
-  --activity-stream-timeline-top: calc(var(--activity-stream-timeline-top-base) * var(--activity-stream-scale));
-  --activity-stream-timeline-marker-left: calc(var(--activity-stream-timeline-marker-left-base) * var(--activity-stream-scale));
-  --activity-stream-timeline-marker-top: calc(var(--activity-stream-timeline-marker-top-base) * var(--activity-stream-scale));
-  --activity-stream-timeline-marker-size: calc(var(--activity-stream-timeline-marker-size-base) * var(--activity-stream-scale));
+  --activity-stream-item-padding-y: calc(
+    var(--activity-stream-item-padding-y-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-item-padding-x: calc(
+    var(--activity-stream-item-padding-x-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-item-gap: calc(
+    var(--activity-stream-item-gap-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-content-gap: calc(
+    var(--activity-stream-content-gap-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-header-gap: calc(
+    var(--activity-stream-header-gap-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-title-line-height: calc(
+    var(--activity-stream-title-line-height-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-timestamp-margin-top: calc(
+    var(--activity-stream-timestamp-margin-top-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-toggle-margin-left: calc(
+    var(--activity-stream-toggle-margin-left-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-description-padding-y: calc(
+    var(--activity-stream-description-padding-y-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-description-padding-x: calc(
+    var(--activity-stream-description-padding-x-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-child-gap: calc(
+    var(--activity-stream-child-gap-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-child-margin-top: calc(
+    var(--activity-stream-child-margin-top-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-child-padding-left: calc(
+    var(--activity-stream-child-padding-left-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-events-gap: calc(
+    var(--activity-stream-events-gap-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-event-item-padding-y: calc(
+    var(--activity-stream-event-item-padding-y-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-event-title-margin-bottom: calc(
+    var(--activity-stream-event-title-margin-bottom-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-date-separator-gap: calc(
+    var(--activity-stream-date-separator-gap-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-date-separator-padding-top: calc(
+    var(--activity-stream-date-separator-padding-top-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-date-separator-padding-right: calc(
+    var(--activity-stream-date-separator-padding-right-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-date-separator-padding-bottom: calc(
+    var(--activity-stream-date-separator-padding-bottom-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-date-label-padding-right: calc(
+    var(--activity-stream-date-label-padding-right-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-icon-size: calc(
+    var(--activity-stream-icon-size-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-icon-svg-size: calc(
+    var(--activity-stream-icon-svg-size-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-timeline-left: calc(
+    var(--activity-stream-timeline-left-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-timeline-top: calc(
+    var(--activity-stream-timeline-top-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-timeline-marker-left: calc(
+    var(--activity-stream-timeline-marker-left-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-timeline-marker-top: calc(
+    var(--activity-stream-timeline-marker-top-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-timeline-marker-size: calc(
+    var(--activity-stream-timeline-marker-size-base) * var(--activity-stream-scale)
+  );
   /* mobile adjustments */
   --activity-stream-mobile-item-padding-y: 8px;
   --activity-stream-mobile-item-padding-x: 10px;
@@ -81,14 +137,30 @@
   --activity-stream-mobile-timeline-left-base: 14px;
   --activity-stream-mobile-timeline-marker-left-base: 10px;
   --activity-stream-mobile-timeline-marker-size-base: 12px;
-  --activity-stream-mobile-item-padding-y: calc(var(--activity-stream-mobile-item-padding-y-base) * var(--activity-stream-scale));
-  --activity-stream-mobile-item-padding-x: calc(var(--activity-stream-mobile-item-padding-x-base) * var(--activity-stream-scale));
-  --activity-stream-mobile-item-gap: calc(var(--activity-stream-mobile-item-gap-base) * var(--activity-stream-scale));
-  --activity-stream-mobile-icon-size: calc(var(--activity-stream-mobile-icon-size-base) * var(--activity-stream-scale));
-  --activity-stream-mobile-icon-svg-size: calc(var(--activity-stream-mobile-icon-svg-size-base) * var(--activity-stream-scale));
-  --activity-stream-mobile-timeline-left: calc(var(--activity-stream-mobile-timeline-left-base) * var(--activity-stream-scale));
-  --activity-stream-mobile-timeline-marker-left: calc(var(--activity-stream-mobile-timeline-marker-left-base) * var(--activity-stream-scale));
-  --activity-stream-mobile-timeline-marker-size: calc(var(--activity-stream-mobile-timeline-marker-size-base) * var(--activity-stream-scale));
+  --activity-stream-mobile-item-padding-y: calc(
+    var(--activity-stream-mobile-item-padding-y-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-mobile-item-padding-x: calc(
+    var(--activity-stream-mobile-item-padding-x-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-mobile-item-gap: calc(
+    var(--activity-stream-mobile-item-gap-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-mobile-icon-size: calc(
+    var(--activity-stream-mobile-icon-size-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-mobile-icon-svg-size: calc(
+    var(--activity-stream-mobile-icon-svg-size-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-mobile-timeline-left: calc(
+    var(--activity-stream-mobile-timeline-left-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-mobile-timeline-marker-left: calc(
+    var(--activity-stream-mobile-timeline-marker-left-base) * var(--activity-stream-scale)
+  );
+  --activity-stream-mobile-timeline-marker-size: calc(
+    var(--activity-stream-mobile-timeline-marker-size-base) * var(--activity-stream-scale)
+  );
   --activity-stream-bg: #ffffff;
   --activity-stream-text: #24292f;
   --activity-stream-text-secondary: #57606a;
@@ -272,7 +344,10 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--activity-stream-content-gap, 4px); /* reduce vertical gap between title/desc/timestamp */
+  gap: var(
+    --activity-stream-content-gap,
+    4px
+  ); /* reduce vertical gap between title/desc/timestamp */
 }
 
 /* Header */
@@ -330,7 +405,8 @@
   font-size: 13px;
   line-height: 1.4;
   color: var(--activity-stream-text-secondary);
-  padding: var(--activity-stream-description-padding-y, 6px) var(--activity-stream-description-padding-x, 10px); /* tighter description padding */
+  padding: var(--activity-stream-description-padding-y, 6px)
+    var(--activity-stream-description-padding-x, 10px); /* tighter description padding */
   background-color: var(--activity-stream-hover-bg);
   border-radius: 6px;
   border: 1px solid var(--activity-stream-border);
@@ -380,7 +456,9 @@
   display: flex;
   align-items: center;
   gap: var(--activity-stream-date-separator-gap, 10px);
-  padding: var(--activity-stream-date-separator-padding-top, 16px) var(--activity-stream-date-separator-padding-right, 16px) var(--activity-stream-date-separator-padding-bottom, 12px); /* reduce top and bottom padding */
+  padding: var(--activity-stream-date-separator-padding-top, 16px)
+    var(--activity-stream-date-separator-padding-right, 16px)
+    var(--activity-stream-date-separator-padding-bottom, 12px); /* reduce top and bottom padding */
   position: relative;
   z-index: 3;
 }
@@ -396,7 +474,10 @@
   font-weight: 600;
   color: var(--activity-stream-text);
   white-space: nowrap;
-  padding-right: var(--activity-stream-date-label-padding-right, 8px); /* smaller spacing from line */
+  padding-right: var(
+    --activity-stream-date-label-padding-right,
+    8px
+  ); /* smaller spacing from line */
   order: -1; /* Move label to the left */
 }
 
@@ -492,7 +573,8 @@
 /* Responsive design */
 @media (max-width: 640px) {
   .activity-stream__item {
-    padding: var(--activity-stream-mobile-item-padding-y, 8px) var(--activity-stream-mobile-item-padding-x, 10px); /* smaller mobile padding */
+    padding: var(--activity-stream-mobile-item-padding-y, 8px)
+      var(--activity-stream-mobile-item-padding-x, 10px); /* smaller mobile padding */
     gap: var(--activity-stream-mobile-item-gap, 8px);
   }
 
@@ -520,7 +602,10 @@
   }
 
   .activity-stream--with-timeline .activity-stream__items {
-    padding-left: var(--activity-stream-mobile-timeline-left, 14px); /* slightly tighter on small screens */
+    padding-left: var(
+      --activity-stream-mobile-timeline-left,
+      14px
+    ); /* slightly tighter on small screens */
   }
 
   .activity-stream--with-timeline .activity-stream__items::before {

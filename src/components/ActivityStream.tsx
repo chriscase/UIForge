@@ -160,8 +160,7 @@ export interface UIForgeActivityStreamProps {
  */
 const getDefaultIcon = (type: string): React.ReactNode => {
   const IconComponent =
-    (ActivityIcons as Record<string, React.FC<{ size?: number }>>)[type] ||
-    ActivityIcons.commit
+    (ActivityIcons as Record<string, React.FC<{ size?: number }>>)[type] || ActivityIcons.commit
   return <IconComponent size={16} />
 }
 
@@ -557,7 +556,14 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
 
   return (
     <div ref={containerRef} className={classes} data-theme={theme}>
-      <div ref={scrollRef} className="activity-stream__container" style={{ ...(containerStyle as React.CSSProperties), ...(scaleStyle as React.CSSProperties) }}>
+      <div
+        ref={scrollRef}
+        className="activity-stream__container"
+        style={{
+          ...(containerStyle as React.CSSProperties),
+          ...(scaleStyle as React.CSSProperties),
+        }}
+      >
         {processedItems.length === 0 ? (
           <div className="activity-stream__empty">{emptyMessage}</div>
         ) : (

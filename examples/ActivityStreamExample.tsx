@@ -1,8 +1,5 @@
 import { useState, useMemo } from 'react'
-import {
-  UIForgeActivityStream,
-  ActivityEvent,
-} from '../src/components/ActivityStream'
+import { UIForgeActivityStream, ActivityEvent } from '../src/components/ActivityStream'
 import '../src/components/ActivityStream.css'
 import './ActivityStreamExample.css'
 
@@ -261,7 +258,9 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
               Spacious
             </button>
           </div>
-          <div style={{ marginLeft: 8, fontSize: 13, color: theme === 'dark' ? '#8b949e' : '#57606a' }}>
+          <div
+            style={{ marginLeft: 8, fontSize: 13, color: theme === 'dark' ? '#8b949e' : '#57606a' }}
+          >
             Scale: {scale}
           </div>
         </div>
@@ -353,12 +352,11 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
           <h3>Key Features</h3>
           <ul>
             <li>
-              <strong>Smart Event Grouping:</strong> Automatically groups consecutive events of
-              the same type (e.g., "Created 6 pull requests in myapp/frontend")
+              <strong>Smart Event Grouping:</strong> Automatically groups consecutive events of the
+              same type (e.g., "Created 6 pull requests in myapp/frontend")
             </li>
             <li>
-              <strong>Nested Grouping:</strong> Groups can have sub-groups by repository or
-              context
+              <strong>Nested Grouping:</strong> Groups can have sub-groups by repository or context
             </li>
             <li>
               <strong>Timeline Visualization:</strong> Vertical line with markers shows event flow
@@ -380,8 +378,8 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
               <strong>Light/Dark Themes:</strong> Seamless theme switching with CSS variables
             </li>
             <li>
-              <strong>Fully Accessible:</strong> Keyboard navigation, ARIA attributes, screen
-              reader support
+              <strong>Fully Accessible:</strong> Keyboard navigation, ARIA attributes, screen reader
+              support
             </li>
             <li>
               <strong>Responsive Design:</strong> Adapts to mobile and desktop viewports
@@ -392,7 +390,7 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
 
       <div className="activity-stream-example__code">
         <h3>Usage Examples</h3>
-        
+
         <h4>Basic Usage</h4>
         <pre>
           <code>
