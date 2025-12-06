@@ -52,7 +52,7 @@ jobs:
         run: |
           echo "## ✅ Successfully Published to NPM" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Package:** @chriscase/uiforge" >> $GITHUB_STEP_SUMMARY
+          echo "**Package:** @appforgeapps/uiforge" >> $GITHUB_STEP_SUMMARY
           echo "**Version:** ${{ github.event.release.tag_name }}" >> $GITHUB_STEP_SUMMARY
-          echo "**NPM:** https://www.npmjs.com/package/@chriscase/uiforge" >> $GITHUB_STEP_SUMMARY
+          echo "**NPM:** https://www.npmjs.com/package/@appforgeapps/uiforge" >> $GITHUB_STEP_SUMMARY
 

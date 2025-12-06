@@ -105,7 +105,7 @@ const createBlock = (type: BlockType = 'paragraph'): ContentBlock => ({
  *
  * @example
  * ```tsx
- * import { UIForgeBlocksEditor } from '@chriscase/uiforge'
+ * import { UIForgeBlocksEditor } from '@appforgeapps/uiforge'
  *
  * function MyEditor() {
  *   const [blocks, setBlocks] = useState([])

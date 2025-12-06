@@ -33,9 +33,9 @@ The repository includes a GitHub Actions workflow (`.github/workflows/publish.ym
      - Name: `NPM_TOKEN`
      - Value: Your NPM token
 
-2. **NPM Account Access**: Ensure you have publish access to `@chriscase/uiforge`
-   - Verify with: `npm view @chriscase/uiforge`
-   - If not published yet, ensure you have access to the `@chriscase` scope
+2. **NPM Account Access**: Ensure you have publish access to `@appforgeapps/uiforge`
+   - Verify with: `npm view @appforgeapps/uiforge`
+   - If not published yet, ensure you have access to the `@appforgeapps` scope
 
 #### Publishing Steps
 
@@ -103,15 +103,15 @@ The repository includes a GitHub Actions workflow (`.github/workflows/publish.ym
 5. **Verify Publication**
 
    After the workflow completes (usually 2-5 minutes):
-   - Check the [NPM package page](https://www.npmjs.com/package/@chriscase/uiforge)
-   - Test installation: `npm install @chriscase/uiforge@latest`
+   - Check the [NPM package page](https://www.npmjs.com/package/@appforgeapps/uiforge)
+   - Test installation: `npm install @appforgeapps/uiforge@latest`
    - Verify the version number matches your release
 
 6. **Add NPM Badge (After First Publication)**
 
    After the first successful publication, add the NPM version badge to README.md:
    ```markdown
-   [![npm version](https://img.shields.io/npm/v/@chriscase/uiforge.svg)](https://www.npmjs.com/package/@chriscase/uiforge)
+   [![npm version](https://img.shields.io/npm/v/@appforgeapps/uiforge.svg)](https://www.npmjs.com/package/@appforgeapps/uiforge)
    ```
 
 ### Manual Publishing
@@ -179,7 +179,7 @@ If you need to publish manually (not recommended for regular releases):
    npm pack
    
    # Test in another project
-   npm install /path/to/chriscase-uiforge-X.Y.Z.tgz
+   npm install /path/to/appforgeapps-uiforge-X.Y.Z.tgz
    ```
 
 4. **Publish**
@@ -346,7 +346,6 @@ UIForge follows [SemVer](https://semver.org/):
 
 **Solutions:**
 - Verify you're logged in: `npm whoami`
-- Check you have access to the `@chriscase` scope
 - Ensure `publishConfig.access` is set to `"public"` in package.json
 
 #### "Version X.Y.Z already exists"
@@ -354,7 +353,7 @@ UIForge follows [SemVer](https://semver.org/):
 **Solutions:**
 - You cannot republish the same version
 - Increment the version: `npm version patch`
-- If made a mistake within 72 hours: `npm unpublish @chriscase/uiforge@X.Y.Z` (use cautiously!)
+- If made a mistake within 72 hours: `npm unpublish @appforgeapps/uiforge@X.Y.Z` (use cautiously!)
 
 #### "Package size exceeds recommended limit"
 
