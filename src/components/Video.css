@@ -1,0 +1,194 @@
+/* UIForgeVideo Component Styles */
+.uiforge-video {
+  width: 100%;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+.uiforge-video__header {
+  margin-bottom: 1rem;
+}
+
+.uiforge-video__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  color: #1f2937;
+}
+
+.uiforge-video__description {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.uiforge-video__player-container {
+  position: relative;
+  width: 100%;
+  background-color: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.uiforge-video__thumbnail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.uiforge-video__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+  z-index: 1;
+}
+
+.uiforge-video__overlay:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.uiforge-video__overlay:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+}
+
+.uiforge-video__play-icon {
+  transition: transform 0.2s ease-in-out;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+.uiforge-video__overlay:hover .uiforge-video__play-icon {
+  transform: scale(1.1);
+}
+
+.uiforge-video__iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* UIForgeVideoPreview Component Styles */
+.uiforge-video-preview {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  transition: background-color 0.2s ease-in-out;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Button variant styles */
+button.uiforge-video-preview {
+  background: none;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+}
+
+button.uiforge-video-preview:hover {
+  background-color: #f3f4f6;
+}
+
+button.uiforge-video-preview:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+button.uiforge-video-preview:active {
+  background-color: #e5e7eb;
+}
+
+/* Non-button variant (just display) */
+div.uiforge-video-preview {
+  border: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+}
+
+.uiforge-video-preview__icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3b82f6;
+  flex-shrink: 0;
+}
+
+.uiforge-video-preview__title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .uiforge-video__title {
+    color: #f9fafb;
+  }
+
+  .uiforge-video__description {
+    color: #9ca3af;
+  }
+
+  button.uiforge-video-preview {
+    border-color: #374151;
+  }
+
+  button.uiforge-video-preview:hover {
+    background-color: #1f2937;
+  }
+
+  button.uiforge-video-preview:active {
+    background-color: #111827;
+  }
+
+  div.uiforge-video-preview {
+    border-color: #374151;
+    background-color: #1f2937;
+  }
+
+  .uiforge-video-preview__title {
+    color: #f9fafb;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .uiforge-video__title {
+    font-size: 1.25rem;
+  }
+
+  .uiforge-video__description {
+    font-size: 0.875rem;
+  }
+
+  .uiforge-video__play-icon {
+    width: 48px;
+    height: 48px;
+  }
+}

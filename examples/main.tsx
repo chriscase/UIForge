@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import Home from './Home'
 import ActivityStreamExample from './ActivityStreamExample'
 import IconLibrary from './IconLibrary'
+import VideoExample from './VideoExample'
 import App from './App'
 import './index.css'
 
@@ -21,6 +22,8 @@ function Router() {
       return <ActivityStreamExample onNavigate={navigate} />
     case '/icons':
       return <IconLibrary onNavigate={navigate} />
+    case '/video':
+      return <VideoExample />
     case '/grid':
     case '/blocks-editor':
     case '/combobox':
