@@ -610,6 +610,110 @@ When grouped events span multiple repositories:
 
 See `examples/ActivityStreamExample.tsx` for a complete interactive demo.
 
+### UIForgeVideo / UIForgeVideoPreview
+
+Video components for embedding YouTube and Vimeo videos with interactive overlays and preview functionality.
+
+**UIForgeVideo Features:**
+
+- **Video Embedding** - Supports both YouTube and Vimeo video embeds
+- **Lazy Loading** - Video player loads only when user clicks to play
+- **Custom Thumbnails** - Use custom thumbnail images or provider defaults
+- **Overlay Interaction** - Clickable overlay with customizable play icon
+- **Event Emission** - Fires callback when video starts playing for analytics/tracking
+- **Responsive Design** - Adjustable aspect ratios and mobile-friendly
+- **Accessibility** - Proper ARIA labels and keyboard navigation
+
+**UIForgeVideoPreview Features:**
+
+- **Compact Display** - Small preview component with title and icon
+- **Interactive** - Optional click handler for navigation
+- **Customizable Icons** - Support for custom icons or emojis
+- **Lightweight** - Perfect for video lists and catalogs
+
+```tsx
+import { UIForgeVideo, UIForgeVideoPreview } from '@chriscase/uiforge'
+
+// YouTube video with event tracking
+<UIForgeVideo
+  title="Introduction to React"
+  description="Learn React basics in this comprehensive tutorial"
+  youtubeId="dQw4w9WgXcQ"
+  onPlay={(videoId, provider) => {
+    console.log(`Playing ${provider} video: ${videoId}`)
+    trackAnalytics('video_play', { videoId, provider })
+  }}
+/>
+
+// Vimeo video
+<UIForgeVideo
+  title="Beautiful Nature Footage"
+  description="Stunning visuals from around the world"
+  vimeoId="76979871"
+  onPlay={(videoId, provider) => {
+    console.log('Video started')
+  }}
+/>
+
+// Custom thumbnail and aspect ratio
+<UIForgeVideo
+  title="Classic Format Video"
+  youtubeId="abc123"
+  thumbnailUrl="https://example.com/custom-thumb.jpg"
+  aspectRatio="4/3"
+  onPlay={handlePlay}
+/>
+
+// Custom overlay icon
+<UIForgeVideo
+  title="Video with Custom Play Button"
+  youtubeId="xyz789"
+  overlayIcon={<span style={{ fontSize: '64px' }}>▶️</span>}
+  onPlay={handlePlay}
+/>
+
+// Video preview component
+<UIForgeVideoPreview
+  title="Tutorial: Getting Started"
+  icon={<span>🎓</span>}
+  onClick={() => navigateToVideo('tutorial-123')}
+/>
+```
+
+**UIForgeVideo Props:**
+
+| Prop           | Type                                        | Default    | Description                                   |
+| -------------- | ------------------------------------------- | ---------- | --------------------------------------------- |
+| `title`        | `string`                                    | required   | Video title                                   |
+| `description`  | `string`                                    | -          | Optional video description                    |
+| `youtubeId`    | `string`                                    | -          | YouTube video ID (required if no vimeoId)     |
+| `vimeoId`      | `string`                                    | -          | Vimeo video ID (required if no youtubeId)     |
+| `thumbnailUrl` | `string`                                    | -          | Custom thumbnail URL (optional)               |
+| `onPlay`       | `(videoId, provider) => void`               | -          | Callback when video starts playing            |
+| `className`    | `string`                                    | -          | Additional CSS classes                        |
+| `overlayIcon`  | `React.ReactNode`                           | Play icon  | Custom overlay icon                           |
+| `aspectRatio`  | `string`                                    | `"16/9"`   | Video aspect ratio (CSS value)                |
+
+**UIForgeVideoPreview Props:**
+
+| Prop        | Type              | Default  | Description                    |
+| ----------- | ----------------- | -------- | ------------------------------ |
+| `title`     | `string`          | required | Video title                    |
+| `icon`      | `React.ReactNode` | -        | Optional custom icon           |
+| `className` | `string`          | -        | Additional CSS classes         |
+| `onClick`   | `() => void`      | -        | Click handler (makes it interactive) |
+
+**Use Cases:**
+
+- Video tutorials and educational content
+- Product demos and walkthroughs
+- Marketing videos and testimonials
+- Video galleries and catalogs
+- Course content and lessons
+- Conference talks and presentations
+
+See `examples/VideoExample.tsx` for a complete interactive demo with multiple examples.
+
 ## Theming
 
 UIForge components support comprehensive theming through CSS variables. See [THEMING.md](./THEMING.md) for a complete guide on:

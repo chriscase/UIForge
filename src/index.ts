@@ -32,6 +32,12 @@ export type {
   ActivityStreamPagination,
 } from './components/ActivityStream'
 
+export { UIForgeVideo, UIForgeVideoPreview } from './components/Video'
+export type {
+  UIForgeVideoProps,
+  UIForgeVideoPreviewProps,
+} from './components/Video'
+
 // Export icon library
 export * from './icons'
 
@@ -41,3 +47,4 @@ import './components/Grid.css'
 import './components/BlocksEditor.css'
 import './components/ComboBox.css'
 import './components/ActivityStream.css'
+import './components/Video.css'
