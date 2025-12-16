@@ -4,15 +4,8 @@ on:
   release:
     types: [published]
 
-# DISABLED: This workflow is now handled by release.yml which uses semantic-release
-# to automatically version, create releases, and publish to NPM in a single workflow.
-#
-# This workflow is kept for reference/backup purposes only.
-# To re-enable, remove the 'false' condition below.
-
 jobs:
   publish:
-    if: false # Disabled - use release.yml instead
     runs-on: ubuntu-latest
     permissions:
       contents: read
