@@ -66,8 +66,8 @@ export const VideoExample: React.FC = () => {
       <div className="video-example__header">
         <h1>UIForge Video Components Demo</h1>
         <p>
-          Universal video embedding with 30+ supported platforms including YouTube,
-          Vimeo, Dailymotion, Twitch, and more
+          Universal video embedding with 30+ supported platforms including YouTube, Vimeo,
+          Dailymotion, Twitch, and more
         </p>
       </div>
 
@@ -214,17 +214,15 @@ export const VideoExample: React.FC = () => {
       {/* Multi-Platform Support Examples */}
       <section className="video-example__section">
         <h2>Supported Platforms</h2>
-        <p>
-          UIForgeVideo automatically detects and supports 30+ video platforms:
-        </p>
+        <p>UIForgeVideo automatically detects and supports 30+ video platforms:</p>
         <ul style={{ lineHeight: '1.8' }}>
           <li>
-            <strong>Major Platforms:</strong> YouTube, Vimeo, Dailymotion, Twitch, Kick,
-            Rumble, Odysee, BitChute, VK Video, Bilibili, Niconico
+            <strong>Major Platforms:</strong> YouTube, Vimeo, Dailymotion, Twitch, Kick, Rumble,
+            Odysee, BitChute, VK Video, Bilibili, Niconico
           </li>
           <li>
-            <strong>Professional:</strong> Wistia, Brightcove, Kaltura, Panopto, JW
-            Player, Cloudflare Stream, Mux, AWS IVS, Azure Media Services
+            <strong>Professional:</strong> Wistia, Brightcove, Kaltura, Panopto, JW Player,
+            Cloudflare Stream, Mux, AWS IVS, Azure Media Services
           </li>
           <li>
             <strong>Cloud Storage:</strong> Google Drive, Dropbox
@@ -233,8 +231,8 @@ export const VideoExample: React.FC = () => {
             <strong>Social Media:</strong> Facebook Video, Instagram, X/Twitter
           </li>
           <li>
-            <strong>Adult Content:</strong> 5+ adult platforms (requires explicit opt-in
-            via allowAdultContent prop)
+            <strong>Adult Content:</strong> 5+ adult platforms (requires explicit opt-in via
+            allowAdultContent prop)
           </li>
         </ul>
       </section>
