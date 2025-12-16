@@ -38,6 +38,21 @@ export type {
   UIForgeVideoPreviewProps,
 } from './components/Video'
 
+// Export video utilities and providers
+export {
+  detectProvider,
+  extractVideoId,
+  getEmbedUrlFromVideoUrl,
+  isAdultContent,
+  videoProviders,
+  providersByName,
+} from './video'
+export type {
+  VideoProvider,
+  EmbedOptions,
+  VideoProviderTier,
+} from './video'
+
 // Export icon library
 export * from './icons'
 

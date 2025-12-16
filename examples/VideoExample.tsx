@@ -9,35 +9,39 @@ export const VideoExample: React.FC = () => {
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null)
   const [playLogs, setPlayLogs] = useState<string[]>([])
 
-  // Sample video data
+  // Sample video data - now using URL-based approach
   const videos = [
     {
       id: 'youtube-1',
       title: 'React Basics Tutorial',
       description: 'Learn the fundamentals of React in this comprehensive tutorial',
-      youtubeId: 'SqcY0GlETPk',
+      url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      provider: 'YouTube',
     },
     {
       id: 'vimeo-1',
       title: 'Advanced React Patterns',
       description: 'Explore advanced patterns and best practices for React development',
-      vimeoId: '76979871',
+      url: 'https://vimeo.com/76979871',
+      provider: 'Vimeo',
     },
     {
       id: 'youtube-2',
       title: 'TypeScript Deep Dive',
       description: 'Master TypeScript with practical examples and real-world scenarios',
-      youtubeId: 'ahCwqrYpIuM',
+      url: 'https://www.youtube.com/watch?v=q1mSDLBVHWE',
+      provider: 'YouTube',
     },
     {
-      id: 'youtube-3',
-      title: 'Modern CSS Techniques',
-      description: 'Discover modern CSS features like Grid, Flexbox, and Custom Properties',
-      youtubeId: 'qm0IfG1GyZU',
+      id: 'dailymotion-1',
+      title: 'Web Development Tips',
+      description: 'Essential tips for modern web development',
+      url: 'https://www.dailymotion.com/video/x8b9k2w',
+      provider: 'Dailymotion',
     },
   ]
 
-  const handlePlayVideo = (videoId: string, provider: 'youtube' | 'vimeo') => {
+  const handlePlayVideo = (videoId: string, provider: string) => {
     const timestamp = new Date().toLocaleTimeString()
     const logEntry = `[${timestamp}] Video played: ${videoId} (${provider})`
     setPlayLogs((prev) => [logEntry, ...prev])
@@ -61,7 +65,10 @@ export const VideoExample: React.FC = () => {
     <div className="video-example">
       <div className="video-example__header">
         <h1>UIForge Video Components Demo</h1>
-        <p>Explore video embedding with UIForgeVideo and UIForgeVideoPreview</p>
+        <p>
+          Universal video embedding with 30+ supported platforms including YouTube, Vimeo,
+          Dailymotion, Twitch, and more
+        </p>
       </div>
 
       {/* Video Preview List */}
@@ -114,8 +121,7 @@ export const VideoExample: React.FC = () => {
             <UIForgeVideo
               title={currentVideo.title}
               description={currentVideo.description}
-              youtubeId={currentVideo.youtubeId}
-              vimeoId={currentVideo.vimeoId}
+              url={currentVideo.url}
               onPlay={handlePlayVideo}
             />
           </div>
@@ -126,23 +132,33 @@ export const VideoExample: React.FC = () => {
         )}
       </section>
 
-      {/* Direct Examples */}
+      {/* Direct Examples - URL-based */}
       <section className="video-example__section">
-        <h2>YouTube Video Example</h2>
+        <h2>URL-Based: YouTube Video</h2>
         <UIForgeVideo
           title="Rick Astley - Never Gonna Give You Up"
-          description="The official music video that started it all"
-          youtubeId="dQw4w9WgXcQ"
+          description="Automatically detected from YouTube URL"
+          url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
           onPlay={handlePlayVideo}
         />
       </section>
 
       <section className="video-example__section">
-        <h2>Vimeo Video Example</h2>
+        <h2>URL-Based: Vimeo Video</h2>
         <UIForgeVideo
           title="Beautiful Nature Footage"
-          description="Stunning visuals from around the world"
-          vimeoId="76979871"
+          description="Automatically detected from Vimeo URL"
+          url="https://vimeo.com/76979871"
+          onPlay={handlePlayVideo}
+        />
+      </section>
+
+      <section className="video-example__section">
+        <h2>URL-Based: Dailymotion Video</h2>
+        <UIForgeVideo
+          title="Tech Tutorials"
+          description="Automatically detected from Dailymotion URL"
+          url="https://www.dailymotion.com/video/x8b9k2w"
           onPlay={handlePlayVideo}
         />
       </section>
@@ -152,19 +168,19 @@ export const VideoExample: React.FC = () => {
         <UIForgeVideo
           title="Classic Format Video"
           description="This video uses a 4:3 aspect ratio"
-          youtubeId="SqcY0GlETPk"
-          aspectRatio="4/3"
+          url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          aspectRatio="4:3"
           onPlay={handlePlayVideo}
         />
       </section>
 
       <section className="video-example__section">
-        <h2>Custom Thumbnail</h2>
+        <h2>With Playback Options</h2>
         <UIForgeVideo
-          title="Video with Custom Thumbnail"
-          description="Uses a custom thumbnail instead of the default provider thumbnail"
-          youtubeId="ahCwqrYpIuM"
-          thumbnailUrl="https://picsum.photos/seed/video/1280/720"
+          title="Auto-muted Video"
+          description="Configured with muted playback"
+          url="https://www.youtube.com/watch?v=q1mSDLBVHWE"
+          muted={true}
           onPlay={handlePlayVideo}
         />
       </section>
@@ -174,7 +190,7 @@ export const VideoExample: React.FC = () => {
         <UIForgeVideo
           title="Video with Custom Play Button"
           description="Features a custom emoji as the play button"
-          youtubeId="qm0IfG1GyZU"
+          url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
           overlayIcon={
             <div
               style={{
@@ -193,6 +209,32 @@ export const VideoExample: React.FC = () => {
           }
           onPlay={handlePlayVideo}
         />
+      </section>
+
+      {/* Multi-Platform Support Examples */}
+      <section className="video-example__section">
+        <h2>Supported Platforms</h2>
+        <p>UIForgeVideo automatically detects and supports 30+ video platforms:</p>
+        <ul style={{ lineHeight: '1.8' }}>
+          <li>
+            <strong>Major Platforms:</strong> YouTube, Vimeo, Dailymotion, Twitch, Kick, Rumble,
+            Odysee, BitChute, VK Video, Bilibili, Niconico
+          </li>
+          <li>
+            <strong>Professional:</strong> Wistia, Brightcove, Kaltura, Panopto, JW Player,
+            Cloudflare Stream, Mux, AWS IVS, Azure Media Services
+          </li>
+          <li>
+            <strong>Cloud Storage:</strong> Google Drive, Dropbox
+          </li>
+          <li>
+            <strong>Social Media:</strong> Facebook Video, Instagram, X/Twitter
+          </li>
+          <li>
+            <strong>Adult Content:</strong> 5+ adult platforms (requires explicit opt-in via
+            allowAdultContent prop)
+          </li>
+        </ul>
       </section>
 
       {/* Event Log */}
@@ -220,30 +262,36 @@ export const VideoExample: React.FC = () => {
       <section className="video-example__section">
         <h2>Usage Examples</h2>
 
-        <h3>Basic YouTube Video</h3>
+        <h3>Auto-detect from URL (Recommended)</h3>
+        <pre className="video-example__code">
+          {`<UIForgeVideo url="https://www.youtube.com/watch?v=dQw4w9WgXcQ" />`}
+        </pre>
+
+        <h3>With Title and Options</h3>
         <pre className="video-example__code">
           {`<UIForgeVideo
   title="Introduction to React"
-  description="Learn React basics in this tutorial"
-  youtubeId="dQw4w9WgXcQ"
+  description="Learn React basics"
+  url="https://vimeo.com/123456789"
+  autoplay={false}
+  muted={true}
+  aspectRatio="16:9"
   onPlay={(videoId, provider) => {
     console.log(\`Playing \${provider} video: \${videoId}\`)
   }}
 />`}
         </pre>
 
-        <h3>Vimeo Video</h3>
+        <h3>Direct Provider Specification</h3>
         <pre className="video-example__code">
           {`<UIForgeVideo
-  title="Beautiful Nature"
-  vimeoId="76979871"
-  onPlay={(videoId, provider) => {
-    trackAnalytics('video_play', { videoId, provider })
-  }}
+  provider="youtube"
+  videoId="dQw4w9WgXcQ"
+  title="Custom Title"
 />`}
         </pre>
 
-        <h3>Video Preview</h3>
+        <h3>Video Preview Component</h3>
         <pre className="video-example__code">
           {`<UIForgeVideoPreview
   title="Tutorial Video"
@@ -252,13 +300,11 @@ export const VideoExample: React.FC = () => {
 />`}
         </pre>
 
-        <h3>Custom Thumbnail and Aspect Ratio</h3>
+        <h3>Legacy Props (Still Supported)</h3>
         <pre className="video-example__code">
           {`<UIForgeVideo
-  title="Custom Format"
-  youtubeId="abc123"
-  thumbnailUrl="https://example.com/custom-thumb.jpg"
-  aspectRatio="4/3"
+  title="My Video"
+  youtubeId="dQw4w9WgXcQ"  // Still works!
   onPlay={handlePlay}
 />`}
         </pre>

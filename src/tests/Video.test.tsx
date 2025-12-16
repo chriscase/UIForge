@@ -12,11 +12,7 @@ describe('UIForgeVideo', () => {
 
     it('renders video with title and description', () => {
       render(
-        <UIForgeVideo
-          title="Test Video"
-          description="This is a test video"
-          youtubeId="test123"
-        />
+        <UIForgeVideo title="Test Video" description="This is a test video" youtubeId="test123" />
       )
       expect(screen.getByText('Test Video')).toBeInTheDocument()
       expect(screen.getByText('This is a test video')).toBeInTheDocument()
@@ -24,11 +20,7 @@ describe('UIForgeVideo', () => {
 
     it('applies custom className', () => {
       const { container } = render(
-        <UIForgeVideo
-          title="Test Video"
-          youtubeId="test123"
-          className="custom-class"
-        />
+        <UIForgeVideo title="Test Video" youtubeId="test123" className="custom-class" />
       )
       expect(container.querySelector('.uiforge-video')).toHaveClass('custom-class')
     })
@@ -65,21 +57,13 @@ describe('UIForgeVideo', () => {
 
       const iframe = screen.getByTitle('Test Video')
       expect(iframe).toBeInTheDocument()
-      expect(iframe).toHaveAttribute(
-        'src',
-        'https://www.youtube.com/embed/test123?autoplay=1&rel=0'
-      )
+      // Now uses regular youtube.com for better embedding compatibility
+      expect(iframe).toHaveAttribute('src', 'https://www.youtube.com/embed/test123?autoplay=1')
     })
 
     it('uses custom thumbnail when provided', () => {
       const customThumb = 'https://example.com/custom-thumb.jpg'
-      render(
-        <UIForgeVideo
-          title="Test Video"
-          youtubeId="test123"
-          thumbnailUrl={customThumb}
-        />
-      )
+      render(<UIForgeVideo title="Test Video" youtubeId="test123" thumbnailUrl={customThumb} />)
       const thumbnail = screen.getByAltText('Test Video')
       expect(thumbnail).toHaveAttribute('src', customThumb)
     })
@@ -95,21 +79,12 @@ describe('UIForgeVideo', () => {
 
       const iframe = screen.getByTitle('Test Video')
       expect(iframe).toBeInTheDocument()
-      expect(iframe).toHaveAttribute(
-        'src',
-        'https://player.vimeo.com/video/123456789?autoplay=1'
-      )
+      expect(iframe).toHaveAttribute('src', 'https://player.vimeo.com/video/123456789?autoplay=1')
     })
 
     it('uses custom thumbnail for Vimeo', () => {
       const customThumb = 'https://example.com/vimeo-thumb.jpg'
-      render(
-        <UIForgeVideo
-          title="Test Video"
-          vimeoId="123456789"
-          thumbnailUrl={customThumb}
-        />
-      )
+      render(<UIForgeVideo title="Test Video" vimeoId="123456789" thumbnailUrl={customThumb} />)
       const thumbnail = screen.getByAltText('Test Video')
       expect(thumbnail).toHaveAttribute('src', customThumb)
     })
@@ -119,13 +94,7 @@ describe('UIForgeVideo', () => {
     it('calls onPlay callback when video starts', async () => {
       const user = userEvent.setup()
       const handlePlay = vi.fn()
-      render(
-        <UIForgeVideo
-          title="Test Video"
-          youtubeId="test123"
-          onPlay={handlePlay}
-        />
-      )
+      render(<UIForgeVideo title="Test Video" youtubeId="test123" onPlay={handlePlay} />)
 
       const playButton = screen.getByRole('button', { name: /play video/i })
       await user.click(playButton)
@@ -136,13 +105,7 @@ describe('UIForgeVideo', () => {
     it('calls onPlay with correct provider for Vimeo', async () => {
       const user = userEvent.setup()
       const handlePlay = vi.fn()
-      render(
-        <UIForgeVideo
-          title="Test Video"
-          vimeoId="123456789"
-          onPlay={handlePlay}
-        />
-      )
+      render(<UIForgeVideo title="Test Video" vimeoId="123456789" onPlay={handlePlay} />)
 
       const playButton = screen.getByRole('button', { name: /play video/i })
       await user.click(playButton)
@@ -154,39 +117,23 @@ describe('UIForgeVideo', () => {
   describe('Custom overlay icon', () => {
     it('renders custom overlay icon', () => {
       const customIcon = <span data-testid="custom-icon">▶️</span>
-      render(
-        <UIForgeVideo
-          title="Test Video"
-          youtubeId="test123"
-          overlayIcon={customIcon}
-        />
-      )
+      render(<UIForgeVideo title="Test Video" youtubeId="test123" overlayIcon={customIcon} />)
       expect(screen.getByTestId('custom-icon')).toBeInTheDocument()
     })
   })
 
   describe('Aspect ratio', () => {
     it('applies default aspect ratio', () => {
-      const { container } = render(
-        <UIForgeVideo title="Test Video" youtubeId="test123" />
-      )
-      const playerContainer = container.querySelector(
-        '.uiforge-video__player-container'
-      )
+      const { container } = render(<UIForgeVideo title="Test Video" youtubeId="test123" />)
+      const playerContainer = container.querySelector('.uiforge-video__player-container')
       expect(playerContainer).toHaveStyle({ aspectRatio: '16/9' })
     })
 
     it('applies custom aspect ratio', () => {
       const { container } = render(
-        <UIForgeVideo
-          title="Test Video"
-          youtubeId="test123"
-          aspectRatio="4/3"
-        />
+        <UIForgeVideo title="Test Video" youtubeId="test123" aspectRatio="4/3" />
       )
-      const playerContainer = container.querySelector(
-        '.uiforge-video__player-container'
-      )
+      const playerContainer = container.querySelector('.uiforge-video__player-container')
       expect(playerContainer).toHaveStyle({ aspectRatio: '4/3' })
     })
   })
@@ -239,9 +186,7 @@ describe('UIForgeVideoPreview', () => {
       const { container } = render(
         <UIForgeVideoPreview title="Preview Video" className="custom-class" />
       )
-      expect(container.querySelector('.uiforge-video-preview')).toHaveClass(
-        'custom-class'
-      )
+      expect(container.querySelector('.uiforge-video-preview')).toHaveClass('custom-class')
     })
 
     it('renders as div when no onClick is provided', () => {
@@ -260,9 +205,7 @@ describe('UIForgeVideoPreview', () => {
   describe('Icon display', () => {
     it('renders default video icon', () => {
       const { container } = render(<UIForgeVideoPreview title="Preview Video" />)
-      const iconContainer = container.querySelector(
-        '.uiforge-video-preview__icon-container'
-      )
+      const iconContainer = container.querySelector('.uiforge-video-preview__icon-container')
       expect(iconContainer).toBeInTheDocument()
       expect(iconContainer?.querySelector('svg')).toBeInTheDocument()
     })
@@ -313,9 +256,7 @@ describe('UIForgeVideoPreview', () => {
     it('does not call onClick when non-interactive', async () => {
       const user = userEvent.setup()
       const handleClick = vi.fn()
-      const { container } = render(
-        <UIForgeVideoPreview title="Preview Video" />
-      )
+      const { container } = render(<UIForgeVideoPreview title="Preview Video" />)
 
       const div = container.querySelector('.uiforge-video-preview')
       if (div) {

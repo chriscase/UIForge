@@ -177,6 +177,21 @@ div.uiforge-video-preview {
   }
 }
 
+/* Error state */
+.uiforge-video__error {
+  padding: 2rem;
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #991b1b;
+  text-align: center;
+}
+
+.uiforge-video__error p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
 /* Responsive adjustments */
 @media (max-width: 640px) {
   .uiforge-video__title {
