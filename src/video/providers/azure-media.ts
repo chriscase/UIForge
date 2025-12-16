@@ -17,7 +17,8 @@ export const azureMediaProvider: VideoProvider = {
       const urlObj = new URL(url)
 
       // Azure Media Services URLs: ACCOUNT.streaming.media.azure.net/ASSET_ID/manifest
-      if (urlObj.hostname.includes('.streaming.media.azure.net')) {
+      // Check hostname ends with the domain to prevent subdomain attacks
+      if (urlObj.hostname.endsWith('.streaming.media.azure.net')) {
         const pathParts = urlObj.pathname.split('/')
         if (pathParts.length >= 2) {
           return `${urlObj.hostname}:${pathParts[1]}`

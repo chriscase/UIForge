@@ -18,7 +18,13 @@ export const cloudflareProvider: VideoProvider = {
       const hostname = urlObj.hostname
 
       // iframe.videodelivery.net/VIDEO_ID or customer-ACCOUNT_ID.cloudflarestream.com/VIDEO_ID/iframe
-      if (hostname.includes('videodelivery.net') || hostname.includes('cloudflarestream.com')) {
+      // Validate exact domain match or subdomain
+      const isVideoDelivery =
+        hostname === 'videodelivery.net' || hostname.endsWith('.videodelivery.net')
+      const isCloudflareStream =
+        hostname === 'cloudflarestream.com' || hostname.endsWith('.cloudflarestream.com')
+
+      if (isVideoDelivery || isCloudflareStream) {
         const videoMatch = urlObj.pathname.match(/\/([a-zA-Z0-9]+)(?:\/|$)/)
         if (videoMatch) {
           return videoMatch[1]

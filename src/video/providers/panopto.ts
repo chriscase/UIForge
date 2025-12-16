@@ -18,7 +18,10 @@ export const panoptoProvider: VideoProvider = {
       const hostname = urlObj.hostname
 
       // Panopto URLs: subdomain.panopto.com/Panopto/Pages/Viewer.aspx?id=SESSION_ID
-      if (hostname.includes('panopto.com')) {
+      // Validate exact domain match or subdomain
+      const isPanopto = hostname === 'panopto.com' || hostname.endsWith('.panopto.com')
+
+      if (isPanopto) {
         const sessionId = urlObj.searchParams.get('id')
         if (sessionId) {
           const subdomain = hostname.split('.')[0]
