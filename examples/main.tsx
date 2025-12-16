@@ -34,8 +34,12 @@ function Router() {
   }
 }
 
+export default function App() {
+  return <Router />
+}
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Router />
+    <App />
   </React.StrictMode>
 )

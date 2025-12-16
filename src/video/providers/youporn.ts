@@ -1,4 +1,4 @@
-import { VideoProvider, EmbedOptions } from './types'
+import { VideoProvider } from './types'
 
 /**
  * YouPorn video provider
@@ -33,7 +33,7 @@ export const youpornProvider: VideoProvider = {
     }
   },
 
-  getEmbedUrl: (videoId: string, _options: EmbedOptions = {}): string => {
+  getEmbedUrl: (videoId: string): string => {
     return `https://www.youporn.com/embed/${videoId}`
   },
 }

@@ -1,4 +1,4 @@
-import { VideoProvider, EmbedOptions } from './types'
+import { VideoProvider } from './types'
 
 /**
  * Kaltura video provider
@@ -33,7 +33,7 @@ export const kalturaProvider: VideoProvider = {
     }
   },
 
-  getEmbedUrl: (videoId: string, _options: EmbedOptions = {}): string => {
+  getEmbedUrl: (videoId: string): string => {
     // videoId format: PARTNER_ID:UI_CONF_ID:ENTRY_ID
     // Use pipe as separator to avoid conflicts with colons in IDs
     const parts = videoId.split(':')

@@ -1,4 +1,4 @@
-import { VideoProvider, EmbedOptions } from './types'
+import { VideoProvider } from './types'
 
 /**
  * SpankBang video provider
@@ -33,7 +33,7 @@ export const spankbangProvider: VideoProvider = {
     }
   },
 
-  getEmbedUrl: (videoId: string, _options: EmbedOptions = {}): string => {
+  getEmbedUrl: (videoId: string): string => {
     return `https://spankbang.com/${videoId}/embed/`
   },
 }

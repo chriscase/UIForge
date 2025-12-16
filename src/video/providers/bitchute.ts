@@ -1,4 +1,4 @@
-import { VideoProvider, EmbedOptions } from './types'
+import { VideoProvider } from './types'
 
 /**
  * BitChute video provider
@@ -33,7 +33,7 @@ export const bitchuteProvider: VideoProvider = {
     }
   },
 
-  getEmbedUrl: (videoId: string, _options: EmbedOptions = {}): string => {
+  getEmbedUrl: (videoId: string): string => {
     return `https://www.bitchute.com/embed/${videoId}/`
   },
 }

@@ -1,4 +1,4 @@
-import { VideoProvider, EmbedOptions } from './types'
+import { VideoProvider } from './types'
 
 /**
  * XHamster video provider
@@ -33,7 +33,7 @@ export const xhamsterProvider: VideoProvider = {
     }
   },
 
-  getEmbedUrl: (videoId: string, _options: EmbedOptions = {}): string => {
+  getEmbedUrl: (videoId: string): string => {
     return `https://xhamster.com/xembed.php?video=${videoId}`
   },
 }

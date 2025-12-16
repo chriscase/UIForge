@@ -65,7 +65,7 @@ describe('UIForgeComboBox', () => {
   describe('Static Options', () => {
     it('opens dropdown on click', async () => {
       const user = userEvent.setup()
-      const { container } = render(<UIForgeComboBox options={basicOptions} searchable={false} />)
+      render(<UIForgeComboBox options={basicOptions} searchable={false} />)
 
       const combobox = screen.getByRole('combobox')
       combobox.focus()
@@ -80,9 +80,7 @@ describe('UIForgeComboBox', () => {
     it('selects option on click', async () => {
       const user = userEvent.setup()
       const handleChange = vi.fn()
-      const { container } = render(
-        <UIForgeComboBox options={basicOptions} onChange={handleChange} searchable={false} />
-      )
+      render(<UIForgeComboBox options={basicOptions} onChange={handleChange} searchable={false} />)
 
       const combobox = screen.getByRole('combobox')
       combobox.focus()
@@ -99,7 +97,7 @@ describe('UIForgeComboBox', () => {
 
     it('closes dropdown after selection', async () => {
       const user = userEvent.setup()
-      const { container } = render(<UIForgeComboBox options={basicOptions} searchable={false} />)
+      render(<UIForgeComboBox options={basicOptions} searchable={false} />)
 
       const combobox = screen.getByRole('combobox')
       combobox.focus()
@@ -115,9 +113,7 @@ describe('UIForgeComboBox', () => {
   describe('Icons', () => {
     it('renders icons in options', async () => {
       const user = userEvent.setup()
-      const { container } = render(
-        <UIForgeComboBox options={optionsWithIcons} searchable={false} />
-      )
+      render(<UIForgeComboBox options={optionsWithIcons} searchable={false} />)
 
       const combobox = screen.getByRole('combobox')
       combobox.focus()
@@ -157,9 +153,7 @@ describe('UIForgeComboBox', () => {
   describe('Hierarchical Options', () => {
     it('renders hierarchical options with indentation', async () => {
       const user = userEvent.setup()
-      const { container } = render(
-        <UIForgeComboBox options={hierarchicalOptions} searchable={false} />
-      )
+      render(<UIForgeComboBox options={hierarchicalOptions} searchable={false} />)
 
       const combobox = screen.getByRole('combobox')
       combobox.focus()
@@ -174,7 +168,7 @@ describe('UIForgeComboBox', () => {
     it('does not select disabled header options', async () => {
       const user = userEvent.setup()
       const handleChange = vi.fn()
-      const { container } = render(
+      render(
         <UIForgeComboBox options={hierarchicalOptions} onChange={handleChange} searchable={false} />
       )
 
@@ -191,7 +185,7 @@ describe('UIForgeComboBox', () => {
     it('selects nested options', async () => {
       const user = userEvent.setup()
       const handleChange = vi.fn()
-      const { container } = render(
+      render(
         <UIForgeComboBox options={hierarchicalOptions} onChange={handleChange} searchable={false} />
       )
 
@@ -299,7 +293,7 @@ describe('UIForgeComboBox', () => {
 
     it('closes on Escape key', async () => {
       const user = userEvent.setup()
-      const { container } = render(<UIForgeComboBox options={basicOptions} searchable={false} />)
+      render(<UIForgeComboBox options={basicOptions} searchable={false} />)
 
       const combobox = screen.getByRole('combobox')
       combobox.focus()
@@ -517,8 +511,8 @@ describe('UIForgeComboBox', () => {
 
     it('cancels stale results using AbortController when a newer search starts', async () => {
       const user = userEvent.setup()
-      const resolves: Array<(v: any) => void> = []
-      const onSearch = vi.fn().mockImplementation((text, signal) => {
+      const resolves: Array<(v: ComboBoxOption[]) => void> = []
+      const onSearch = vi.fn().mockImplementation((): Promise<ComboBoxOption[]> => {
         return new Promise((resolve) => {
           resolves.push(resolve)
         })
@@ -603,7 +597,7 @@ describe('UIForgeComboBox', () => {
       expect(onSearch).toHaveBeenCalledTimes(1)
 
       // Clear the cache via the previously provided callback
-      clearFn && clearFn()
+      clearFn?.()
       // Open again and search — this should trigger onSearch again
       fireEvent.keyDown(combobox, { key: 'ArrowDown' })
       await waitFor(() => expect(screen.getByRole('listbox')).toBeInTheDocument())
@@ -676,7 +670,7 @@ describe('UIForgeComboBox', () => {
 
       await waitFor(() => expect(screen.getByText('OldResult')).toBeInTheDocument())
       // Now force a refresh
-      forceRefreshFn && forceRefreshFn()
+      forceRefreshFn?.()
 
       await waitFor(() => expect(screen.getByText('NewResult')).toBeInTheDocument())
     })
@@ -685,9 +679,7 @@ describe('UIForgeComboBox', () => {
   describe('Loading State', () => {
     it('shows loading indicator when loading prop is true', async () => {
       const user = userEvent.setup()
-      const { container } = render(
-        <UIForgeComboBox options={basicOptions} loading searchable={false} />
-      )
+      render(<UIForgeComboBox options={basicOptions} loading searchable={false} />)
 
       const combobox = screen.getByRole('combobox')
       combobox.focus()
@@ -704,7 +696,7 @@ describe('UIForgeComboBox', () => {
         <div data-testid="custom-option">Custom: {option.label}</div>
       )
 
-      const { container } = render(
+      render(
         <UIForgeComboBox options={basicOptions} renderOption={renderOption} searchable={false} />
       )
 
@@ -729,7 +721,7 @@ describe('UIForgeComboBox', () => {
   describe('Click Outside', () => {
     it('closes dropdown when clicking outside', async () => {
       const user = userEvent.setup()
-      const { container } = render(
+      render(
         <div>
           <UIForgeComboBox options={basicOptions} searchable={false} />
           <button>Outside</button>
@@ -762,7 +754,7 @@ describe('UIForgeComboBox', () => {
 
     it('updates aria-expanded when opened', async () => {
       const user = userEvent.setup()
-      const { container } = render(<UIForgeComboBox options={basicOptions} searchable={false} />)
+      render(<UIForgeComboBox options={basicOptions} searchable={false} />)
 
       const combobox = screen.getByRole('combobox')
       combobox.focus()
@@ -773,9 +765,7 @@ describe('UIForgeComboBox', () => {
 
     it('marks selected option with aria-selected', async () => {
       const user = userEvent.setup()
-      const { container } = render(
-        <UIForgeComboBox options={basicOptions} value={1} searchable={false} />
-      )
+      render(<UIForgeComboBox options={basicOptions} value={1} searchable={false} />)
 
       const combobox = screen.getByRole('combobox')
       combobox.focus()
@@ -788,9 +778,7 @@ describe('UIForgeComboBox', () => {
 
     it('marks disabled options with aria-disabled', async () => {
       const user = userEvent.setup()
-      const { container } = render(
-        <UIForgeComboBox options={hierarchicalOptions} searchable={false} />
-      )
+      render(<UIForgeComboBox options={hierarchicalOptions} searchable={false} />)
 
       const combobox = screen.getByRole('combobox')
       combobox.focus()

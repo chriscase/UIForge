@@ -1,4 +1,4 @@
-import { VideoProvider, EmbedOptions } from './types'
+import { VideoProvider } from './types'
 
 /**
  * Panopto video provider
@@ -35,7 +35,7 @@ export const panoptoProvider: VideoProvider = {
     }
   },
 
-  getEmbedUrl: (videoId: string, _options: EmbedOptions = {}): string => {
+  getEmbedUrl: (videoId: string): string => {
     // videoId format: SUBDOMAIN:SESSION_ID
     const parts = videoId.split(':')
     if (parts.length < 2) {

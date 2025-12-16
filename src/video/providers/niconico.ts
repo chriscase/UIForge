@@ -1,4 +1,4 @@
-import { VideoProvider, EmbedOptions } from './types'
+import { VideoProvider } from './types'
 
 /**
  * Niconico video provider
@@ -33,7 +33,7 @@ export const niconicoProvider: VideoProvider = {
     }
   },
 
-  getEmbedUrl: (videoId: string, _options: EmbedOptions = {}): string => {
+  getEmbedUrl: (videoId: string): string => {
     return `https://embed.nicovideo.jp/watch/${videoId}`
   },
 }

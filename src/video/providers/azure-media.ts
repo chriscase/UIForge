@@ -1,4 +1,4 @@
-import { VideoProvider, EmbedOptions } from './types'
+import { VideoProvider } from './types'
 
 /**
  * Azure Media Services provider
@@ -31,7 +31,7 @@ export const azureMediaProvider: VideoProvider = {
     }
   },
 
-  getEmbedUrl: (videoId: string, _options: EmbedOptions = {}): string => {
+  getEmbedUrl: (videoId: string): string => {
     // videoId format: HOSTNAME:ASSET_ID
     const parts = videoId.split(':')
     if (parts.length < 2) {

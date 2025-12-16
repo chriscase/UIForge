@@ -279,7 +279,7 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
             } else {
               results = await (onSearchRef.current
                 ? onSearchRef.current(searchText, signal)
-                : onSearch?.(searchText, signal) ?? [])
+                : (onSearch?.(searchText, signal) ?? []))
               if (!signal.aborted && enableCacheRef.current) {
                 cacheRef.current.set(cacheKey, { data: results, timestamp: now })
               }
@@ -297,7 +297,7 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
         })()
       })
     }
-  }, [onClearCache, onForceRefresh, searchText])
+  }, [onClearCache, onForceRefresh, searchText, onSearch])
 
   // Handle async search with debounce
   useEffect(() => {
@@ -365,7 +365,7 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
       setFilteredOptions(filterOptions(options, searchText))
     }
     prevIsOpenRef.current = isOpen
-  }, [searchText, isOpen, options, debounceMs, filterOptions, refreshOnOpen])
+  }, [searchText, isOpen, options, debounceMs, filterOptions, refreshOnOpen, onSearch])
 
   // Initialize filtered options
   useEffect(() => {

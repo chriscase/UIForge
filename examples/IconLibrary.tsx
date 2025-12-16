@@ -1,13 +1,5 @@
 import { useState } from 'react'
 import {
-  ActivityIcons,
-  UIIcons,
-  WellnessIcons,
-  FitnessIcons,
-  TechIcons,
-  SpaceIcons,
-  BusinessIcons,
-  DevProcessIcons,
   CommitIcon,
   PullRequestIcon,
   IssueIcon,
@@ -62,7 +54,15 @@ interface IconLibraryProps {
 interface IconInfo {
   name: string
   component: React.FC<{ size?: number; className?: string; color?: string }>
-  category: 'activity' | 'ui' | 'wellness' | 'fitness' | 'tech' | 'space' | 'business' | 'devprocess'
+  category:
+    | 'activity'
+    | 'ui'
+    | 'wellness'
+    | 'fitness'
+    | 'tech'
+    | 'space'
+    | 'business'
+    | 'devprocess'
   description: string
 }
 
@@ -394,9 +394,7 @@ const IconLibrary: React.FC<IconLibraryProps> = ({ onNavigate }) => {
       <main className="icon-library-main">
         <section className="icon-category">
           <h2>Activity Icons</h2>
-          <p className="category-description">
-            Icons representing Git and development activities
-          </p>
+          <p className="category-description">Icons representing Git and development activities</p>
           <div className="icon-grid">
             {activityIcons.map((icon) => (
               <div
@@ -411,9 +409,7 @@ const IconLibrary: React.FC<IconLibraryProps> = ({ onNavigate }) => {
                 <div className="icon-info">
                   <h3>{icon.name}</h3>
                   <p>{icon.description}</p>
-                  {copiedIcon === icon.name && (
-                    <span className="copied-indicator">✓ Copied!</span>
-                  )}
+                  {copiedIcon === icon.name && <span className="copied-indicator">✓ Copied!</span>}
                 </div>
               </div>
             ))}
@@ -437,9 +433,7 @@ const IconLibrary: React.FC<IconLibraryProps> = ({ onNavigate }) => {
                 <div className="icon-info">
                   <h3>{icon.name}</h3>
                   <p>{icon.description}</p>
-                  {copiedIcon === icon.name && (
-                    <span className="copied-indicator">✓ Copied!</span>
-                  )}
+                  {copiedIcon === icon.name && <span className="copied-indicator">✓ Copied!</span>}
                 </div>
               </div>
             ))}
@@ -448,7 +442,9 @@ const IconLibrary: React.FC<IconLibraryProps> = ({ onNavigate }) => {
 
         <section className="icon-category">
           <h2>Wellness Icons</h2>
-          <p className="category-description">Icons for tai chi, meditation, and wellness activities</p>
+          <p className="category-description">
+            Icons for tai chi, meditation, and wellness activities
+          </p>
           <div className="icon-grid">
             {wellnessIcons.map((icon) => (
               <div
@@ -463,9 +459,7 @@ const IconLibrary: React.FC<IconLibraryProps> = ({ onNavigate }) => {
                 <div className="icon-info">
                   <h3>{icon.name}</h3>
                   <p>{icon.description}</p>
-                  {copiedIcon === icon.name && (
-                    <span className="copied-indicator">✓ Copied!</span>
-                  )}
+                  {copiedIcon === icon.name && <span className="copied-indicator">✓ Copied!</span>}
                 </div>
               </div>
             ))}
@@ -489,9 +483,7 @@ const IconLibrary: React.FC<IconLibraryProps> = ({ onNavigate }) => {
                 <div className="icon-info">
                   <h3>{icon.name}</h3>
                   <p>{icon.description}</p>
-                  {copiedIcon === icon.name && (
-                    <span className="copied-indicator">✓ Copied!</span>
-                  )}
+                  {copiedIcon === icon.name && <span className="copied-indicator">✓ Copied!</span>}
                 </div>
               </div>
             ))}
@@ -515,9 +507,7 @@ const IconLibrary: React.FC<IconLibraryProps> = ({ onNavigate }) => {
                 <div className="icon-info">
                   <h3>{icon.name}</h3>
                   <p>{icon.description}</p>
-                  {copiedIcon === icon.name && (
-                    <span className="copied-indicator">✓ Copied!</span>
-                  )}
+                  {copiedIcon === icon.name && <span className="copied-indicator">✓ Copied!</span>}
                 </div>
               </div>
             ))}
@@ -541,9 +531,7 @@ const IconLibrary: React.FC<IconLibraryProps> = ({ onNavigate }) => {
                 <div className="icon-info">
                   <h3>{icon.name}</h3>
                   <p>{icon.description}</p>
-                  {copiedIcon === icon.name && (
-                    <span className="copied-indicator">✓ Copied!</span>
-                  )}
+                  {copiedIcon === icon.name && <span className="copied-indicator">✓ Copied!</span>}
                 </div>
               </div>
             ))}
@@ -567,9 +555,7 @@ const IconLibrary: React.FC<IconLibraryProps> = ({ onNavigate }) => {
                 <div className="icon-info">
                   <h3>{icon.name}</h3>
                   <p>{icon.description}</p>
-                  {copiedIcon === icon.name && (
-                    <span className="copied-indicator">✓ Copied!</span>
-                  )}
+                  {copiedIcon === icon.name && <span className="copied-indicator">✓ Copied!</span>}
                 </div>
               </div>
             ))}
@@ -593,9 +579,7 @@ const IconLibrary: React.FC<IconLibraryProps> = ({ onNavigate }) => {
                 <div className="icon-info">
                   <h3>{icon.name}</h3>
                   <p>{icon.description}</p>
-                  {copiedIcon === icon.name && (
-                    <span className="copied-indicator">✓ Copied!</span>
-                  )}
+                  {copiedIcon === icon.name && <span className="copied-indicator">✓ Copied!</span>}
                 </div>
               </div>
             ))}

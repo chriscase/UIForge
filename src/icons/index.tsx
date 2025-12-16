@@ -200,10 +200,7 @@ export const TaiChiIcon: React.FC<IconProps> = ({
   <svg width={size} height={size} viewBox="0 0 16 16" fill="none" className={className}>
     {/* Yin-Yang symbol for tai chi */}
     <circle cx="8" cy="8" r="7" stroke={color} strokeWidth="1.5" />
-    <path
-      d="M8 1C11.866 1 15 4.134 15 8C15 11.866 11.866 15 8 15"
-      fill={color}
-    />
+    <path d="M8 1C11.866 1 15 4.134 15 8C15 11.866 11.866 15 8 15" fill={color} />
     <circle cx="8" cy="5" r="2" fill={color === 'currentColor' ? 'white' : '#fff'} />
     <circle cx="8" cy="11" r="2" fill={color} />
     <circle cx="8" cy="5" r="0.5" fill={color} />
@@ -345,7 +342,15 @@ export const TerminalIcon: React.FC<IconProps> = ({
       strokeLinejoin="round"
       fill="none"
     />
-    <line x1="8" y1="10.5" x2="12" y2="10.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+    <line
+      x1="8"
+      y1="10.5"
+      x2="12"
+      y2="10.5"
+      stroke="white"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
   </svg>
 )
 
@@ -356,7 +361,12 @@ export const BugIcon: React.FC<IconProps> = ({
 }) => (
   <svg width={size} height={size} viewBox="0 0 16 16" fill={color} className={className}>
     <path d="M4.75 7.5a3.25 3.25 0 116.5 0v3.75a3.25 3.25 0 01-6.5 0V7.5z" />
-    <path d="M5.75 7.5c0-.69.56-1.25 1.25-1.25h2c.69 0 1.25.56 1.25 1.25M4 5.5L2 4M12 5.5L14 4M4 9H1M15 9H12M4 12L2 13.5M12 12L14 13.5" stroke={color} strokeWidth="1.5" fill="none" />
+    <path
+      d="M5.75 7.5c0-.69.56-1.25 1.25-1.25h2c.69 0 1.25.56 1.25 1.25M4 5.5L2 4M12 5.5L14 4M4 9H1M15 9H12M4 12L2 13.5M12 12L14 13.5"
+      stroke={color}
+      strokeWidth="1.5"
+      fill="none"
+    />
     <ellipse cx="8" cy="4" rx="2.5" ry="1.5" />
   </svg>
 )
@@ -390,7 +400,12 @@ export const SatelliteIcon: React.FC<IconProps> = ({
 }) => (
   <svg width={size} height={size} viewBox="0 0 16 16" fill={color} className={className}>
     <rect x="6" y="6" width="4" height="4" rx="0.5" />
-    <path d="M4 4L2 2M4 12L2 14M12 4L14 2M12 12L14 14" strokeWidth="1.5" stroke={color} strokeLinecap="round" />
+    <path
+      d="M4 4L2 2M4 12L2 14M12 4L14 2M12 12L14 14"
+      strokeWidth="1.5"
+      stroke={color}
+      strokeLinecap="round"
+    />
     <rect x="1" y="1" width="1.5" height="1.5" />
     <rect x="13.5" y="1" width="1.5" height="1.5" />
     <rect x="1" y="13.5" width="1.5" height="1.5" />
@@ -422,7 +437,16 @@ export const PlanetIcon: React.FC<IconProps> = ({
 }) => (
   <svg width={size} height={size} viewBox="0 0 16 16" fill={color} className={className}>
     <circle cx="8" cy="8" r="5" />
-    <ellipse cx="8" cy="8" rx="8" ry="2.5" fill="none" stroke={color} strokeWidth="1" opacity="0.6" />
+    <ellipse
+      cx="8"
+      cy="8"
+      rx="8"
+      ry="2.5"
+      fill="none"
+      stroke={color}
+      strokeWidth="1"
+      opacity="0.6"
+    />
     <circle cx="6" cy="6" r="1" opacity="0.4" fill={color === 'currentColor' ? 'white' : '#fff'} />
   </svg>
 )
@@ -525,7 +549,13 @@ export const TestingIcon: React.FC<IconProps> = ({
     {/* Beaker/flask for testing */}
     <path d="M6 1h4v1H6V1zM5.5 3h5L13 13c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2L5.5 3z" />
     <circle cx="7" cy="8" r="1" fill={color === 'currentColor' ? 'white' : '#fff'} opacity="0.5" />
-    <circle cx="9" cy="10" r="0.75" fill={color === 'currentColor' ? 'white' : '#fff'} opacity="0.5" />
+    <circle
+      cx="9"
+      cy="10"
+      r="0.75"
+      fill={color === 'currentColor' ? 'white' : '#fff'}
+      opacity="0.5"
+    />
   </svg>
 )
 
@@ -536,7 +566,10 @@ export const DeploymentIcon: React.FC<IconProps> = ({
 }) => (
   <svg width={size} height={size} viewBox="0 0 16 16" fill={color} className={className}>
     <path d="M8 0L0 3v5c0 5 3 7.5 8 8 5-.5 8-3 8-8V3L8 0z" />
-    <path d="M7 10L4.5 7.5l1-1L7 8l3.5-3.5 1 1L7 10z" fill={color === 'currentColor' ? 'white' : '#fff'} />
+    <path
+      d="M7 10L4.5 7.5l1-1L7 8l3.5-3.5 1 1L7 10z"
+      fill={color === 'currentColor' ? 'white' : '#fff'}
+    />
   </svg>
 )
 
@@ -548,10 +581,32 @@ export const ReviewIcon: React.FC<IconProps> = ({
   <svg width={size} height={size} viewBox="0 0 16 16" fill={color} className={className}>
     {/* Magnifying glass over document */}
     <rect x="1" y="1" width="9" height="11" rx="1" />
-    <line x1="3" y1="4" x2="7" y2="4" stroke={color === 'currentColor' ? 'white' : '#fff'} strokeWidth="1" />
-    <line x1="3" y1="6.5" x2="7" y2="6.5" stroke={color === 'currentColor' ? 'white' : '#fff'} strokeWidth="1" />
+    <line
+      x1="3"
+      y1="4"
+      x2="7"
+      y2="4"
+      stroke={color === 'currentColor' ? 'white' : '#fff'}
+      strokeWidth="1"
+    />
+    <line
+      x1="3"
+      y1="6.5"
+      x2="7"
+      y2="6.5"
+      stroke={color === 'currentColor' ? 'white' : '#fff'}
+      strokeWidth="1"
+    />
     <circle cx="11" cy="11" r="3" fill="none" stroke={color} strokeWidth="1.5" />
-    <line x1="13" y1="13" x2="15.5" y2="15.5" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+    <line
+      x1="13"
+      y1="13"
+      x2="15.5"
+      y2="15.5"
+      stroke={color}
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
   </svg>
 )
 
@@ -565,70 +620,3 @@ export const BuildIcon: React.FC<IconProps> = ({
     <path d="M4.48 7.27c.26.26 1.28 1.33 1.28 1.33l.56-.58-.88-.91 1.69-1.8s-.76-.74-.43-.45c.32-1.19.03-2.51-.87-3.44C4.93.5 3.66.2 2.52.51l1.93 2-.51 1.96-1.89.52-1.93-2C-.19 4.17.1 5.48 1 6.4c.94.98 2.29 1.26 3.48.87zm6.44 1.94l-2.33 2.3 3.84 3.98c.31.33.73.49 1.14.49.41 0 .82-.16 1.14-.49.63-.65.63-1.7 0-2.35l-3.79-3.93zM16 2.53L13.55 0 6.33 7.46l.88.91-4.31 4.46-.99.53-1.39 2.27.35.37 2.2-1.44.51-1.02L7.9 9.08l.88.91L16 2.53z" />
   </svg>
 )
-
-// Export a map for easy lookup
-export const ActivityIcons = {
-  commit: CommitIcon,
-  pr: PullRequestIcon,
-  issue: IssueIcon,
-  comment: CommentIcon,
-  star: StarIcon,
-  fork: ForkIcon,
-  merge: MergeIcon,
-  release: ReleaseIcon,
-  deploy: DeployIcon,
-}
-
-export const UIIcons = {
-  unfold: UnfoldIcon,
-  fold: FoldIcon,
-  close: CloseIcon,
-  check: CheckIcon,
-}
-
-export const WellnessIcons = {
-  taichi: TaiChiIcon,
-  meditation: MeditationIcon,
-  yoga: YogaIcon,
-}
-
-export const FitnessIcons = {
-  dumbbell: DumbbellIcon,
-  running: RunningIcon,
-  heartrate: HeartRateIcon,
-  strength: StrengthIcon,
-}
-
-export const TechIcons = {
-  server: ServerIcon,
-  database: DatabaseIcon,
-  cloud: CloudIcon,
-  terminal: TerminalIcon,
-  bug: BugIcon,
-  code: CodeIcon,
-}
-
-export const SpaceIcons = {
-  rocket: RocketIcon,
-  satellite: SatelliteIcon,
-  alien: AlienIcon,
-  planet: PlanetIcon,
-  telescope: TelescopeIcon,
-}
-
-export const BusinessIcons = {
-  chart: ChartIcon,
-  meeting: MeetingIcon,
-  document: DocumentIcon,
-  calendar: CalendarIcon,
-  briefcase: BriefcaseIcon,
-}
-
-export const DevProcessIcons = {
-  gitbranch: GitBranchIcon,
-  prdraft: PullRequestDraftIcon,
-  testing: TestingIcon,
-  deployment: DeploymentIcon,
-  review: ReviewIcon,
-  build: BuildIcon,
-}

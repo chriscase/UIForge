@@ -1,4 +1,4 @@
-import { VideoProvider, EmbedOptions } from './types'
+import { VideoProvider } from './types'
 
 /**
  * AWS IVS (Interactive Video Service) provider
@@ -28,7 +28,7 @@ export const awsIvsProvider: VideoProvider = {
     }
   },
 
-  getEmbedUrl: (videoId: string, _options: EmbedOptions = {}): string => {
+  getEmbedUrl: (videoId: string): string => {
     // Note: AWS IVS typically requires custom player implementation
     // This is a simplified version
     return `https://${videoId}.channel.ivs.aws/stream.m3u8`

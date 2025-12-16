@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './Home.css'
 
 interface ComponentCardProps {
@@ -25,9 +24,7 @@ const ComponentCard: React.FC<ComponentCardProps> = ({
     </div>
     <p className="component-description">{description}</p>
     <div className="component-preview">{preview}</div>
-    <button className="component-card-button">
-      View Details →
-    </button>
+    <button className="component-card-button">View Details →</button>
   </div>
 )
 
@@ -126,9 +123,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                   <span>⚛️ React</span>
                   <span className="preview-dropdown">▼</span>
                 </div>
-                <div className="preview-combobox-hint">
-                  Searchable dropdown with icons
-                </div>
+                <div className="preview-combobox-hint">Searchable dropdown with icons</div>
               </div>
             }
             onNavigate={onNavigate}

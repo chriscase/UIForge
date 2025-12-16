@@ -1,4 +1,4 @@
-import { VideoProvider, EmbedOptions } from './types'
+import { VideoProvider } from './types'
 
 /**
  * Dropbox video provider
@@ -28,7 +28,7 @@ export const dropboxProvider: VideoProvider = {
     }
   },
 
-  getEmbedUrl: (videoId: string, _options: EmbedOptions = {}): string => {
+  getEmbedUrl: (videoId: string): string => {
     // Dropbox uses the full URL as videoId
     // Convert to raw playback URL
     try {

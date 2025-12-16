@@ -1,4 +1,4 @@
-import { VideoProvider, EmbedOptions } from './types'
+import { VideoProvider } from './types'
 
 /**
  * X (Twitter) video provider
@@ -33,7 +33,7 @@ export const twitterProvider: VideoProvider = {
     }
   },
 
-  getEmbedUrl: (videoId: string, _options: EmbedOptions = {}): string => {
+  getEmbedUrl: (videoId: string): string => {
     // Twitter/X embeds require the full tweet URL, which we don't have from just the ID
     // This is a limitation - ideally we'd store the full URL
     return `https://platform.twitter.com/embed/Tweet.html?id=${videoId}`
