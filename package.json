@@ -1,6 +1,6 @@
 {
   "name": "@appforgeapps/uiforge",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A rich user interface library for ReactJS developers written by a seasoned user interface developer who loves working with ReactJS.",
   "type": "module",
   "main": "./dist/uiforge.cjs",
