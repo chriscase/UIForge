@@ -163,11 +163,7 @@ const PlayIcon: React.FC = () => (
     className="uiforge-video__play-icon"
   >
     <circle cx="32" cy="32" r="32" fill="white" fillOpacity="0.9" />
-    <path
-      d="M26 20L46 32L26 44V20Z"
-      fill="currentColor"
-      style={{ color: '#3b82f6' }}
-    />
+    <path d="M26 20L46 32L26 44V20Z" fill="currentColor" style={{ color: '#3b82f6' }} />
   </svg>
 )
 
@@ -414,11 +410,7 @@ export const UIForgeVideo: React.FC<UIForgeVideoProps> = ({
         {!isPlaying ? (
           <>
             {thumbnail && (
-              <img
-                src={thumbnail}
-                alt={displayTitle}
-                className={`${baseClass}__thumbnail`}
-              />
+              <img src={thumbnail} alt={displayTitle} className={`${baseClass}__thumbnail`} />
             )}
             <button
               className={`${baseClass}__overlay`}
@@ -494,9 +486,7 @@ export const UIForgeVideoPreview: React.FC<UIForgeVideoPreviewProps> = ({
 
   return (
     <Component className={classes} {...interactiveProps}>
-      <div className={`${baseClass}__icon-container`}>
-        {icon || <VideoIcon />}
-      </div>
+      <div className={`${baseClass}__icon-container`}>{icon || <VideoIcon />}</div>
       <span className={`${baseClass}__title`}>{title}</span>
     </Component>
   )

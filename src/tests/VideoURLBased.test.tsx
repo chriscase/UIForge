@@ -76,9 +76,7 @@ describe('UIForgeVideo - URL-based functionality', () => {
     })
 
     it('renders video from Google Drive URL', () => {
-      render(
-        <UIForgeVideo url="https://drive.google.com/file/d/1ABCdef123456/view" />
-      )
+      render(<UIForgeVideo url="https://drive.google.com/file/d/1ABCdef123456/view" />)
       const playButton = screen.getByRole('button', { name: /play video/i })
       expect(playButton).toBeInTheDocument()
     })
@@ -106,12 +104,7 @@ describe('UIForgeVideo - URL-based functionality', () => {
   describe('Playback options', () => {
     it('passes autoplay option to embed URL', async () => {
       const user = userEvent.setup()
-      render(
-        <UIForgeVideo
-          url="https://www.youtube.com/watch?v=test123"
-          autoplay={true}
-        />
-      )
+      render(<UIForgeVideo url="https://www.youtube.com/watch?v=test123" autoplay={true} />)
 
       const playButton = screen.getByRole('button', { name: /play video/i })
       await user.click(playButton)
@@ -122,9 +115,7 @@ describe('UIForgeVideo - URL-based functionality', () => {
 
     it('passes muted option to embed URL', async () => {
       const user = userEvent.setup()
-      render(
-        <UIForgeVideo url="https://www.youtube.com/watch?v=test123" muted={true} />
-      )
+      render(<UIForgeVideo url="https://www.youtube.com/watch?v=test123" muted={true} />)
 
       const playButton = screen.getByRole('button', { name: /play video/i })
       await user.click(playButton)
@@ -135,9 +126,7 @@ describe('UIForgeVideo - URL-based functionality', () => {
 
     it('passes loop option to embed URL', async () => {
       const user = userEvent.setup()
-      render(
-        <UIForgeVideo url="https://www.youtube.com/watch?v=test123" loop={true} />
-      )
+      render(<UIForgeVideo url="https://www.youtube.com/watch?v=test123" loop={true} />)
 
       const playButton = screen.getByRole('button', { name: /play video/i })
       await user.click(playButton)
@@ -152,35 +141,23 @@ describe('UIForgeVideo - URL-based functionality', () => {
       const { container } = render(
         <UIForgeVideo url="https://www.youtube.com/watch?v=test123" width="640px" />
       )
-      const playerContainer = container.querySelector(
-        '.uiforge-video__player-container'
-      )
+      const playerContainer = container.querySelector('.uiforge-video__player-container')
       expect(playerContainer).toHaveStyle({ width: '640px' })
     })
 
     it('applies custom height', () => {
       const { container } = render(
-        <UIForgeVideo
-          url="https://www.youtube.com/watch?v=test123"
-          height="360px"
-        />
+        <UIForgeVideo url="https://www.youtube.com/watch?v=test123" height="360px" />
       )
-      const playerContainer = container.querySelector(
-        '.uiforge-video__player-container'
-      )
+      const playerContainer = container.querySelector('.uiforge-video__player-container')
       expect(playerContainer).toHaveStyle({ height: '360px' })
     })
 
     it('applies custom aspect ratio', () => {
       const { container } = render(
-        <UIForgeVideo
-          url="https://www.youtube.com/watch?v=test123"
-          aspectRatio="4:3"
-        />
+        <UIForgeVideo url="https://www.youtube.com/watch?v=test123" aspectRatio="4:3" />
       )
-      const playerContainer = container.querySelector(
-        '.uiforge-video__player-container'
-      )
+      const playerContainer = container.querySelector('.uiforge-video__player-container')
       expect(playerContainer).toHaveStyle({ aspectRatio: '4/3' })
     })
   })
@@ -189,12 +166,7 @@ describe('UIForgeVideo - URL-based functionality', () => {
     it('calls onPlay callback with provider name', async () => {
       const user = userEvent.setup()
       const handlePlay = vi.fn()
-      render(
-        <UIForgeVideo
-          url="https://www.youtube.com/watch?v=test123"
-          onPlay={handlePlay}
-        />
-      )
+      render(<UIForgeVideo url="https://www.youtube.com/watch?v=test123" onPlay={handlePlay} />)
 
       const playButton = screen.getByRole('button', { name: /play video/i })
       await user.click(playButton)
@@ -205,12 +177,7 @@ describe('UIForgeVideo - URL-based functionality', () => {
     it('calls onReady callback when video loads', async () => {
       const user = userEvent.setup()
       const handleReady = vi.fn()
-      render(
-        <UIForgeVideo
-          url="https://vimeo.com/123456789"
-          onReady={handleReady}
-        />
-      )
+      render(<UIForgeVideo url="https://vimeo.com/123456789" onReady={handleReady} />)
 
       const playButton = screen.getByRole('button', { name: /play video/i })
       await user.click(playButton)
@@ -224,9 +191,7 @@ describe('UIForgeVideo - URL-based functionality', () => {
       const { container } = render(
         <UIForgeVideo url="https://pornhub.com/view_video.php?viewkey=abc123" />
       )
-      expect(
-        container.textContent?.includes('Adult content must be explicitly enabled')
-      ).toBe(true)
+      expect(container.textContent?.includes('Adult content must be explicitly enabled')).toBe(true)
     })
 
     it('allows adult content when explicitly enabled', () => {
@@ -259,10 +224,7 @@ describe('UIForgeVideo - URL-based functionality', () => {
 
     it('shows fallback for invalid URL', () => {
       render(
-        <UIForgeVideo
-          url="https://invalid.com/video"
-          fallback={<div>Video not supported</div>}
-        />
+        <UIForgeVideo url="https://invalid.com/video" fallback={<div>Video not supported</div>} />
       )
       expect(screen.getByText('Video not supported')).toBeInTheDocument()
     })
@@ -275,12 +237,7 @@ describe('UIForgeVideo - URL-based functionality', () => {
 
   describe('Title and description', () => {
     it('displays custom title', () => {
-      render(
-        <UIForgeVideo
-          title="My Custom Video"
-          url="https://www.youtube.com/watch?v=test123"
-        />
-      )
+      render(<UIForgeVideo title="My Custom Video" url="https://www.youtube.com/watch?v=test123" />)
       expect(screen.getByText('My Custom Video')).toBeInTheDocument()
     })
 

@@ -33,10 +33,7 @@ export type {
 } from './components/ActivityStream'
 
 export { UIForgeVideo, UIForgeVideoPreview } from './components/Video'
-export type {
-  UIForgeVideoProps,
-  UIForgeVideoPreviewProps,
-} from './components/Video'
+export type { UIForgeVideoProps, UIForgeVideoPreviewProps } from './components/Video'
 
 // Export video utilities and providers
 export {
@@ -47,11 +44,7 @@ export {
   videoProviders,
   providersByName,
 } from './video'
-export type {
-  VideoProvider,
-  EmbedOptions,
-  VideoProviderTier,
-} from './video'
+export type { VideoProvider, EmbedOptions, VideoProviderTier } from './video'
 
 // Export icon library
 export * from './icons'

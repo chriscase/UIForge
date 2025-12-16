@@ -121,9 +121,7 @@ describe('Video Provider Detection', () => {
 
     // Google Drive tests
     it('extracts Google Drive file ID', () => {
-      const result = extractVideoId(
-        'https://drive.google.com/file/d/1ABCdef123456/view'
-      )
+      const result = extractVideoId('https://drive.google.com/file/d/1ABCdef123456/view')
       expect(result).not.toBeNull()
       expect(result?.provider.name).toBe('google-drive')
       expect(result?.videoId).toBe('1ABCdef123456')
@@ -143,9 +141,7 @@ describe('Video Provider Detection', () => {
 
   describe('isAdultContent', () => {
     it('returns true for adult content providers', () => {
-      expect(isAdultContent('https://pornhub.com/view_video.php?viewkey=abc123')).toBe(
-        true
-      )
+      expect(isAdultContent('https://pornhub.com/view_video.php?viewkey=abc123')).toBe(true)
       expect(isAdultContent('https://youporn.com/watch/123/')).toBe(true)
       expect(isAdultContent('https://redtube.com/123')).toBe(true)
     })
@@ -248,13 +244,7 @@ describe('Video Provider Detection', () => {
     })
 
     it('has all Tier 5 adult content providers', () => {
-      const tier5Providers = [
-        'pornhub',
-        'youporn',
-        'redtube',
-        'xhamster',
-        'spankbang',
-      ]
+      const tier5Providers = ['pornhub', 'youporn', 'redtube', 'xhamster', 'spankbang']
 
       tier5Providers.forEach((name) => {
         expect(providersByName[name]).toBeDefined()

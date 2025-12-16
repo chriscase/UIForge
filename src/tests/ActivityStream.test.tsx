@@ -140,9 +140,7 @@ describe('UIForgeActivityStream', () => {
       // Find the event container by its data attribute, then click the header
       const { container } = render(<UIForgeActivityStream events={mockEvents} />)
       const eventElement = container.querySelector('[data-event-id="1"]')
-      const eventHeader = eventElement?.querySelector(
-        '.activity-stream__header'
-      ) as HTMLElement
+      const eventHeader = eventElement?.querySelector('.activity-stream__header') as HTMLElement
 
       expect(screen.queryByText('Added installation instructions')).not.toBeInTheDocument()
 
@@ -156,9 +154,7 @@ describe('UIForgeActivityStream', () => {
       const { container } = render(<UIForgeActivityStream events={mockEvents} />)
 
       const eventElement = container.querySelector('[data-event-id="1"]')
-      const eventHeader = eventElement?.querySelector(
-        '.activity-stream__header'
-      ) as HTMLElement
+      const eventHeader = eventElement?.querySelector('.activity-stream__header') as HTMLElement
 
       await user.click(eventHeader)
       expect(screen.getByText('Added installation instructions')).toBeInTheDocument()
@@ -172,9 +168,7 @@ describe('UIForgeActivityStream', () => {
       const { container } = render(<UIForgeActivityStream events={mockEvents} />)
 
       const eventElement = container.querySelector('[data-event-id="1"]')
-      const eventHeader = eventElement?.querySelector(
-        '.activity-stream__header'
-      ) as HTMLElement
+      const eventHeader = eventElement?.querySelector('.activity-stream__header') as HTMLElement
 
       eventHeader.focus()
 
@@ -188,9 +182,7 @@ describe('UIForgeActivityStream', () => {
       const { container } = render(<UIForgeActivityStream events={mockEvents} />)
 
       const eventElement = container.querySelector('[data-event-id="1"]')
-      const eventHeader = eventElement?.querySelector(
-        '.activity-stream__header'
-      ) as HTMLElement
+      const eventHeader = eventElement?.querySelector('.activity-stream__header') as HTMLElement
 
       eventHeader.focus()
 
@@ -207,9 +199,7 @@ describe('UIForgeActivityStream', () => {
       )
 
       const eventElement = container.querySelector('[data-event-id="1"]')
-      const eventHeader = eventElement?.querySelector(
-        '.activity-stream__header'
-      ) as HTMLElement
+      const eventHeader = eventElement?.querySelector('.activity-stream__header') as HTMLElement
 
       await user.click(eventHeader)
       expect(onToggleExpand).toHaveBeenCalledWith(1, true)

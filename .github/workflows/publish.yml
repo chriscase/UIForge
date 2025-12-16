@@ -4,8 +4,15 @@ on:
   release:
     types: [published]
 
+# DISABLED: This workflow is now handled by release.yml which uses semantic-release
+# to automatically version, create releases, and publish to NPM in a single workflow.
+#
+# This workflow is kept for reference/backup purposes only.
+# To re-enable, remove the 'false' condition below.
+
 jobs:
   publish:
+    if: false # Disabled - use release.yml instead
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -13,27 +20,27 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run linter
         run: npm run lint
         continue-on-error: true
-      
+
       - name: Run tests
         run: npm test -- --run
-      
+
       - name: Build library
         run: npm run build
-      
+
       - name: Verify build artifacts
         run: |
           if [ ! -f "dist/uiforge.js" ] || [ ! -f "dist/uiforge.cjs" ] || [ ! -f "dist/uiforge.css" ] || [ ! -f "dist/index.d.ts" ]; then
@@ -41,12 +48,12 @@ jobs:
             exit 1
           fi
           echo "✅ All build artifacts present"
-      
+
       - name: Publish to NPM
         run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      
+
       - name: Create summary
         if: success()
         run: |
@@ -55,4 +62,3 @@ jobs:
           echo "**Package:** @appforgeapps/uiforge" >> $GITHUB_STEP_SUMMARY
           echo "**Version:** ${{ github.event.release.tag_name }}" >> $GITHUB_STEP_SUMMARY
           echo "**NPM:** https://www.npmjs.com/package/@appforgeapps/uiforge" >> $GITHUB_STEP_SUMMARY
-
