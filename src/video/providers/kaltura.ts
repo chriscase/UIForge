@@ -35,7 +35,13 @@ export const kalturaProvider: VideoProvider = {
 
   getEmbedUrl: (videoId: string, _options: EmbedOptions = {}): string => {
     // videoId format: PARTNER_ID:UI_CONF_ID:ENTRY_ID
-    const [partnerId, uiConfId, entryId] = videoId.split(':')
+    // Use pipe as separator to avoid conflicts with colons in IDs
+    const parts = videoId.split(':')
+    if (parts.length < 3) {
+      console.error('Kaltura video ID must be in format PARTNER_ID:UI_CONF_ID:ENTRY_ID')
+      return ''
+    }
+    const [partnerId, uiConfId, entryId] = parts
     return `https://cdnapisec.kaltura.com/p/${partnerId}/sp/${partnerId}00/embedIframeJs/uiconf_id/${uiConfId}/partner_id/${partnerId}?iframeembed=true&entry_id=${entryId}`
   },
 }

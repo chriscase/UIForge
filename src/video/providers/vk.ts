@@ -46,7 +46,14 @@ export const vkProvider: VideoProvider = {
       params.set('autoplay', '1')
     }
 
+    // Validate videoId format (should be OWNER_ID_VIDEO_ID)
+    const parts = videoId.split('_')
+    if (parts.length < 2) {
+      console.error('VK video ID must be in format OWNER_ID_VIDEO_ID')
+      return ''
+    }
+
     const queryString = params.toString()
-    return `https://vk.com/video_ext.php?oid=${videoId.split('_')[0]}&id=${videoId.split('_')[1]}${queryString ? `&${queryString}` : ''}`
+    return `https://vk.com/video_ext.php?oid=${parts[0]}&id=${parts[1]}${queryString ? `&${queryString}` : ''}`
   },
 }

@@ -29,8 +29,17 @@ export const dropboxProvider: VideoProvider = {
   },
 
   getEmbedUrl: (videoId: string, _options: EmbedOptions = {}): string => {
-    // Convert regular Dropbox URL to embed URL
-    const embedUrl = videoId.replace('www.dropbox.com', 'www.dropbox.com/s').replace('?dl=0', '')
-    return `${embedUrl}?raw=1`
+    // Dropbox uses the full URL as videoId
+    // Convert to raw playback URL
+    try {
+      const url = new URL(videoId)
+      // Remove dl parameter and add raw=1
+      url.searchParams.delete('dl')
+      url.searchParams.set('raw', '1')
+      return url.toString()
+    } catch {
+      // Fallback for invalid URLs
+      return videoId
+    }
   },
 }

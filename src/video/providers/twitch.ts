@@ -41,7 +41,10 @@ export const twitchProvider: VideoProvider = {
 
   getEmbedUrl: (videoId: string, options: EmbedOptions = {}): string => {
     const params = new URLSearchParams()
-    params.set('parent', window.location.hostname || 'localhost')
+    // Use safe fallback for SSR environments
+    const hostname =
+      typeof window !== 'undefined' ? window.location.hostname : 'localhost'
+    params.set('parent', hostname)
 
     if (options.autoplay) {
       params.set('autoplay', 'true')

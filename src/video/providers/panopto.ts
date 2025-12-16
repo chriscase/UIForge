@@ -34,7 +34,13 @@ export const panoptoProvider: VideoProvider = {
 
   getEmbedUrl: (videoId: string, _options: EmbedOptions = {}): string => {
     // videoId format: SUBDOMAIN:SESSION_ID
-    const [subdomain, sessionId] = videoId.split(':')
+    const parts = videoId.split(':')
+    if (parts.length < 2) {
+      console.error('Panopto video ID must be in format SUBDOMAIN:SESSION_ID')
+      return ''
+    }
+    const [subdomain, ...sessionIdParts] = parts
+    const sessionId = sessionIdParts.join(':') // Rejoin in case session ID contains colons
     return `https://${subdomain}.panopto.com/Panopto/Pages/Embed.aspx?id=${sessionId}&autoplay=false&offerviewer=true&showtitle=true&showbrand=false&captions=false&interactivity=all`
   },
 }

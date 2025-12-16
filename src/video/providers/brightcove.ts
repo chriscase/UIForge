@@ -34,7 +34,13 @@ export const brightcoveProvider: VideoProvider = {
 
   getEmbedUrl: (videoId: string, _options: EmbedOptions = {}): string => {
     // videoId format: ACCOUNT_ID:VIDEO_ID
-    const [accountId, actualVideoId] = videoId.split(':')
+    const parts = videoId.split(':')
+    if (parts.length < 2) {
+      console.error('Brightcove video ID must be in format ACCOUNT_ID:VIDEO_ID')
+      return ''
+    }
+    const [accountId, ...videoIdParts] = parts
+    const actualVideoId = videoIdParts.join(':') // Rejoin in case video ID contains colons
     return `https://players.brightcove.net/${accountId}/default_default/index.html?videoId=${actualVideoId}`
   },
 }

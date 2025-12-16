@@ -32,7 +32,13 @@ export const azureMediaProvider: VideoProvider = {
 
   getEmbedUrl: (videoId: string, _options: EmbedOptions = {}): string => {
     // videoId format: HOSTNAME:ASSET_ID
-    const [hostname, assetId] = videoId.split(':')
+    const parts = videoId.split(':')
+    if (parts.length < 2) {
+      console.error('Azure Media video ID must be in format HOSTNAME:ASSET_ID')
+      return ''
+    }
+    const [hostname, ...assetIdParts] = parts
+    const assetId = assetIdParts.join(':') // Rejoin in case asset ID contains colons
     return `https://${hostname}/${assetId}/manifest`
   },
 }
