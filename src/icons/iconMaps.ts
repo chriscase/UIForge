@@ -1,3 +1,10 @@
+/**
+ * Icon Maps - Icon lookup tables for easy access to icon components
+ *
+ * These maps are in a separate file to avoid React Fast Refresh issues
+ * when exporting both components and constants from the same file.
+ */
+
 import {
   CommitIcon,
   PullRequestIcon,
@@ -43,7 +50,7 @@ import {
   BuildIcon,
 } from './index'
 
-// Export a map for easy lookup
+// Export icon maps for easy lookup
 export const ActivityIcons = {
   commit: CommitIcon,
   pr: PullRequestIcon,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
-import { ActivityIcons, UIIcons } from '../icons'
+import { ActivityIcons, UIIcons } from '../icons/iconMaps'
 import './ActivityStream.css'
 
 /**
@@ -405,18 +405,12 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
       if ('events' in item && item.type !== 'date-separator') {
         const groupedItem = item as GroupedEvent
         // Add to expanded if initiallyExpandedAll or if any event has initiallyExpanded
-        if (
-          initiallyExpandedAll ||
-          groupedItem.events.some((e) => e.initiallyExpanded)
-        ) {
+        if (initiallyExpandedAll || groupedItem.events.some((e) => e.initiallyExpanded)) {
           allIds.add(groupedItem.id)
         }
         if (groupedItem.children) {
           groupedItem.children.forEach((child: GroupedEvent) => {
-            if (
-              initiallyExpandedAll ||
-              child.events.some((e) => e.initiallyExpanded)
-            ) {
+            if (initiallyExpandedAll || child.events.some((e) => e.initiallyExpanded)) {
               allIds.add(child.id)
             }
           })
