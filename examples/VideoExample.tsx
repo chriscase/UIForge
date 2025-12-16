@@ -15,7 +15,7 @@ export const VideoExample: React.FC = () => {
       id: 'youtube-1',
       title: 'React Basics Tutorial',
       description: 'Learn the fundamentals of React in this comprehensive tutorial',
-      url: 'https://www.youtube.com/watch?v=SqcY0GlETPk',
+      url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
       provider: 'YouTube',
     },
     {
@@ -29,7 +29,7 @@ export const VideoExample: React.FC = () => {
       id: 'youtube-2',
       title: 'TypeScript Deep Dive',
       description: 'Master TypeScript with practical examples and real-world scenarios',
-      url: 'https://www.youtube.com/watch?v=ahCwqrYpIuM',
+      url: 'https://www.youtube.com/watch?v=q1mSDLBVHWE',
       provider: 'YouTube',
     },
     {
@@ -168,7 +168,7 @@ export const VideoExample: React.FC = () => {
         <UIForgeVideo
           title="Classic Format Video"
           description="This video uses a 4:3 aspect ratio"
-          url="https://www.youtube.com/watch?v=SqcY0GlETPk"
+          url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
           aspectRatio="4:3"
           onPlay={handlePlayVideo}
         />
@@ -179,7 +179,7 @@ export const VideoExample: React.FC = () => {
         <UIForgeVideo
           title="Auto-muted Video"
           description="Configured with muted playback"
-          url="https://www.youtube.com/watch?v=ahCwqrYpIuM"
+          url="https://www.youtube.com/watch?v=q1mSDLBVHWE"
           muted={true}
           onPlay={handlePlayVideo}
         />
@@ -190,7 +190,7 @@ export const VideoExample: React.FC = () => {
         <UIForgeVideo
           title="Video with Custom Play Button"
           description="Features a custom emoji as the play button"
-          url="https://www.youtube.com/watch?v=qm0IfG1GyZU"
+          url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
           overlayIcon={
             <div
               style={{

@@ -63,8 +63,9 @@ export const youtubeProvider: VideoProvider = {
       params.set('controls', '0')
     }
 
-    // Use youtube-nocookie.com for privacy-enhanced mode
-    const baseUrl = 'https://www.youtube-nocookie.com'
+    // Use regular youtube.com for better compatibility
+    // youtube-nocookie.com has stricter embedding restrictions for some videos
+    const baseUrl = 'https://www.youtube.com'
     const queryString = params.toString()
 
     return `${baseUrl}/embed/${videoId}${queryString ? `?${queryString}` : ''}`
