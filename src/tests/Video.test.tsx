@@ -65,9 +65,10 @@ describe('UIForgeVideo', () => {
 
       const iframe = screen.getByTitle('Test Video')
       expect(iframe).toBeInTheDocument()
+      // New implementation uses youtube-nocookie.com for privacy
       expect(iframe).toHaveAttribute(
         'src',
-        'https://www.youtube.com/embed/test123?autoplay=1&rel=0'
+        'https://www.youtube-nocookie.com/embed/test123?autoplay=1'
       )
     })
 
