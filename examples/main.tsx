@@ -6,6 +6,7 @@ import IconLibrary from './IconLibrary'
 import VideoExample from './VideoExample'
 import UseResponsiveExample from './UseResponsiveExample'
 import UseDynamicPageCountExample from './UseDynamicPageCountExample'
+import SidebarExample from './SidebarExample'
 import AppDemo from './App'
 import './index.css'
 
@@ -30,6 +31,8 @@ function Router() {
       return <UseResponsiveExample />
     case '/use-dynamic-page-count':
       return <UseDynamicPageCountExample />
+    case '/sidebar':
+      return <SidebarExample />
     case '/grid':
     case '/blocks-editor':
     case '/combobox':

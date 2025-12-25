@@ -213,6 +213,27 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             }
             onNavigate={onNavigate}
           />
+
+          <ComponentCard
+            name="Sidebar"
+            description="Reusable sidebar with static, drawer, and bottom variants for responsive navigation"
+            icon="📱"
+            path="/sidebar"
+            preview={
+              <div className="preview-sidebar">
+                <div className="preview-sidebar-static">
+                  <span>Static</span>
+                </div>
+                <div className="preview-sidebar-drawer">
+                  <span>Drawer</span>
+                </div>
+                <div className="preview-sidebar-bottom">
+                  <span>Bottom</span>
+                </div>
+              </div>
+            }
+            onNavigate={onNavigate}
+          />
         </section>
       </main>
 

@@ -47,6 +47,9 @@ export type {
 export { UIForgeVideo, UIForgeVideoPreview } from './components/Video'
 export type { UIForgeVideoProps, UIForgeVideoPreviewProps } from './components/Video'
 
+export { UIForgeSidebar } from './components/Sidebar'
+export type { UIForgeSidebarProps, SidebarVariant } from './components/Sidebar'
+
 // Export video utilities and providers
 export {
   detectProvider,
@@ -74,3 +77,4 @@ import './components/ComboBox.css'
 import './components/ActivityStream.css'
 import './components/ActivityItem.css'
 import './components/Video.css'
+import './components/Sidebar.css'
