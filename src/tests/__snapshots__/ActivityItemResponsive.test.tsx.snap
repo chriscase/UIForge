@@ -1,0 +1,391 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`UIForgeActivityItem - Responsive Behavior > Visual snapshots for different densities > renders comfortable density consistently 1`] = `
+<div
+  class="uiforge-activity-item uiforge-activity-item--comfortable"
+  data-density="comfortable"
+  data-event-id="1"
+  data-show-meta="true"
+>
+  <div
+    class="uiforge-activity-item__icon"
+  >
+    <svg
+      class=""
+      fill="currentColor"
+      height="16"
+      viewBox="0 0 16 16"
+      width="16"
+    >
+      <path
+        d="M11.93 8.5a4.002 4.002 0 01-7.86 0H.75a.75.75 0 010-1.5h3.32a4.002 4.002 0 017.86 0h3.32a.75.75 0 010 1.5h-3.32zM8 5a3 3 0 100 6 3 3 0 000-6z"
+      />
+    </svg>
+  </div>
+  <div
+    class="uiforge-activity-item__content"
+  >
+    <div
+      aria-expanded="false"
+      class="uiforge-activity-item__header uiforge-activity-item__header--clickable"
+      role="button"
+      tabindex="0"
+    >
+      <div
+        class="uiforge-activity-item__title"
+      >
+        Updated README.md
+      </div>
+      <div
+        class="uiforge-activity-item__timestamp"
+      >
+        30m ago
+      </div>
+      <div
+        class="uiforge-activity-item__toggle"
+      >
+        <svg
+          class=""
+          fill="none"
+          height="16"
+          viewBox="0 0 20 20"
+          width="16"
+        >
+          <path
+            d="M10 2L6 6M10 2L14 6M10 2V7.5"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+          />
+          <path
+            d="M3 10H17"
+            stroke="currentColor"
+            stroke-dasharray="1 2"
+            stroke-linecap="round"
+            stroke-width="1.5"
+          />
+          <path
+            d="M10 18L6 14M10 18L14 14M10 18V12.5"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`UIForgeActivityItem - Responsive Behavior > Visual snapshots for different densities > renders compact density consistently 1`] = `
+<div
+  class="uiforge-activity-item uiforge-activity-item--compact"
+  data-density="compact"
+  data-event-id="1"
+  data-show-meta="true"
+>
+  <div
+    class="uiforge-activity-item__icon"
+  >
+    <svg
+      class=""
+      fill="currentColor"
+      height="16"
+      viewBox="0 0 16 16"
+      width="16"
+    >
+      <path
+        d="M11.93 8.5a4.002 4.002 0 01-7.86 0H.75a.75.75 0 010-1.5h3.32a4.002 4.002 0 017.86 0h3.32a.75.75 0 010 1.5h-3.32zM8 5a3 3 0 100 6 3 3 0 000-6z"
+      />
+    </svg>
+  </div>
+  <div
+    class="uiforge-activity-item__content"
+  >
+    <div
+      aria-expanded="false"
+      class="uiforge-activity-item__header uiforge-activity-item__header--clickable"
+      role="button"
+      tabindex="0"
+    >
+      <div
+        class="uiforge-activity-item__title"
+      >
+        Updated README.md
+      </div>
+      <div
+        class="uiforge-activity-item__timestamp"
+      >
+        30m ago
+      </div>
+      <div
+        class="uiforge-activity-item__toggle"
+      >
+        <svg
+          class=""
+          fill="none"
+          height="16"
+          viewBox="0 0 20 20"
+          width="16"
+        >
+          <path
+            d="M10 2L6 6M10 2L14 6M10 2V7.5"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+          />
+          <path
+            d="M3 10H17"
+            stroke="currentColor"
+            stroke-dasharray="1 2"
+            stroke-linecap="round"
+            stroke-width="1.5"
+          />
+          <path
+            d="M10 18L6 14M10 18L14 14M10 18V12.5"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`UIForgeActivityItem - Responsive Behavior > Visual snapshots for different densities > renders condensed density consistently 1`] = `
+<div
+  class="uiforge-activity-item uiforge-activity-item--condensed uiforge-activity-item--hide-meta"
+  data-density="condensed"
+  data-event-id="1"
+  data-show-meta="false"
+>
+  <div
+    class="uiforge-activity-item__icon"
+  >
+    <svg
+      class=""
+      fill="currentColor"
+      height="16"
+      viewBox="0 0 16 16"
+      width="16"
+    >
+      <path
+        d="M11.93 8.5a4.002 4.002 0 01-7.86 0H.75a.75.75 0 010-1.5h3.32a4.002 4.002 0 017.86 0h3.32a.75.75 0 010 1.5h-3.32zM8 5a3 3 0 100 6 3 3 0 000-6z"
+      />
+    </svg>
+  </div>
+  <div
+    class="uiforge-activity-item__content"
+  >
+    <div
+      aria-expanded="false"
+      class="uiforge-activity-item__header uiforge-activity-item__header--clickable"
+      role="button"
+      tabindex="0"
+    >
+      <div
+        class="uiforge-activity-item__title"
+      >
+        Updated README.md
+      </div>
+      <div
+        class="uiforge-activity-item__toggle"
+      >
+        <svg
+          class=""
+          fill="none"
+          height="16"
+          viewBox="0 0 20 20"
+          width="16"
+        >
+          <path
+            d="M10 2L6 6M10 2L14 6M10 2V7.5"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+          />
+          <path
+            d="M3 10H17"
+            stroke="currentColor"
+            stroke-dasharray="1 2"
+            stroke-linecap="round"
+            stroke-width="1.5"
+          />
+          <path
+            d="M10 18L6 14M10 18L14 14M10 18V12.5"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`UIForgeActivityItem - Responsive Behavior > Visual snapshots for different densities > renders expanded state consistently 1`] = `
+<div
+  class="uiforge-activity-item uiforge-activity-item--comfortable"
+  data-density="comfortable"
+  data-event-id="1"
+  data-show-meta="true"
+>
+  <div
+    class="uiforge-activity-item__icon"
+  >
+    <svg
+      class=""
+      fill="currentColor"
+      height="16"
+      viewBox="0 0 16 16"
+      width="16"
+    >
+      <path
+        d="M11.93 8.5a4.002 4.002 0 01-7.86 0H.75a.75.75 0 010-1.5h3.32a4.002 4.002 0 017.86 0h3.32a.75.75 0 010 1.5h-3.32zM8 5a3 3 0 100 6 3 3 0 000-6z"
+      />
+    </svg>
+  </div>
+  <div
+    class="uiforge-activity-item__content"
+  >
+    <div
+      aria-expanded="true"
+      class="uiforge-activity-item__header uiforge-activity-item__header--clickable"
+      role="button"
+      tabindex="0"
+    >
+      <div
+        class="uiforge-activity-item__title"
+      >
+        Updated README.md
+      </div>
+      <div
+        class="uiforge-activity-item__timestamp"
+      >
+        30m ago
+      </div>
+      <div
+        class="uiforge-activity-item__toggle"
+      >
+        <svg
+          class=""
+          fill="none"
+          height="16"
+          viewBox="0 0 20 20"
+          width="16"
+        >
+          <path
+            d="M10 7.5L6 4M10 7.5L14 4M10 7.5V2"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+          />
+          <path
+            d="M3 10H17"
+            stroke="currentColor"
+            stroke-dasharray="1 2"
+            stroke-linecap="round"
+            stroke-width="1.5"
+          />
+          <path
+            d="M10 12.5L6 16M10 12.5L14 16M10 12.5V18"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+          />
+        </svg>
+      </div>
+    </div>
+    <div
+      class="uiforge-activity-item__description"
+    >
+      Added installation instructions and examples
+    </div>
+  </div>
+</div>
+`;
+
+exports[`UIForgeActivityItem - Responsive Behavior > Visual snapshots for different densities > renders with showMeta false consistently 1`] = `
+<div
+  class="uiforge-activity-item uiforge-activity-item--comfortable uiforge-activity-item--hide-meta"
+  data-density="comfortable"
+  data-event-id="1"
+  data-show-meta="false"
+>
+  <div
+    class="uiforge-activity-item__icon"
+  >
+    <svg
+      class=""
+      fill="currentColor"
+      height="16"
+      viewBox="0 0 16 16"
+      width="16"
+    >
+      <path
+        d="M11.93 8.5a4.002 4.002 0 01-7.86 0H.75a.75.75 0 010-1.5h3.32a4.002 4.002 0 017.86 0h3.32a.75.75 0 010 1.5h-3.32zM8 5a3 3 0 100 6 3 3 0 000-6z"
+      />
+    </svg>
+  </div>
+  <div
+    class="uiforge-activity-item__content"
+  >
+    <div
+      aria-expanded="false"
+      class="uiforge-activity-item__header uiforge-activity-item__header--clickable"
+      role="button"
+      tabindex="0"
+    >
+      <div
+        class="uiforge-activity-item__title"
+      >
+        Updated README.md
+      </div>
+      <div
+        class="uiforge-activity-item__toggle"
+      >
+        <svg
+          class=""
+          fill="none"
+          height="16"
+          viewBox="0 0 20 20"
+          width="16"
+        >
+          <path
+            d="M10 2L6 6M10 2L14 6M10 2V7.5"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+          />
+          <path
+            d="M3 10H17"
+            stroke="currentColor"
+            stroke-dasharray="1 2"
+            stroke-linecap="round"
+            stroke-width="1.5"
+          />
+          <path
+            d="M10 18L6 14M10 18L14 14M10 18V12.5"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+`;
