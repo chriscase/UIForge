@@ -5,6 +5,7 @@ import ActivityStreamExample from './ActivityStreamExample'
 import IconLibrary from './IconLibrary'
 import VideoExample from './VideoExample'
 import UseResponsiveExample from './UseResponsiveExample'
+import UseDynamicPageCountExample from './UseDynamicPageCountExample'
 import AppDemo from './App'
 import './index.css'
 
@@ -27,6 +28,8 @@ function Router() {
       return <VideoExample />
     case '/use-responsive':
       return <UseResponsiveExample />
+    case '/use-dynamic-page-count':
+      return <UseDynamicPageCountExample />
     case '/grid':
     case '/blocks-editor':
     case '/combobox':
