@@ -49,6 +49,9 @@ export type { VideoProvider, EmbedOptions, VideoProviderTier } from './video'
 // Export icon library
 export * from './icons'
 
+// Export hooks
+export { useResponsive } from './hooks'
+
 // Export all styles
 import './components/Button.css'
 import './components/Grid.css'

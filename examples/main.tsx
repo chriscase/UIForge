@@ -4,7 +4,8 @@ import Home from './Home'
 import ActivityStreamExample from './ActivityStreamExample'
 import IconLibrary from './IconLibrary'
 import VideoExample from './VideoExample'
-import App from './App'
+import UseResponsiveExample from './UseResponsiveExample'
+import AppDemo from './App'
 import './index.css'
 
 function Router() {
@@ -24,11 +25,13 @@ function Router() {
       return <IconLibrary onNavigate={navigate} />
     case '/video':
       return <VideoExample />
+    case '/use-responsive':
+      return <UseResponsiveExample />
     case '/grid':
     case '/blocks-editor':
     case '/combobox':
     case '/button':
-      return <App />
+      return <AppDemo />
     default:
       return <Home onNavigate={navigate} />
   }
