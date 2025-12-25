@@ -480,9 +480,9 @@
   outline-offset: 2px;
 }
 
-/* Auto dark mode via system preference (applies if no explicit theme set) */
+/* Auto dark mode via system preference (applies only when no explicit theme is set) */
 @media (prefers-color-scheme: dark) {
-  .uiforge-blocks-editor:not([data-theme='light']) {
+  .uiforge-blocks-editor:not(.uiforge-blocks-editor--light):not(.uiforge-blocks-editor--dark) {
     --editor-bg: #1f2937;
     --editor-text: #f9fafb;
     --editor-text-secondary: #d1d5db;
