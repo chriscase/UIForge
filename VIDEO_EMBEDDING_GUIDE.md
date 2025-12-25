@@ -107,6 +107,25 @@ That's it! The component will automatically:
 />
 ```
 
+### Responsive Video (Mobile-Friendly)
+
+```tsx
+<UIForgeVideo
+  url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  responsive={true}
+  hideHeader={true}
+  maxHeight={400}
+/>
+```
+
+When `responsive` is true:
+- Uses aspect-ratio based layout that scales correctly on all screen sizes
+- No min-height constraints on narrow containers
+- Full width by default
+
+When `hideHeader` is true:
+- Title and description are hidden for compact mobile UIs
+
 ### Event Callbacks
 
 ```tsx
@@ -203,8 +222,13 @@ interface UIForgeVideoProps {
   aspectRatio?: '16:9' | '4:3' | '1:1' | 'auto' | string
   width?: string | number
   height?: string | number
+  maxHeight?: string | number  // Maximum height constraint
   thumbnailUrl?: string
   overlayIcon?: React.ReactNode
+
+  // Responsive behavior
+  responsive?: boolean     // Default: false - enables aspect-ratio scaling
+  hideHeader?: boolean     // Default: false - hides title/description
 
   // Events
   onPlay?: (videoId: string, provider: string) => void

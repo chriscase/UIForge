@@ -108,6 +108,21 @@ export interface UIForgeVideoProps {
    * Height of the video player
    */
   height?: string | number
+  /**
+   * Maximum height of the video player
+   */
+  maxHeight?: string | number
+  /**
+   * Enable responsive behavior (aspect-video, full width, no min-height constraints)
+   * When true, uses aspect-ratio layout that scales correctly on small screens
+   * @default false
+   */
+  responsive?: boolean
+  /**
+   * Hide the header (title and description) for tight mobile UIs
+   * @default false
+   */
+  hideHeader?: boolean
 
   /**
    * Custom overlay icon (defaults to play icon)
@@ -233,6 +248,9 @@ export const UIForgeVideo: React.FC<UIForgeVideoProps> = ({
   aspectRatio = '16:9',
   width,
   height,
+  maxHeight,
+  responsive = false,
+  hideHeader = false,
   allowAdultContent = false,
   fallback,
 }) => {
@@ -387,19 +405,24 @@ export const UIForgeVideo: React.FC<UIForgeVideoProps> = ({
   }
 
   const baseClass = 'uiforge-video'
-  const classes = `${baseClass} ${className}`.trim()
+  const responsiveClass = responsive ? `${baseClass}--responsive` : ''
+  const classes = `${baseClass} ${responsiveClass} ${className}`.trim()
 
   const containerStyle: React.CSSProperties = {
     aspectRatio: aspectRatio !== 'auto' ? aspectRatio.replace(':', '/') : undefined,
     width: width ? (typeof width === 'number' ? `${width}px` : width) : undefined,
     height: height ? (typeof height === 'number' ? `${height}px` : height) : undefined,
+    maxHeight: maxHeight ? (typeof maxHeight === 'number' ? `${maxHeight}px` : maxHeight) : undefined,
   }
 
   const displayTitle = title || `${videoInfo.provider.displayName} Video`
 
+  // Determine whether to show header: only show if not hidden and there's content
+  const showHeader = !hideHeader && (title || description)
+
   return (
     <div className={classes}>
-      {(title || description) && (
+      {showHeader && (
         <div className={`${baseClass}__header`}>
           {title && <h3 className={`${baseClass}__title`}>{title}</h3>}
           {description && <p className={`${baseClass}__description`}>{description}</p>}
