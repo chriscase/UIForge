@@ -505,4 +505,27 @@ describe('UIForgeActivityStream', () => {
       expect(activityStream).not.toHaveClass('activity-stream--scale-spacious')
     })
   })
+
+  describe('showMeta prop', () => {
+    it('sets data-show-meta to true by default', () => {
+      const { container } = render(<UIForgeActivityStream events={mockEvents} />)
+
+      const activityStream = container.querySelector('.activity-stream')
+      expect(activityStream).toHaveAttribute('data-show-meta', 'true')
+    })
+
+    it('sets data-show-meta to false when showMeta is false', () => {
+      const { container } = render(<UIForgeActivityStream events={mockEvents} showMeta={false} />)
+
+      const activityStream = container.querySelector('.activity-stream')
+      expect(activityStream).toHaveAttribute('data-show-meta', 'false')
+    })
+
+    it('sets data-show-meta to true when showMeta is true', () => {
+      const { container } = render(<UIForgeActivityStream events={mockEvents} showMeta={true} />)
+
+      const activityStream = container.querySelector('.activity-stream')
+      expect(activityStream).toHaveAttribute('data-show-meta', 'true')
+    })
+  })
 })

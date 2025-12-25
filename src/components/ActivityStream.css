@@ -762,3 +762,56 @@
   outline: 2px solid var(--activity-stream-link-color);
   outline-offset: -2px;
 }
+
+/* ============================================
+   SHOW/HIDE METADATA
+   Hide timestamps and truncate titles when showMeta is false
+   ============================================ */
+.activity-stream[data-show-meta='false'] .activity-stream__timestamp {
+  display: none;
+}
+
+.activity-stream[data-show-meta='false'] .activity-stream__title {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Compact + hide-meta combination - vertical stacking for mobile */
+.activity-stream--compact[data-show-meta='false'] .activity-stream__header {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.activity-stream--compact[data-show-meta='false'] .activity-stream__title {
+  white-space: normal;
+  text-overflow: clip;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.activity-stream--compact[data-show-meta='false'] .activity-stream__toggle {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+/* Condensed + hide-meta combination - maximum density */
+.activity-stream--condensed[data-show-meta='false'] .activity-stream__header {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+}
+
+.activity-stream--condensed[data-show-meta='false'] .activity-stream__title {
+  white-space: normal;
+  text-overflow: clip;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

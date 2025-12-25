@@ -19,6 +19,7 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
   const [loading, setLoading] = useState(false)
   const [density, setDensity] = useState<ActivityStreamDensity>('comfortable')
   const [responsive, setResponsive] = useState(true)
+  const [showMeta, setShowMeta] = useState(true)
 
   // Generate sample user activity data
   /* eslint-disable react-hooks/purity */
@@ -277,6 +278,17 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
         </div>
 
         <div className="activity-stream-example__control-group">
+          <label>
+            <input
+              type="checkbox"
+              checked={showMeta}
+              onChange={(e) => setShowMeta(e.target.checked)}
+            />
+            Show Metadata (timestamps)
+          </label>
+        </div>
+
+        <div className="activity-stream-example__control-group">
           <label htmlFor="theme-select">Theme:</label>
           <select
             id="theme-select"
@@ -353,6 +365,7 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
               density={density}
               responsive={responsive}
               compactBreakpointPx={640}
+              showMeta={showMeta}
               pagination={{
                 currentPage: 0,
                 pageSize: 15,
@@ -372,6 +385,10 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
             <li>
               <strong>Responsive Behavior:</strong> Automatically switches to compact density when
               container width is below the breakpoint (default: 640px)
+            </li>
+            <li>
+              <strong>Show/Hide Metadata:</strong> Toggle timestamps and metadata visibility with the
+              showMeta prop for denser mobile layouts
             </li>
             <li>
               <strong>Smart Event Grouping:</strong> Automatically groups consecutive events of the
@@ -432,6 +449,7 @@ const events = [
   density="comfortable"        // 'comfortable' | 'compact' | 'condensed'
   responsive={true}            // auto-switch to compact on narrow containers
   compactBreakpointPx={640}    // breakpoint for responsive switching
+  showMeta={true}              // show/hide timestamps and metadata
   enableGrouping={true}
   showTimeline={true}
   showDateSeparators={true}

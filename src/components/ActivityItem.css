@@ -1,0 +1,331 @@
+/* UIForge Activity Item Component - Standalone activity item with compact/mobile layouts */
+
+/* CSS Variables for theming - inherits from activity-stream or uses defaults */
+.uiforge-activity-item {
+  /* Light theme defaults */
+  --uiforge-activity-item-bg: var(--activity-stream-bg, #ffffff);
+  --uiforge-activity-item-text: var(--activity-stream-text, #24292f);
+  --uiforge-activity-item-text-secondary: var(--activity-stream-text-secondary, #57606a);
+  --uiforge-activity-item-border: var(--activity-stream-border, #d0d7de);
+  --uiforge-activity-item-hover-bg: var(--activity-stream-hover-bg, #f6f8fa);
+  --uiforge-activity-item-icon-bg: var(--activity-stream-icon-bg, #f6f8fa);
+  --uiforge-activity-item-icon-color: var(--activity-stream-icon-color, #57606a);
+  --uiforge-activity-item-timeline-color: var(--activity-stream-timeline-color, #d0d7de);
+  --uiforge-activity-item-link-color: var(--activity-stream-link-color, #0969da);
+
+  /* Comfortable density defaults (same as activity-stream) */
+  --uiforge-activity-item-padding-y: 6px;
+  --uiforge-activity-item-padding-x: 14px;
+  --uiforge-activity-item-gap: 8px;
+  --uiforge-activity-item-content-gap: 4px;
+  --uiforge-activity-item-header-gap: 6px;
+  --uiforge-activity-item-icon-size: 24px;
+  --uiforge-activity-item-icon-svg-size: 12px;
+  --uiforge-activity-item-title-font-size: 14px;
+  --uiforge-activity-item-title-line-height: 1.4;
+  --uiforge-activity-item-timestamp-font-size: 12px;
+  --uiforge-activity-item-description-font-size: 13px;
+  --uiforge-activity-item-description-padding-y: 6px;
+  --uiforge-activity-item-description-padding-x: 10px;
+  --uiforge-activity-item-timeline-marker-left: 15px;
+  --uiforge-activity-item-timeline-marker-top: 14px;
+  --uiforge-activity-item-timeline-marker-size: 10px;
+  --uiforge-activity-item-child-padding-left: 12px;
+  --uiforge-activity-item-child-margin-top: 6px;
+
+  display: flex;
+  gap: var(--uiforge-activity-item-gap);
+  padding: var(--uiforge-activity-item-padding-y) var(--uiforge-activity-item-padding-x);
+  position: relative;
+  transition: background-color 0.2s ease;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+  background-color: var(--uiforge-activity-item-bg);
+  color: var(--uiforge-activity-item-text);
+}
+
+.uiforge-activity-item:hover {
+  background-color: var(--uiforge-activity-item-hover-bg);
+}
+
+/* ============================================
+   COMPACT DENSITY - Reduced spacing and smaller icons
+   ============================================ */
+.uiforge-activity-item--compact {
+  --uiforge-activity-item-padding-y: 4px;
+  --uiforge-activity-item-padding-x: 10px;
+  --uiforge-activity-item-gap: 6px;
+  --uiforge-activity-item-content-gap: 2px;
+  --uiforge-activity-item-header-gap: 4px;
+  --uiforge-activity-item-icon-size: 20px;
+  --uiforge-activity-item-icon-svg-size: 10px;
+  --uiforge-activity-item-title-font-size: 13px;
+  --uiforge-activity-item-title-line-height: 1.3;
+  --uiforge-activity-item-timestamp-font-size: 11px;
+  --uiforge-activity-item-description-font-size: 12px;
+  --uiforge-activity-item-description-padding-y: 4px;
+  --uiforge-activity-item-description-padding-x: 8px;
+  --uiforge-activity-item-timeline-marker-left: 12px;
+  --uiforge-activity-item-timeline-marker-top: 10px;
+  --uiforge-activity-item-timeline-marker-size: 8px;
+  --uiforge-activity-item-child-padding-left: 10px;
+  --uiforge-activity-item-child-margin-top: 4px;
+}
+
+/* ============================================
+   CONDENSED DENSITY - Minimal spacing for maximum density
+   ============================================ */
+.uiforge-activity-item--condensed {
+  --uiforge-activity-item-padding-y: 2px;
+  --uiforge-activity-item-padding-x: 8px;
+  --uiforge-activity-item-gap: 4px;
+  --uiforge-activity-item-content-gap: 1px;
+  --uiforge-activity-item-header-gap: 3px;
+  --uiforge-activity-item-icon-size: 18px;
+  --uiforge-activity-item-icon-svg-size: 9px;
+  --uiforge-activity-item-title-font-size: 12px;
+  --uiforge-activity-item-title-line-height: 1.2;
+  --uiforge-activity-item-timestamp-font-size: 10px;
+  --uiforge-activity-item-description-font-size: 11px;
+  --uiforge-activity-item-description-padding-y: 3px;
+  --uiforge-activity-item-description-padding-x: 6px;
+  --uiforge-activity-item-timeline-marker-left: 10px;
+  --uiforge-activity-item-timeline-marker-top: 8px;
+  --uiforge-activity-item-timeline-marker-size: 6px;
+  --uiforge-activity-item-child-padding-left: 8px;
+  --uiforge-activity-item-child-margin-top: 2px;
+}
+
+/* ============================================
+   HIDE META VARIANT - Hides timestamps and metadata
+   ============================================ */
+.uiforge-activity-item--hide-meta .uiforge-activity-item__timestamp {
+  display: none;
+}
+
+.uiforge-activity-item--hide-meta .uiforge-activity-item__title {
+  /* When metadata is hidden, allow title to take full width */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================
+   CHILD ITEM STYLING
+   ============================================ */
+.uiforge-activity-item--child {
+  padding-left: var(--uiforge-activity-item-child-padding-left);
+  margin-top: var(--uiforge-activity-item-child-margin-top);
+}
+
+/* ============================================
+   TIMELINE MARKER
+   ============================================ */
+.uiforge-activity-item__timeline-marker {
+  position: absolute;
+  left: var(--uiforge-activity-item-timeline-marker-left);
+  top: var(--uiforge-activity-item-timeline-marker-top);
+  width: var(--uiforge-activity-item-timeline-marker-size);
+  height: var(--uiforge-activity-item-timeline-marker-size);
+  border-radius: 50%;
+  background-color: var(--uiforge-activity-item-bg);
+  border: 2px solid var(--uiforge-activity-item-timeline-color);
+  z-index: 1;
+}
+
+/* ============================================
+   ICON
+   ============================================ */
+.uiforge-activity-item__icon {
+  flex-shrink: 0;
+  width: var(--uiforge-activity-item-icon-size);
+  height: var(--uiforge-activity-item-icon-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--uiforge-activity-item-icon-bg);
+  border-radius: 50%;
+  color: var(--uiforge-activity-item-icon-color);
+  border: 1px solid var(--uiforge-activity-item-border);
+  position: relative;
+  z-index: 2;
+}
+
+.uiforge-activity-item__icon svg {
+  width: var(--uiforge-activity-item-icon-svg-size);
+  height: var(--uiforge-activity-item-icon-svg-size);
+}
+
+/* ============================================
+   CONTENT
+   ============================================ */
+.uiforge-activity-item__content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--uiforge-activity-item-content-gap);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.uiforge-activity-item__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--uiforge-activity-item-header-gap);
+  cursor: default;
+  position: relative;
+}
+
+.uiforge-activity-item__header--clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.uiforge-activity-item__header--clickable:focus {
+  outline: 2px solid var(--uiforge-activity-item-link-color);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* ============================================
+   TITLE
+   ============================================ */
+.uiforge-activity-item__title {
+  flex: 1;
+  font-size: var(--uiforge-activity-item-title-font-size);
+  line-height: var(--uiforge-activity-item-title-line-height);
+  font-weight: 400;
+  color: var(--uiforge-activity-item-text);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ============================================
+   TIMESTAMP
+   ============================================ */
+.uiforge-activity-item__timestamp {
+  flex-shrink: 0;
+  font-size: var(--uiforge-activity-item-timestamp-font-size);
+  color: var(--uiforge-activity-item-text-secondary);
+  white-space: nowrap;
+  margin-left: auto;
+  margin-top: 2px;
+}
+
+/* ============================================
+   TOGGLE
+   ============================================ */
+.uiforge-activity-item__toggle {
+  flex-shrink: 0;
+  font-size: 10px;
+  color: var(--uiforge-activity-item-text-secondary);
+  transition: transform 0.2s ease;
+  margin-left: 2px;
+}
+
+/* ============================================
+   DESCRIPTION
+   ============================================ */
+.uiforge-activity-item__description {
+  font-size: var(--uiforge-activity-item-description-font-size);
+  line-height: 1.4;
+  color: var(--uiforge-activity-item-text-secondary);
+  padding: var(--uiforge-activity-item-description-padding-y)
+    var(--uiforge-activity-item-description-padding-x);
+  background-color: var(--uiforge-activity-item-hover-bg);
+  border-radius: 6px;
+  border: 1px solid var(--uiforge-activity-item-border);
+  animation: uiforge-activity-item-slideDown 0.2s ease;
+}
+
+@keyframes uiforge-activity-item-slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   COMPACT + HIDE-META COMBINATION
+   Vertical stacking for mobile/compact layouts
+   ============================================ */
+.uiforge-activity-item--compact.uiforge-activity-item--hide-meta .uiforge-activity-item__header {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.uiforge-activity-item--compact.uiforge-activity-item--hide-meta .uiforge-activity-item__title {
+  white-space: normal;
+  text-overflow: clip;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.uiforge-activity-item--compact.uiforge-activity-item--hide-meta .uiforge-activity-item__toggle {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+/* ============================================
+   CONDENSED + HIDE-META COMBINATION
+   Maximum density for mobile screens
+   ============================================ */
+.uiforge-activity-item--condensed.uiforge-activity-item--hide-meta .uiforge-activity-item__header {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+}
+
+.uiforge-activity-item--condensed.uiforge-activity-item--hide-meta .uiforge-activity-item__title {
+  white-space: normal;
+  text-overflow: clip;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ============================================
+   ACCESSIBILITY - Reduced motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .uiforge-activity-item,
+  .uiforge-activity-item__toggle,
+  .uiforge-activity-item__description {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* ============================================
+   FOCUS VISIBLE
+   ============================================ */
+.uiforge-activity-item__header:focus-visible {
+  outline: 2px solid var(--uiforge-activity-item-link-color);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 640px) {
+  .uiforge-activity-item--comfortable {
+    /* Apply compact-like sizing on mobile */
+    --uiforge-activity-item-padding-y: 4px;
+    --uiforge-activity-item-padding-x: 10px;
+    --uiforge-activity-item-title-font-size: 13px;
+    --uiforge-activity-item-timestamp-font-size: 11px;
+  }
+}
