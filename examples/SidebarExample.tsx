@@ -4,13 +4,22 @@ import { Button } from '../src/components/Button'
 import { HamburgerButton } from '../src/components/HamburgerButton'
 import './SidebarExample.css'
 
-export function SidebarExample() {
+interface SidebarExampleProps {
+  onNavigate?: (path: string) => void
+}
+
+export function SidebarExample({ onNavigate }: SidebarExampleProps) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [bottomOpen, setBottomOpen] = useState(false)
   const [drawerPosition, setDrawerPosition] = useState<'left' | 'right'>('left')
   
   return (
     <div className="sidebar-example">
+      {onNavigate && (
+        <button className="back-button" onClick={() => onNavigate('/')}>
+          ← Back to Home
+        </button>
+      )}
       <h2>UIForgeSidebar Component</h2>
       <p className="sidebar-example__description">
         A reusable sidebar component with three variants: static, drawer, and bottom.

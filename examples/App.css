@@ -2,6 +2,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--bg-primary);
 }
 
 .app-header {
@@ -9,6 +10,7 @@
   color: white;
   padding: 3rem 2rem;
   text-align: center;
+  position: relative;
 }
 
 .app-header h1 {
@@ -37,20 +39,20 @@
 .demo-section h2 {
   font-size: 2rem;
   margin-bottom: 2rem;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .demo-group {
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background: #f9fafb;
+  background: var(--bg-tertiary);
   border-radius: 8px;
 }
 
 .demo-group h3 {
   font-size: 1.25rem;
   margin: 0 0 1rem 0;
-  color: #374151;
+  color: var(--text-primary);
 }
 
 .button-group {
@@ -60,13 +62,49 @@
 }
 
 .app-footer {
-  background: #1f2937;
-  color: white;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
   text-align: center;
   padding: 2rem;
   margin-top: auto;
+  border-top: 1px solid var(--border-color);
 }
 
 .app-footer p {
   margin: 0;
+}
+
+/* Back button */
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1.5rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--primary-color);
+}
+
+.back-button--header {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.back-button--header:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
 }

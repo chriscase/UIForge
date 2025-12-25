@@ -101,7 +101,11 @@ const sampleUsers: User[] = [
   },
 ]
 
-function App() {
+interface AppProps {
+  onNavigate?: (path: string) => void
+}
+
+function App({ onNavigate }: AppProps) {
   const [users, setUsers] = useState<User[]>(sampleUsers)
   const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set())
   const [currentPage, setCurrentPage] = useState(0)
@@ -436,6 +440,11 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
+        {onNavigate && (
+          <button className="back-button back-button--header" onClick={() => onNavigate('/')}>
+            ← Back to Home
+          </button>
+        )}
         <h1>UIForge Component Library</h1>
         <p>A rich user interface library for ReactJS developers</p>
       </header>

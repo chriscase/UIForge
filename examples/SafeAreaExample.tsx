@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import './SafeAreaExample.css'
 
+interface SafeAreaExampleProps {
+  onNavigate?: (path: string) => void
+}
+
 /**
  * SafeAreaExample demonstrates UIForge CSS tokens and safe-area utility classes.
  *
@@ -9,13 +13,18 @@ import './SafeAreaExample.css'
  * 2. Safe-area utility classes for iOS notch/home indicator support
  * 3. How to apply these utilities to fixed elements
  */
-export function SafeAreaExample() {
+export function SafeAreaExample({ onNavigate }: SafeAreaExampleProps) {
   const [showHeader, setShowHeader] = useState(false)
   const [showBottomNav, setShowBottomNav] = useState(true)
   const [activeTab, setActiveTab] = useState('home')
 
   return (
     <div className="safe-area-example">
+      {onNavigate && (
+        <button className="back-button" onClick={() => onNavigate('/')}>
+          ← Back to Home
+        </button>
+      )}
       {/* Fixed Header with safe-area support */}
       {showHeader && (
         <header className="safe-area-example__fixed-header uiforge-fixed-top">

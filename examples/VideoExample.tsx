@@ -2,10 +2,14 @@ import React, { useState } from 'react'
 import { UIForgeVideo, UIForgeVideoPreview } from '../src'
 import './VideoExample.css'
 
+interface VideoExampleProps {
+  onNavigate?: (path: string) => void
+}
+
 /**
  * Example component demonstrating UIForgeVideo and UIForgeVideoPreview usage
  */
-export const VideoExample: React.FC = () => {
+export const VideoExample: React.FC<VideoExampleProps> = ({ onNavigate }) => {
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null)
   const [playLogs, setPlayLogs] = useState<string[]>([])
 
@@ -63,6 +67,11 @@ export const VideoExample: React.FC = () => {
 
   return (
     <div className="video-example">
+      {onNavigate && (
+        <button className="back-button" onClick={() => onNavigate('/')}>
+          ← Back to Home
+        </button>
+      )}
       <div className="video-example__header">
         <h1>UIForge Video Components Demo</h1>
         <p>
