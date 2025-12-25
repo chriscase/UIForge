@@ -70,4 +70,24 @@ describe('Button', () => {
     expect(button).toHaveClass('custom-class')
     expect(button).toHaveClass('uiforge-button')
   })
+
+  describe('Density prop', () => {
+    it('applies default density (no condensed class) by default', () => {
+      render(<Button>Click me</Button>)
+      const button = screen.getByRole('button')
+      expect(button).not.toHaveClass('uiforge-button--condensed')
+    })
+
+    it('applies condensed class when density is condensed', () => {
+      render(<Button density="condensed">Click me</Button>)
+      const button = screen.getByRole('button')
+      expect(button).toHaveClass('uiforge-button--condensed')
+    })
+
+    it('does not apply condensed class when density is default', () => {
+      render(<Button density="default">Click me</Button>)
+      const button = screen.getByRole('button')
+      expect(button).not.toHaveClass('uiforge-button--condensed')
+    })
+  })
 })

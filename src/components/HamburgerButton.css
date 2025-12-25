@@ -1,0 +1,114 @@
+/* HamburgerButton - Accessible hamburger menu button */
+
+.uiforge-hamburger-button {
+  /* Base styles with 44x44px minimum touch target */
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 10px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  gap: 5px;
+  transition: background-color 0.2s ease;
+  border-radius: 4px;
+}
+
+.uiforge-hamburger-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.uiforge-hamburger-button:focus-visible {
+  outline: 2px solid var(--uiforge-focus-ring, #3b82f6);
+  outline-offset: 2px;
+}
+
+/* Hamburger bar styles */
+.uiforge-hamburger-button__bar {
+  display: block;
+  width: 24px;
+  height: 3px;
+  background-color: currentColor;
+  border-radius: 2px;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+/* Size variants */
+/* Note: Even small size maintains 44px minimum touch target for WCAG 2.1 compliance */
+.uiforge-hamburger-button--small {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 12px;
+  gap: 4px;
+}
+
+.uiforge-hamburger-button--small .uiforge-hamburger-button__bar {
+  width: 18px;
+  height: 2px;
+}
+
+.uiforge-hamburger-button--large {
+  min-width: 52px;
+  min-height: 52px;
+  padding: 12px;
+  gap: 6px;
+}
+
+.uiforge-hamburger-button--large .uiforge-hamburger-button__bar {
+  width: 28px;
+  height: 4px;
+}
+
+/* Open state - transform to X */
+.uiforge-hamburger-button--open .uiforge-hamburger-button__bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.uiforge-hamburger-button--open .uiforge-hamburger-button__bar:nth-child(2) {
+  opacity: 0;
+}
+
+.uiforge-hamburger-button--open .uiforge-hamburger-button__bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Small size X transform adjustments */
+.uiforge-hamburger-button--small.uiforge-hamburger-button--open .uiforge-hamburger-button__bar:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.uiforge-hamburger-button--small.uiforge-hamburger-button--open .uiforge-hamburger-button__bar:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Large size X transform adjustments */
+.uiforge-hamburger-button--large.uiforge-hamburger-button--open .uiforge-hamburger-button__bar:nth-child(1) {
+  transform: translateY(10px) rotate(45deg);
+}
+
+.uiforge-hamburger-button--large.uiforge-hamburger-button--open .uiforge-hamburger-button__bar:nth-child(3) {
+  transform: translateY(-10px) rotate(-45deg);
+}
+
+/* Dark mode support */
+[data-theme='dark'] .uiforge-hamburger-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .uiforge-hamburger-button--auto-theme:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .uiforge-hamburger-button__bar {
+    transition: none;
+  }
+}

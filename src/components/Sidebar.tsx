@@ -11,6 +11,11 @@ export type SidebarVariant = 'static' | 'drawer' | 'bottom'
  */
 export interface UIForgeSidebarProps {
   /**
+   * Unique identifier for the sidebar element
+   * Useful for linking with aria-controls on trigger buttons
+   */
+  id?: string
+  /**
    * Variant style of the sidebar
    * - 'static': Desktop fixed sidebar (default)
    * - 'drawer': Slide-in panel for mobile & small containers
@@ -95,6 +100,7 @@ const getFocusableElements = (container: HTMLElement): HTMLElement[] => {
  * - CSS safe-area insets support
  */
 export const UIForgeSidebar: React.FC<UIForgeSidebarProps> = ({
+  id,
   variant = 'static',
   open = true,
   onOpenChange,
@@ -248,6 +254,7 @@ export const UIForgeSidebar: React.FC<UIForgeSidebarProps> = ({
   if (variant === 'static') {
     return (
       <aside
+        id={id}
         ref={sidebarRef}
         className={sidebarClasses}
         style={sidebarStyle}
@@ -269,6 +276,7 @@ export const UIForgeSidebar: React.FC<UIForgeSidebarProps> = ({
         />
       )}
       <aside
+        id={id}
         ref={sidebarRef}
         className={sidebarClasses}
         style={sidebarStyle}

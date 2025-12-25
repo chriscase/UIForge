@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { UIForgeSidebar } from '../src/components/Sidebar'
 import { Button } from '../src/components/Button'
+import { HamburgerButton } from '../src/components/HamburgerButton'
 import './SidebarExample.css'
 
 export function SidebarExample() {
@@ -55,6 +56,12 @@ export function SidebarExample() {
         </p>
         
         <div className="sidebar-example__controls">
+          <HamburgerButton
+            isOpen={drawerOpen}
+            controlsId="main-drawer"
+            ariaLabel="Toggle navigation menu"
+            onClick={() => setDrawerOpen(!drawerOpen)}
+          />
           <Button onClick={() => setDrawerOpen(true)}>
             Open Drawer
           </Button>
@@ -83,6 +90,7 @@ export function SidebarExample() {
         </div>
 
         <UIForgeSidebar
+          id="main-drawer"
           variant="drawer"
           position={drawerPosition}
           open={drawerOpen}
