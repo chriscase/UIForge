@@ -174,6 +174,64 @@ export const VideoExample: React.FC = () => {
         />
       </section>
 
+      {/* Responsive Examples */}
+      <section className="video-example__section">
+        <h2>Responsive Video (Full Width)</h2>
+        <p>
+          The <code>responsive</code> prop enables aspect-ratio based scaling that works well on all
+          screen sizes.
+        </p>
+        <UIForgeVideo
+          title="Responsive Video Example"
+          description="This video scales correctly on small screens without min-height constraints"
+          url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          responsive={true}
+          onPlay={handlePlayVideo}
+        />
+      </section>
+
+      <section className="video-example__section">
+        <h2>Responsive with Hidden Header (Mobile-Friendly)</h2>
+        <p>
+          Use <code>hideHeader</code> to create a compact video player for tight mobile UIs.
+        </p>
+        <UIForgeVideo
+          title="Mobile Video"
+          description="This description will be hidden"
+          url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          responsive={true}
+          hideHeader={true}
+          onPlay={handlePlayVideo}
+        />
+      </section>
+
+      <section className="video-example__section">
+        <h2>With Max Height Constraint</h2>
+        <p>
+          Use <code>maxHeight</code> to limit the video player&apos;s maximum height.
+        </p>
+        <UIForgeVideo
+          title="Max Height Video"
+          description="This video has a maximum height of 300px"
+          url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          maxHeight={300}
+          onPlay={handlePlayVideo}
+        />
+      </section>
+
+      <section className="video-example__section">
+        <h2>Responsive in Narrow Container (Simulated Mobile)</h2>
+        <p>This demonstrates how the responsive video looks in a narrow container.</p>
+        <div style={{ maxWidth: '320px', border: '2px dashed #ccc', padding: '8px' }}>
+          <UIForgeVideo
+            url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            responsive={true}
+            hideHeader={true}
+            onPlay={handlePlayVideo}
+          />
+        </div>
+      </section>
+
       <section className="video-example__section">
         <h2>With Playback Options</h2>
         <UIForgeVideo
@@ -288,6 +346,16 @@ export const VideoExample: React.FC = () => {
   provider="youtube"
   videoId="dQw4w9WgXcQ"
   title="Custom Title"
+/>`}
+        </pre>
+
+        <h3>Responsive Video (Mobile-Friendly)</h3>
+        <pre className="video-example__code">
+          {`<UIForgeVideo
+  url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  responsive={true}
+  hideHeader={true}
+  maxHeight={400}
 />`}
         </pre>
 

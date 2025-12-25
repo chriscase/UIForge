@@ -7,6 +7,15 @@
     sans-serif;
 }
 
+/* Responsive modifier - enables full responsive behavior */
+.uiforge-video--responsive {
+  max-width: 100%;
+}
+
+.uiforge-video--responsive .uiforge-video__player-container {
+  min-height: 0;
+}
+
 .uiforge-video__header {
   margin-bottom: 1rem;
 }

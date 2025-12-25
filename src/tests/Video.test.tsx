@@ -138,6 +138,88 @@ describe('UIForgeVideo', () => {
     })
   })
 
+  describe('Responsive behavior', () => {
+    it('adds responsive class when responsive prop is true', () => {
+      const { container } = render(
+        <UIForgeVideo title="Test Video" youtubeId="test123" responsive={true} />
+      )
+      expect(container.querySelector('.uiforge-video')).toHaveClass('uiforge-video--responsive')
+    })
+
+    it('does not add responsive class when responsive prop is false', () => {
+      const { container } = render(
+        <UIForgeVideo title="Test Video" youtubeId="test123" responsive={false} />
+      )
+      expect(container.querySelector('.uiforge-video')).not.toHaveClass('uiforge-video--responsive')
+    })
+
+    it('does not add responsive class by default', () => {
+      const { container } = render(<UIForgeVideo title="Test Video" youtubeId="test123" />)
+      expect(container.querySelector('.uiforge-video')).not.toHaveClass('uiforge-video--responsive')
+    })
+  })
+
+  describe('hideHeader prop', () => {
+    it('shows header with title and description by default', () => {
+      render(
+        <UIForgeVideo title="Test Video" description="Test description" youtubeId="test123" />
+      )
+      expect(screen.getByText('Test Video')).toBeInTheDocument()
+      expect(screen.getByText('Test description')).toBeInTheDocument()
+    })
+
+    it('hides header when hideHeader is true', () => {
+      render(
+        <UIForgeVideo
+          title="Test Video"
+          description="Test description"
+          youtubeId="test123"
+          hideHeader={true}
+        />
+      )
+      expect(screen.queryByText('Test Video')).not.toBeInTheDocument()
+      expect(screen.queryByText('Test description')).not.toBeInTheDocument()
+    })
+
+    it('shows header when hideHeader is false', () => {
+      render(
+        <UIForgeVideo
+          title="Test Video"
+          description="Test description"
+          youtubeId="test123"
+          hideHeader={false}
+        />
+      )
+      expect(screen.getByText('Test Video')).toBeInTheDocument()
+      expect(screen.getByText('Test description')).toBeInTheDocument()
+    })
+  })
+
+  describe('maxHeight prop', () => {
+    it('applies maxHeight when provided as string', () => {
+      const { container } = render(
+        <UIForgeVideo title="Test Video" youtubeId="test123" maxHeight="500px" />
+      )
+      const playerContainer = container.querySelector('.uiforge-video__player-container')
+      expect(playerContainer).toHaveStyle({ maxHeight: '500px' })
+    })
+
+    it('applies maxHeight when provided as number', () => {
+      const { container } = render(
+        <UIForgeVideo title="Test Video" youtubeId="test123" maxHeight={400} />
+      )
+      const playerContainer = container.querySelector('.uiforge-video__player-container')
+      expect(playerContainer).toHaveStyle({ maxHeight: '400px' })
+    })
+
+    it('does not apply maxHeight when not provided', () => {
+      const { container } = render(<UIForgeVideo title="Test Video" youtubeId="test123" />)
+      const playerContainer = container.querySelector('.uiforge-video__player-container')
+      // maxHeight should not be set (empty string) when not provided
+      expect(playerContainer).toHaveStyle({ maxHeight: '' })
+    })
+  })
+
   describe('Accessibility', () => {
     it('has accessible play button with aria-label', () => {
       render(<UIForgeVideo title="My Video Title" youtubeId="test123" />)
