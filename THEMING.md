@@ -349,6 +349,174 @@ We're working on:
 - Component-specific theme exports
 - Better TypeScript support for CSS variables
 
+## Global CSS Tokens
+
+UIForge provides a set of CSS custom properties (tokens) that allow you to customize spacing, sizing, and typography across all components. These tokens are defined in `:root` and can be overridden in your own stylesheets.
+
+### Available Tokens
+
+#### Spacing Tokens
+
+```css
+:root {
+  --uiforge-gap: 8px;         /* Default gap */
+  --uiforge-gap-xs: 4px;      /* Extra small gap */
+  --uiforge-gap-sm: 6px;      /* Small gap */
+  --uiforge-gap-md: 8px;      /* Medium gap (same as default) */
+  --uiforge-gap-lg: 12px;     /* Large gap */
+  --uiforge-gap-xl: 16px;     /* Extra large gap */
+}
+```
+
+#### Size Tokens
+
+```css
+:root {
+  /* Item heights */
+  --uiforge-item-height: 40px;
+  --uiforge-item-height-sm: 32px;
+  --uiforge-item-height-lg: 48px;
+
+  /* Avatar sizes */
+  --uiforge-avatar-size: 32px;
+  --uiforge-avatar-size-sm: 24px;
+  --uiforge-avatar-size-lg: 40px;
+  --uiforge-avatar-size-xl: 48px;
+
+  /* Icon sizes */
+  --uiforge-icon-size: 20px;
+  --uiforge-icon-size-sm: 16px;
+  --uiforge-icon-size-lg: 24px;
+}
+```
+
+#### Typography Tokens
+
+```css
+:root {
+  /* Font sizes */
+  --uiforge-font-size: 14px;
+  --uiforge-font-size-xs: 11px;
+  --uiforge-font-size-sm: 12px;
+  --uiforge-font-size-md: 14px;
+  --uiforge-font-size-lg: 16px;
+  --uiforge-font-size-xl: 18px;
+
+  /* Line heights */
+  --uiforge-line-height: 1.5;
+  --uiforge-line-height-tight: 1.25;
+  --uiforge-line-height-relaxed: 1.75;
+}
+```
+
+#### Border Radius Tokens
+
+```css
+:root {
+  --uiforge-border-radius: 6px;
+  --uiforge-border-radius-sm: 4px;
+  --uiforge-border-radius-lg: 8px;
+  --uiforge-border-radius-full: 9999px;
+}
+```
+
+#### Z-Index Tokens
+
+```css
+:root {
+  --uiforge-z-index-dropdown: 1000;
+  --uiforge-z-index-sticky: 1020;
+  --uiforge-z-index-fixed: 1030;
+  --uiforge-z-index-modal-backdrop: 1040;
+  --uiforge-z-index-modal: 1050;
+  --uiforge-z-index-tooltip: 1060;
+}
+```
+
+### Customizing Tokens
+
+Override tokens in your CSS to customize the entire UIForge design system:
+
+```css
+:root {
+  /* Make all gaps larger */
+  --uiforge-gap: 12px;
+  --uiforge-gap-lg: 16px;
+  --uiforge-gap-xl: 24px;
+
+  /* Use larger fonts */
+  --uiforge-font-size: 16px;
+
+  /* More rounded corners */
+  --uiforge-border-radius: 8px;
+}
+```
+
+## Safe-Area Utility Classes
+
+UIForge provides utility classes that leverage `env(safe-area-inset-*)` to ensure fixed or sticky elements respect iOS notch areas and other device safe areas.
+
+### Available Classes
+
+| Class | Description |
+| --- | --- |
+| `.uiforge-fixed-bottom` | Adds `padding-bottom` for the home indicator/bottom safe area |
+| `.uiforge-fixed-top` | Adds `padding-top` for the notch/top safe area |
+| `.uiforge-fixed-left` | Adds `padding-left` for left safe area |
+| `.uiforge-fixed-right` | Adds `padding-right` for right safe area |
+| `.uiforge-fixed-all` | Adds padding for all safe areas |
+| `.uiforge-fixed-bottom-margin` | Margin variant for bottom safe area |
+| `.uiforge-fixed-top-margin` | Margin variant for top safe area |
+| `.uiforge-fixed-left-margin` | Margin variant for left safe area |
+| `.uiforge-fixed-right-margin` | Margin variant for right safe area |
+
+### Usage Example
+
+Apply safe-area classes to fixed elements:
+
+```tsx
+// Fixed bottom navigation bar
+<nav className="my-bottom-nav uiforge-fixed-bottom">
+  <button>Home</button>
+  <button>Search</button>
+  <button>Profile</button>
+</nav>
+
+// Fixed header
+<header className="my-header uiforge-fixed-top">
+  <h1>My App</h1>
+</header>
+
+// Full-screen fixed overlay
+<div className="my-overlay uiforge-fixed-all">
+  <div className="content">...</div>
+</div>
+```
+
+### CSS Implementation
+
+The classes use the CSS `env()` function with fallbacks for non-supporting browsers:
+
+```css
+.uiforge-fixed-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.uiforge-fixed-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+```
+
+### Important: viewport-fit Meta Tag
+
+For safe-area insets to work, you must set `viewport-fit=cover` in your HTML:
+
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+```
+
+Without this meta tag, `env(safe-area-inset-*)` values will always be `0`.
+
 ## Contributing
 
 Have a great theme? Share it with the community! Submit your custom themes as examples in the `examples/themes/` directory.
@@ -358,3 +526,4 @@ Have a great theme? Share it with the community! Submit your custom themes as ex
 - [CSS Variables (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
 - [WCAG Contrast Guidelines](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html)
 - [prefers-color-scheme (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)
+- [Safe Area Insets (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/env)

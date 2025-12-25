@@ -70,6 +70,7 @@ export { useDynamicPageCount } from './hooks'
 export type { UseDynamicPageCountOptions } from './hooks'
 
 // Export all styles
+import './components/Tokens.css'
 import './components/Button.css'
 import './components/Grid.css'
 import './components/BlocksEditor.css'

@@ -7,6 +7,7 @@ import VideoExample from './VideoExample'
 import UseResponsiveExample from './UseResponsiveExample'
 import UseDynamicPageCountExample from './UseDynamicPageCountExample'
 import SidebarExample from './SidebarExample'
+import SafeAreaExample from './SafeAreaExample'
 import AppDemo from './App'
 import './index.css'
 
@@ -33,6 +34,8 @@ function Router() {
       return <UseDynamicPageCountExample />
     case '/sidebar':
       return <SidebarExample />
+    case '/safe-area':
+      return <SafeAreaExample />
     case '/grid':
     case '/blocks-editor':
     case '/combobox':
