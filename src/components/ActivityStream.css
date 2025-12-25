@@ -815,3 +815,67 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* ============================================
+   VIRTUALIZATION STYLES
+   Styles for react-window virtualized list
+   ============================================ */
+
+/* Virtualized container */
+.activity-stream--virtualized {
+  position: relative;
+}
+
+.activity-stream__container--virtualized {
+  background-color: var(--activity-stream-bg);
+  color: var(--activity-stream-text);
+  border-radius: 6px;
+  position: relative;
+}
+
+/* Virtualized items wrapper */
+.activity-stream__items--virtualized {
+  position: relative;
+}
+
+/* Virtual row wrapper - contains each virtualized item */
+.activity-stream__virtual-row {
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Ensure timeline works with virtualization */
+.activity-stream--virtualized.activity-stream--with-timeline .activity-stream__items--virtualized {
+  padding-left: var(--activity-stream-timeline-left, 20px);
+}
+
+/* Timeline line for virtualized lists - applied to the wrapper div */
+.activity-stream--virtualized.activity-stream--with-timeline .activity-stream__container--virtualized::before {
+  content: '';
+  position: absolute;
+  left: var(--activity-stream-timeline-left, 23px);
+  top: var(--activity-stream-timeline-top, 28px);
+  bottom: 0;
+  width: 2px;
+  background-color: var(--activity-stream-timeline-color);
+  z-index: 0;
+}
+
+/* Override standard timeline positioning for virtualized mode */
+.activity-stream--virtualized .activity-stream__items--virtualized::before {
+  display: none;
+}
+
+/* Ensure items in virtual rows maintain proper layout */
+.activity-stream__virtual-row .activity-stream__item {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Adjust date separator for virtualized lists */
+.activity-stream__virtual-row .activity-stream__date-separator {
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}

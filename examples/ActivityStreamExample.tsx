@@ -20,6 +20,7 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
   const [density, setDensity] = useState<ActivityStreamDensity>('comfortable')
   const [responsive, setResponsive] = useState(true)
   const [showMeta, setShowMeta] = useState(true)
+  const [virtualization, setVirtualization] = useState(false)
 
   // Generate sample user activity data
   /* eslint-disable react-hooks/purity */
@@ -289,6 +290,17 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
         </div>
 
         <div className="activity-stream-example__control-group">
+          <label>
+            <input
+              type="checkbox"
+              checked={virtualization}
+              onChange={(e) => setVirtualization(e.target.checked)}
+            />
+            Enable Virtualization
+          </label>
+        </div>
+
+        <div className="activity-stream-example__control-group">
           <label htmlFor="theme-select">Theme:</label>
           <select
             id="theme-select"
@@ -366,6 +378,8 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
               responsive={responsive}
               compactBreakpointPx={640}
               showMeta={showMeta}
+              virtualization={virtualization}
+              virtualItemHeight={48}
               pagination={{
                 currentPage: 0,
                 pageSize: 15,
@@ -389,6 +403,10 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
             <li>
               <strong>Show/Hide Metadata:</strong> Toggle timestamps and metadata visibility with the
               showMeta prop for denser mobile layouts
+            </li>
+            <li>
+              <strong>Virtualization (opt-in):</strong> Uses react-window to render only visible items
+              for improved performance with large lists. Enable with virtualization={'{true}'}
             </li>
             <li>
               <strong>Smart Event Grouping:</strong> Automatically groups consecutive events of the
@@ -460,6 +478,31 @@ const events = [
     hasMore: true,
   }}
 />`}
+          </code>
+        </pre>
+
+        <h4>Virtualization for Large Lists</h4>
+        <pre>
+          <code>
+            {`import { UIForgeActivityStream } from '@appforgeapps/uiforge'
+
+// For large lists (100+ items), enable virtualization
+// This uses react-window to render only visible items
+<UIForgeActivityStream
+  events={largeEventsList}      // Can handle 1000s of events
+  virtualization={true}          // Enable react-window virtualization
+  virtualItemHeight={48}         // Height per item in pixels (default: 48)
+  maxHeight="600px"              // Container height for the virtual list
+  theme="dark"
+  density="compact"
+  showTimeline={true}
+/>
+
+// Trade-offs to consider:
+// - Virtualization uses fixed item heights, so expanded items may not
+//   display fully. Best for simple, non-expandable lists.
+// - Date separators and grouping work but may look different.
+// - Improves performance significantly for 100+ items.`}
           </code>
         </pre>
 
