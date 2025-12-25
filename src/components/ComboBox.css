@@ -1,6 +1,25 @@
 /* UIForgeComboBox Styles */
 
 .uiforge-combobox {
+  /* CSS Variables for theming */
+  --combobox-bg: #ffffff;
+  --combobox-text: #1f2937;
+  --combobox-text-secondary: #9ca3af;
+  --combobox-text-muted: #6b7280;
+  --combobox-border: #d1d5db;
+  --combobox-border-hover: #9ca3af;
+  --combobox-border-focus: #3b82f6;
+  --combobox-dropdown-bg: #ffffff;
+  --combobox-dropdown-border: #d1d5db;
+  --combobox-option-hover: #f3f4f6;
+  --combobox-option-highlighted: #eff6ff;
+  --combobox-option-selected-bg: #dbeafe;
+  --combobox-option-selected-text: #1e40af;
+  --combobox-option-disabled-bg: #f9fafb;
+  --combobox-option-disabled-text: #9ca3af;
+  --combobox-disabled-bg: #f3f4f6;
+  --combobox-spinner: #3b82f6;
+
   position: relative;
   display: inline-block;
   width: 100%;
@@ -11,29 +30,50 @@
   line-height: 1.5;
 }
 
+/* Dark theme variables */
+.uiforge-combobox--dark {
+  --combobox-bg: #374151;
+  --combobox-text: #f9fafb;
+  --combobox-text-secondary: #9ca3af;
+  --combobox-text-muted: #9ca3af;
+  --combobox-border: #4b5563;
+  --combobox-border-hover: #6b7280;
+  --combobox-border-focus: #3b82f6;
+  --combobox-dropdown-bg: #1f2937;
+  --combobox-dropdown-border: #374151;
+  --combobox-option-hover: #374151;
+  --combobox-option-highlighted: #1e3a5f;
+  --combobox-option-selected-bg: #1e4976;
+  --combobox-option-selected-text: #93c5fd;
+  --combobox-option-disabled-bg: #111827;
+  --combobox-option-disabled-text: #6b7280;
+  --combobox-disabled-bg: #1f2937;
+  --combobox-spinner: #60a5fa;
+}
+
 .uiforge-combobox-control {
   display: flex;
   align-items: center;
   min-height: 38px;
   padding: 6px 12px;
-  background-color: #ffffff;
-  border: 1px solid #d1d5db;
+  background-color: var(--combobox-bg);
+  border: 1px solid var(--combobox-border);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .uiforge-combobox-control:hover {
-  border-color: #9ca3af;
+  border-color: var(--combobox-border-hover);
 }
 
 .uiforge-combobox--open .uiforge-combobox-control {
-  border-color: #3b82f6;
+  border-color: var(--combobox-border-focus);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .uiforge-combobox--disabled .uiforge-combobox-control {
-  background-color: #f3f4f6;
+  background-color: var(--combobox-disabled-bg);
   cursor: not-allowed;
   opacity: 0.6;
 }
@@ -43,12 +83,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #1f2937;
+  color: var(--combobox-text);
 }
 
 .uiforge-combobox-value:empty::before {
   content: attr(placeholder);
-  color: #9ca3af;
+  color: var(--combobox-text-secondary);
 }
 
 .uiforge-combobox-value-content {
@@ -85,13 +125,13 @@
   background: transparent;
   font-size: inherit;
   font-family: inherit;
-  color: #1f2937;
+  color: var(--combobox-text);
   padding: 0;
   min-width: 0;
 }
 
 .uiforge-combobox-input::placeholder {
-  color: #9ca3af;
+  color: var(--combobox-text-secondary);
 }
 
 .uiforge-combobox-indicators {
@@ -112,14 +152,14 @@
   border: none;
   background: none;
   cursor: pointer;
-  color: #6b7280;
+  color: var(--combobox-text-muted);
   font-size: 20px;
   line-height: 1;
   transition: color 0.2s ease;
 }
 
 .uiforge-combobox-clear:hover {
-  color: #1f2937;
+  color: var(--combobox-text);
 }
 
 .uiforge-combobox-arrow {
@@ -128,7 +168,7 @@
   justify-content: center;
   width: 16px;
   height: 16px;
-  color: #6b7280;
+  color: var(--combobox-text-muted);
   font-size: 10px;
   transition: transform 0.2s ease;
   pointer-events: none;
@@ -144,8 +184,8 @@
   left: 0;
   right: 0;
   margin-top: 4px;
-  background-color: #ffffff;
-  border: 1px solid #d1d5db;
+  background-color: var(--combobox-dropdown-bg);
+  border: 1px solid var(--combobox-dropdown-border);
   border-radius: 6px;
   box-shadow:
     0 10px 15px -3px rgba(0, 0, 0, 0.1),
@@ -153,6 +193,12 @@
   overflow-y: auto;
   z-index: 1000;
   animation: slideDown 0.15s ease-out;
+}
+
+.uiforge-combobox--dark .uiforge-combobox-dropdown {
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.3),
+    0 4px 6px -2px rgba(0, 0, 0, 0.2);
 }
 
 @keyframes slideDown {
@@ -170,28 +216,28 @@
   padding: 8px 12px;
   cursor: pointer;
   transition: background-color 0.15s ease;
-  color: #1f2937;
+  color: var(--combobox-text);
 }
 
 .uiforge-combobox-option:hover:not(.uiforge-combobox-option--disabled) {
-  background-color: #f3f4f6;
+  background-color: var(--combobox-option-hover);
 }
 
 .uiforge-combobox-option--highlighted {
-  background-color: #eff6ff;
+  background-color: var(--combobox-option-highlighted);
 }
 
 .uiforge-combobox-option--selected {
-  background-color: #dbeafe;
-  color: #1e40af;
+  background-color: var(--combobox-option-selected-bg);
+  color: var(--combobox-option-selected-text);
   font-weight: 500;
 }
 
 .uiforge-combobox-option--disabled {
-  color: #9ca3af;
+  color: var(--combobox-option-disabled-text);
   cursor: default;
   font-weight: 600;
-  background-color: #f9fafb;
+  background-color: var(--combobox-option-disabled-bg);
 }
 
 .uiforge-combobox-option-content {
@@ -226,7 +272,7 @@
 .uiforge-combobox-no-options {
   padding: 12px;
   text-align: center;
-  color: #6b7280;
+  color: var(--combobox-text-muted);
   font-style: italic;
 }
 
@@ -236,7 +282,7 @@
   width: 12px;
   height: 12px;
   margin-left: 8px;
-  border: 2px solid #3b82f6;
+  border: 2px solid var(--combobox-spinner);
   border-radius: 50%;
   border-top-color: transparent;
   animation: spin 0.6s linear infinite;
@@ -250,7 +296,7 @@
 
 /* Focus styles for accessibility */
 .uiforge-combobox:focus-within .uiforge-combobox-control {
-  outline: 2px solid #3b82f6;
+  outline: 2px solid var(--combobox-border-focus);
   outline-offset: 2px;
 }
 

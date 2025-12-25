@@ -70,6 +70,10 @@ export interface UIForgeBlocksEditorProps {
    */
   readOnly?: boolean
   /**
+   * Theme variant ('light' or 'dark')
+   */
+  theme?: 'light' | 'dark'
+  /**
    * Custom CSS class name
    */
   className?: string
@@ -125,6 +129,7 @@ export const UIForgeBlocksEditor: React.FC<UIForgeBlocksEditorProps> = ({
   onChange,
   placeholder = 'Start typing...',
   readOnly = false,
+  theme = 'light',
   className = '',
   maxHeight,
 }) => {
@@ -290,8 +295,10 @@ export const UIForgeBlocksEditor: React.FC<UIForgeBlocksEditorProps> = ({
     [readOnly, blocks, toggleFormat, addBlock, deleteBlock]
   )
 
+  const themeClass = `uiforge-blocks-editor--${theme}`
+
   return (
-    <div className={`uiforge-blocks-editor ${className}`} ref={editorRef} style={{ maxHeight }}>
+    <div className={`uiforge-blocks-editor ${themeClass} ${className}`} ref={editorRef} style={{ maxHeight }} data-theme={theme}>
       {!readOnly && showToolbar && selectedBlockId && (
         <Toolbar
           selectedBlock={blocks.find((b) => b.id === selectedBlockId)}

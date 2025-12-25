@@ -96,6 +96,10 @@ export interface UIForgeGridProps<T = Record<string, unknown>> {
    */
   data: T[]
   /**
+   * Theme variant ('light' or 'dark')
+   */
+  theme?: 'light' | 'dark'
+  /**
    * Enable row selection
    */
   selectable?: boolean
@@ -171,6 +175,7 @@ export interface UIForgeGridProps<T = Record<string, unknown>> {
 export const UIForgeGrid = <T extends Record<string, unknown>>({
   columns,
   data,
+  theme = 'light',
   selectable = false,
   selectedRows: controlledSelectedRows,
   getRowKey = (_, index) => index,
@@ -375,9 +380,10 @@ export const UIForgeGrid = <T extends Record<string, unknown>>({
   }, [paginatedData, selectedRowKeys, allVisibleSelected, data, getRowKey])
 
   const baseClass = 'uiforge-grid'
+  const themeClass = `${baseClass}--${theme}`
 
   return (
-    <div className={`${baseClass} ${className}`.trim()}>
+    <div className={`${baseClass} ${themeClass} ${className}`.trim()} data-theme={theme}>
       {/* Toolbar */}
       {(searchable || actionButtons.length > 0) && (
         <div className={`${baseClass}__toolbar`}>

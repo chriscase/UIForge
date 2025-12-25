@@ -69,6 +69,20 @@ describe('UIForgeBlocksEditor', () => {
     expect(editor).toHaveClass('custom-class')
   })
 
+  it('applies light theme by default', () => {
+    const { container } = render(<UIForgeBlocksEditor />)
+    const editor = container.querySelector('.uiforge-blocks-editor')
+    expect(editor).toHaveClass('uiforge-blocks-editor--light')
+    expect(editor).toHaveAttribute('data-theme', 'light')
+  })
+
+  it('applies dark theme when specified', () => {
+    const { container } = render(<UIForgeBlocksEditor theme="dark" />)
+    const editor = container.querySelector('.uiforge-blocks-editor')
+    expect(editor).toHaveClass('uiforge-blocks-editor--dark')
+    expect(editor).toHaveAttribute('data-theme', 'dark')
+  })
+
   it('creates heading1 block', async () => {
     const user = userEvent.setup()
     render(<UIForgeBlocksEditor />)

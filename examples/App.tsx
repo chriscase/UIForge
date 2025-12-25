@@ -6,6 +6,7 @@ import { blocksToHTML, blocksToMarkdown } from '../src/components/BlocksEditorUt
 import { UIForgeComboBox, ComboBoxOption } from '../src/components/ComboBox'
 import { UIForgeActivityStream, ActivityEvent } from '../src/components/ActivityStream'
 import { UIForgeVideo, UIForgeVideoPreview } from '../src/components/Video'
+import { useTheme, AppTheme } from './ThemeContext'
 import './App.css'
 
 // Sample data for the grid
@@ -106,6 +107,9 @@ interface AppProps {
 }
 
 function App({ onNavigate }: AppProps) {
+  // Use global theme from context
+  const { theme: globalTheme, setTheme: setGlobalTheme } = useTheme()
+  
   const [users, setUsers] = useState<User[]>(sampleUsers)
   const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set())
   const [currentPage, setCurrentPage] = useState(0)
@@ -121,9 +125,6 @@ function App({ onNavigate }: AppProps) {
   const [cachedValue, setCachedValue] = useState<string | number | null>(null)
   const [clearCacheFn, setClearCacheFn] = useState<(() => void) | null>(null)
   const [forceRefreshFn, setForceRefreshFn] = useState<(() => void) | null>(null)
-
-  // ActivityStream state
-  const [activityTheme, setActivityTheme] = useState<'light' | 'dark'>('light')
   
   // Video state
   const [videoLogs, setVideoLogs] = useState<string[]>([])
@@ -438,15 +439,33 @@ function App({ onNavigate }: AppProps) {
   }
 
   return (
-    <div className="app">
+    <div className={`app ${globalTheme === 'light' ? 'app--light' : 'app--dark'}`} data-theme={globalTheme}>
       <header className="app-header">
-        {onNavigate && (
-          <button className="back-button back-button--header" onClick={() => onNavigate('/')}>
-            ← Back to Home
-          </button>
-        )}
-        <h1>UIForge Component Library</h1>
-        <p>A rich user interface library for ReactJS developers</p>
+        <div className="app-header__nav">
+          {onNavigate && (
+            <button className="app-header__back-btn" onClick={() => onNavigate('/')}>
+              ← Back to Home
+            </button>
+          )}
+          <div className="app-header__theme-toggle">
+            <label htmlFor="global-theme" className="app-header__theme-label">
+              Theme:
+            </label>
+            <select
+              id="global-theme"
+              value={globalTheme}
+              onChange={(e) => setGlobalTheme(e.target.value as AppTheme)}
+              className="app-header__theme-select"
+            >
+              <option value="dark">Dark</option>
+              <option value="light">Light</option>
+            </select>
+          </div>
+        </div>
+        <div className="app-header__content">
+          <h1>UIForge Component Library</h1>
+          <p>A rich user interface library for ReactJS developers</p>
+        </div>
       </header>
 
       <main className="app-main">
@@ -456,39 +475,39 @@ function App({ onNavigate }: AppProps) {
           <div className="demo-group">
             <h3>Variants</h3>
             <div className="button-group">
-              <Button variant="primary">Primary Button</Button>
-              <Button variant="secondary">Secondary Button</Button>
-              <Button variant="outline">Outline Button</Button>
+              <Button variant="primary" theme={globalTheme}>Primary Button</Button>
+              <Button variant="secondary" theme={globalTheme}>Secondary Button</Button>
+              <Button variant="outline" theme={globalTheme}>Outline Button</Button>
             </div>
           </div>
 
           <div className="demo-group">
             <h3>Sizes</h3>
             <div className="button-group">
-              <Button size="small">Small</Button>
-              <Button size="medium">Medium</Button>
-              <Button size="large">Large</Button>
+              <Button size="small" theme={globalTheme}>Small</Button>
+              <Button size="medium" theme={globalTheme}>Medium</Button>
+              <Button size="large" theme={globalTheme}>Large</Button>
             </div>
           </div>
 
           <div className="demo-group">
             <h3>States</h3>
             <div className="button-group">
-              <Button>Enabled</Button>
-              <Button disabled>Disabled</Button>
+              <Button theme={globalTheme}>Enabled</Button>
+              <Button disabled theme={globalTheme}>Disabled</Button>
             </div>
           </div>
         </section>
 
         <section className="demo-section">
           <h2>UIForgeBlocksEditor Component</h2>
-          <p style={{ marginBottom: '1rem', color: '#6b7280' }}>
+          <p style={{ marginBottom: '1rem', color: globalTheme === 'dark' ? '#9ca3af' : '#6b7280' }}>
             A rich, block-based content editor for flexible layouts and content creation.
           </p>
 
           <div className="demo-group">
             <h3>Interactive Editor</h3>
-            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: globalTheme === 'dark' ? '#9ca3af' : '#6b7280' }}>
               Try these features: Add blocks, drag to reorder, format text (Ctrl+B for bold, Ctrl+I
               for italic), and export content.
             </p>
@@ -499,6 +518,7 @@ function App({ onNavigate }: AppProps) {
                 onChange={setEditorBlocks}
                 placeholder="Start writing your content here..."
                 maxHeight="500px"
+                theme={globalTheme}
               />
             </div>
 
@@ -514,15 +534,17 @@ function App({ onNavigate }: AppProps) {
                   style={{
                     padding: '0.5rem',
                     borderRadius: '6px',
-                    border: '1px solid #d1d5db',
+                    border: globalTheme === 'dark' ? '1px solid #4b5563' : '1px solid #d1d5db',
                     fontSize: '0.875rem',
+                    backgroundColor: globalTheme === 'dark' ? '#374151' : '#ffffff',
+                    color: globalTheme === 'dark' ? '#f9fafb' : '#1f2937',
                   }}
                 >
                   <option value="html">HTML</option>
                   <option value="markdown">Markdown</option>
                 </select>
               </div>
-              <Button onClick={handleExportContent}>Export Content</Button>
+              <Button onClick={handleExportContent} theme={globalTheme}>Export Content</Button>
             </div>
 
             {exportedContent && (
@@ -549,7 +571,7 @@ function App({ onNavigate }: AppProps) {
 
           <div className="demo-group" style={{ marginTop: '2rem' }}>
             <h3>Read-Only Mode</h3>
-            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: globalTheme === 'dark' ? '#9ca3af' : '#6b7280' }}>
               Display content in read-only mode (no editing controls).
             </p>
             <UIForgeBlocksEditor
@@ -569,19 +591,20 @@ function App({ onNavigate }: AppProps) {
                 },
               ]}
               readOnly
+              theme={globalTheme}
             />
           </div>
         </section>
 
         <section className="demo-section">
           <h2>UIForgeGrid Component</h2>
-          <p style={{ marginBottom: '1rem', color: '#6b7280' }}>
+          <p style={{ marginBottom: '1rem', color: globalTheme === 'dark' ? '#9ca3af' : '#6b7280' }}>
             A feature-rich data grid with selection, editing, search, pagination, and more.
           </p>
 
           <div className="demo-group">
             <h3>Interactive Grid Demo</h3>
-            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: globalTheme === 'dark' ? '#9ca3af' : '#6b7280' }}>
               Try these features: Select rows, edit cells (click on Name or Role), search, paginate,
               and use action buttons.
             </p>
@@ -589,6 +612,7 @@ function App({ onNavigate }: AppProps) {
             <UIForgeGrid
               columns={columns}
               data={users}
+              theme={globalTheme}
               selectable
               selectedRows={selectedRows}
               onSelectionChange={handleSelectionChange}
@@ -617,12 +641,13 @@ function App({ onNavigate }: AppProps) {
                 { key: 'role', header: 'Role', field: 'role' },
               ]}
               data={users.slice(0, 3)}
+              theme={globalTheme}
             />
           </div>
 
           <div className="demo-group" style={{ marginTop: '2rem' }}>
             <h3>Loading State</h3>
-            <UIForgeGrid columns={columns} data={[]} loading />
+            <UIForgeGrid columns={columns} data={[]} loading theme={globalTheme} />
           </div>
 
           <div className="demo-group" style={{ marginTop: '2rem' }}>
@@ -631,20 +656,21 @@ function App({ onNavigate }: AppProps) {
               columns={columns}
               data={[]}
               emptyMessage="No users found. Try adding some!"
+              theme={globalTheme}
             />
           </div>
         </section>
 
         <section className="demo-section">
           <h2>UIForgeComboBox Component</h2>
-          <p style={{ marginBottom: '1rem', color: '#6b7280' }}>
+          <p style={{ marginBottom: '1rem', color: globalTheme === 'dark' ? '#9ca3af' : '#6b7280' }}>
             A rich, powerful select/combo box with icons, hierarchical options, and async search
             support.
           </p>
 
           <div className="demo-group">
             <h3>Simple Select with Icons</h3>
-            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: globalTheme === 'dark' ? '#9ca3af' : '#6b7280' }}>
               Click to select a programming language. The dropdown is searchable.
             </p>
             <div style={{ maxWidth: '400px' }}>
@@ -654,11 +680,12 @@ function App({ onNavigate }: AppProps) {
                 onChange={(val) => setSelectedOption(val)}
                 placeholder="Select a language..."
                 clearable
+                theme={globalTheme}
                 searchable
               />
             </div>
             {selectedOption && (
-              <p style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#374151' }}>
+              <p style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: globalTheme === 'dark' ? '#e5e7eb' : '#374151' }}>
                 Selected:{' '}
                 <strong>{simpleOptions.find((o) => o.value === selectedOption)?.label}</strong>
               </p>
@@ -667,7 +694,7 @@ function App({ onNavigate }: AppProps) {
 
           <div className="demo-group" style={{ marginTop: '2rem' }}>
             <h3>Hierarchical Options (Tree View)</h3>
-            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: globalTheme === 'dark' ? '#9ca3af' : '#6b7280' }}>
               Options grouped into categories with non-selectable headers.
             </p>
             <div style={{ maxWidth: '400px' }}>
@@ -677,10 +704,11 @@ function App({ onNavigate }: AppProps) {
                 onChange={(val) => setSelectedHierarchical(val)}
                 placeholder="Select a technology..."
                 clearable
+                theme={globalTheme}
               />
             </div>
             {selectedHierarchical && (
-              <p style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#374151' }}>
+              <p style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: globalTheme === 'dark' ? '#e5e7eb' : '#374151' }}>
                 Selected:{' '}
                 <strong>
                   {
@@ -695,7 +723,7 @@ function App({ onNavigate }: AppProps) {
 
           <div className="demo-group" style={{ marginTop: '2rem' }}>
             <h3>Async Search (Server-Side)</h3>
-            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: globalTheme === 'dark' ? '#9ca3af' : '#6b7280' }}>
               Type to search. Results are fetched asynchronously (simulated 500ms delay).
             </p>
             <div style={{ maxWidth: '400px' }}>
@@ -706,10 +734,11 @@ function App({ onNavigate }: AppProps) {
                 placeholder="Search for a user..."
                 clearable
                 searchable
+                theme={globalTheme}
               />
             </div>
             {asyncValue && (
-              <p style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#374151' }}>
+              <p style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: globalTheme === 'dark' ? '#e5e7eb' : '#374151' }}>
                 Selected user ID: <strong>{asyncValue}</strong>
               </p>
             )}
@@ -718,13 +747,13 @@ function App({ onNavigate }: AppProps) {
           <div className="demo-group" style={{ marginTop: '2rem' }}>
             <h3>Disabled State</h3>
             <div style={{ maxWidth: '400px' }}>
-              <UIForgeComboBox options={simpleOptions} value={1} onChange={() => {}} disabled />
+              <UIForgeComboBox options={simpleOptions} value={1} onChange={() => {}} disabled theme={globalTheme} />
             </div>
           </div>
 
           <div className="demo-group" style={{ marginTop: '2rem' }}>
             <h3>Non-Searchable</h3>
-            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: globalTheme === 'dark' ? '#9ca3af' : '#6b7280' }}>
               A simple dropdown without search functionality.
             </p>
             <div style={{ maxWidth: '400px' }}>
@@ -734,13 +763,14 @@ function App({ onNavigate }: AppProps) {
                 onChange={(val) => setSelectedOption(val)}
                 placeholder="Select a language..."
                 searchable={false}
+                theme={globalTheme}
               />
             </div>
           </div>
 
           <div className="demo-group" style={{ marginTop: '2rem' }}>
             <h3>Caching + TTL + Clear Cache</h3>
-            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: globalTheme === 'dark' ? '#9ca3af' : '#6b7280' }}>
               Results are cached for 10 seconds. Use the button to manually clear the cache.
             </p>
             <div style={{ maxWidth: '400px', marginBottom: '0.5rem' }}>
@@ -755,11 +785,13 @@ function App({ onNavigate }: AppProps) {
                 cacheTTL={10000}
                 onClearCache={(fn) => setClearCacheFn(() => fn)}
                 onForceRefresh={(fn) => setForceRefreshFn(() => fn)}
+                theme={globalTheme}
               />
             </div>
             <Button
               variant="outline"
               size="small"
+              theme={globalTheme}
               onClick={() => {
                 if (clearCacheFn) {
                   clearCacheFn()
@@ -772,6 +804,7 @@ function App({ onNavigate }: AppProps) {
             <Button
               variant="outline"
               size="small"
+              theme={globalTheme}
               onClick={() => {
                 if (forceRefreshFn) {
                   forceRefreshFn()
@@ -783,7 +816,7 @@ function App({ onNavigate }: AppProps) {
               Force Refresh
             </Button>
             {cachedValue && (
-              <p style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#374151' }}>
+              <p style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: globalTheme === 'dark' ? '#e5e7eb' : '#374151' }}>
                 Selected user ID: <strong>{cachedValue}</strong>
               </p>
             )}
@@ -791,7 +824,7 @@ function App({ onNavigate }: AppProps) {
 
           <div className="demo-group" style={{ marginTop: '2rem' }}>
             <h3>Refresh On Open</h3>
-            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: globalTheme === 'dark' ? '#9ca3af' : '#6b7280' }}>
               Re-fetches results every time the dropdown is opened, even if the search text hasn't
               changed.
             </p>
@@ -804,6 +837,7 @@ function App({ onNavigate }: AppProps) {
                 clearable
                 searchable
                 refreshOnOpen
+                theme={globalTheme}
               />
             </div>
           </div>
@@ -811,42 +845,21 @@ function App({ onNavigate }: AppProps) {
 
         <section className="demo-section">
           <h2>UIForgeActivityStream Component</h2>
-          <p style={{ marginBottom: '1rem', color: '#6b7280' }}>
+          <p style={{ marginBottom: '1rem', color: globalTheme === 'dark' ? '#9ca3af' : '#6b7280' }}>
             A GitHub-inspired activity stream with theming, icons, collapsible content, and infinite scroll.
           </p>
 
           <div className="demo-group">
-            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1rem' }}>
-              <h3 style={{ margin: 0 }}>Interactive Activity Stream</h3>
-              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginLeft: 'auto' }}>
-                <label htmlFor="activity-theme" style={{ fontSize: '0.875rem', fontWeight: 500 }}>
-                  Theme:
-                </label>
-                <select
-                  id="activity-theme"
-                  value={activityTheme}
-                  onChange={(e) => setActivityTheme(e.target.value as 'light' | 'dark')}
-                  style={{
-                    padding: '0.5rem',
-                    borderRadius: '6px',
-                    border: '1px solid #d1d5db',
-                    fontSize: '0.875rem',
-                  }}
-                >
-                  <option value="light">Light</option>
-                  <option value="dark">Dark</option>
-                </select>
-              </div>
-            </div>
+            <h3 style={{ margin: 0, marginBottom: '1rem' }}>Interactive Activity Stream</h3>
 
-            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: globalTheme === 'dark' ? '#9ca3af' : '#6b7280' }}>
               Click event titles to expand/collapse content. Scroll to bottom to see "Show more" bar.
             </p>
 
-            <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden' }}>
+            <div style={{ border: globalTheme === 'dark' ? '1px solid #374151' : '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden' }}>
               <UIForgeActivityStream
                 events={activityEvents}
-                theme={activityTheme}
+                theme={globalTheme}
                 showLoadMore={true}
                 loading={activityLoading}
                 onLoadMore={handleLoadMoreActivities}
@@ -866,13 +879,13 @@ function App({ onNavigate }: AppProps) {
 
           <div className="demo-group" style={{ marginTop: '2rem' }}>
             <h3>All Events Expanded</h3>
-            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: globalTheme === 'dark' ? '#9ca3af' : '#6b7280' }}>
               Display all events in expanded state by default.
             </p>
-            <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden' }}>
+            <div style={{ border: globalTheme === 'dark' ? '1px solid #374151' : '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden' }}>
               <UIForgeActivityStream
                 events={activityEvents.slice(0, 4)}
-                theme={activityTheme}
+                theme={globalTheme}
                 initiallyExpandedAll={true}
                 maxHeight="400px"
                 showLoadMore={false}
@@ -882,10 +895,10 @@ function App({ onNavigate }: AppProps) {
 
           <div className="demo-group" style={{ marginTop: '2rem' }}>
             <h3>Empty State</h3>
-            <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden' }}>
+            <div style={{ border: globalTheme === 'dark' ? '1px solid #374151' : '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden' }}>
               <UIForgeActivityStream
                 events={[]}
-                theme={activityTheme}
+                theme={globalTheme}
                 emptyMessage="No recent activity found"
               />
             </div>
@@ -893,10 +906,10 @@ function App({ onNavigate }: AppProps) {
 
           <div className="demo-group" style={{ marginTop: '2rem' }}>
             <h3>Loading State</h3>
-            <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden' }}>
+            <div style={{ border: globalTheme === 'dark' ? '1px solid #374151' : '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden' }}>
               <UIForgeActivityStream
                 events={activityEvents.slice(0, 3)}
-                theme={activityTheme}
+                theme={globalTheme}
                 loading={true}
                 maxHeight="300px"
               />
@@ -906,13 +919,13 @@ function App({ onNavigate }: AppProps) {
 
         <section className="demo-section">
           <h2>UIForgeVideo Component</h2>
-          <p style={{ marginBottom: '1rem', color: '#6b7280' }}>
+          <p style={{ marginBottom: '1rem', color: globalTheme === 'dark' ? '#9ca3af' : '#6b7280' }}>
             Video components for embedding YouTube and Vimeo videos with interactive overlays.
           </p>
 
           <div className="demo-group">
             <h3>YouTube Video Example</h3>
-            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: '#6b7280' }}>
+            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', color: globalTheme === 'dark' ? '#9ca3af' : '#6b7280' }}>
               Click the overlay to start playing the video. The onPlay callback tracks video interactions.
             </p>
             <UIForgeVideo

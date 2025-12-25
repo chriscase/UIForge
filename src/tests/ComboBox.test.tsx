@@ -60,6 +60,22 @@ describe('UIForgeComboBox', () => {
       const combobox = screen.getByRole('combobox')
       expect(combobox).toHaveAttribute('aria-label', 'Select option')
     })
+
+    it('applies light theme by default', () => {
+      const { container } = render(<UIForgeComboBox options={basicOptions} />)
+
+      const combobox = container.querySelector('.uiforge-combobox')
+      expect(combobox).toHaveClass('uiforge-combobox--light')
+      expect(combobox).toHaveAttribute('data-theme', 'light')
+    })
+
+    it('applies dark theme when specified', () => {
+      const { container } = render(<UIForgeComboBox options={basicOptions} theme="dark" />)
+
+      const combobox = container.querySelector('.uiforge-combobox')
+      expect(combobox).toHaveClass('uiforge-combobox--dark')
+      expect(combobox).toHaveAttribute('data-theme', 'dark')
+    })
   })
 
   describe('Static Options', () => {

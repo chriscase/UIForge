@@ -18,6 +18,10 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
    */
   size?: 'small' | 'medium' | 'large'
   /**
+   * Theme variant ('light' or 'dark')
+   */
+  theme?: 'light' | 'dark'
+  /**
    * Density of the button - affects minimum touch target size
    * - 'default': Enforces 44px minimum touch target (recommended for accessibility)
    * - 'condensed': Allows smaller touch targets for dense UIs
@@ -39,6 +43,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   size = 'medium',
+  theme = 'light',
   density = 'default',
   children,
   className = '',
@@ -47,13 +52,14 @@ export const Button: React.FC<ButtonProps> = ({
   const baseClass = 'uiforge-button'
   const variantClass = `${baseClass}--${variant}`
   const sizeClass = `${baseClass}--${size}`
+  const themeClass = `${baseClass}--${theme}`
   const densityClass = density === 'condensed' ? `${baseClass}--condensed` : ''
-  const classes = [baseClass, variantClass, sizeClass, densityClass, className]
+  const classes = [baseClass, variantClass, sizeClass, themeClass, densityClass, className]
     .filter(Boolean)
     .join(' ')
 
   return (
-    <button className={classes} {...props}>
+    <button className={classes} data-theme={theme} {...props}>
       {children}
     </button>
   )
