@@ -20,13 +20,13 @@ export function SafeAreaExample() {
       {showHeader && (
         <header className="safe-area-example__fixed-header uiforge-fixed-top">
           <span className="safe-area-example__header-title">My App</span>
-          <button onClick={() => setShowHeader(false)} style={{ border: 'none', background: 'none', fontSize: '1.5rem', cursor: 'pointer' }}>
+          <button onClick={() => setShowHeader(false)} className="safe-area-example__close-button">
             ×
           </button>
         </header>
       )}
 
-      <div className="safe-area-example__section" style={{ marginTop: showHeader ? '80px' : 0 }}>
+      <div className={`safe-area-example__section ${showHeader ? 'safe-area-example__section--with-header' : ''}`}>
         <h2>UIForge CSS Tokens & Safe-Area Utilities</h2>
         <p>
           This example demonstrates the CSS custom properties (tokens) and safe-area utility classes
@@ -115,33 +115,33 @@ export function SafeAreaExample() {
 </div>`}
         </div>
 
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
+        <table className="safe-area-example__table">
           <thead>
-            <tr style={{ borderBottom: '2px solid #e5e7eb' }}>
-              <th style={{ textAlign: 'left', padding: '0.75rem', color: '#374151' }}>Class</th>
-              <th style={{ textAlign: 'left', padding: '0.75rem', color: '#374151' }}>CSS Property</th>
+            <tr>
+              <th>Class</th>
+              <th>CSS Property</th>
             </tr>
           </thead>
           <tbody>
-            <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-              <td style={{ padding: '0.75rem' }}><code className="safe-area-example__code-inline">.uiforge-fixed-bottom</code></td>
-              <td style={{ padding: '0.75rem' }}>padding-bottom: env(safe-area-inset-bottom)</td>
+            <tr>
+              <td><code className="safe-area-example__code-inline">.uiforge-fixed-bottom</code></td>
+              <td>padding-bottom: env(safe-area-inset-bottom)</td>
             </tr>
-            <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-              <td style={{ padding: '0.75rem' }}><code className="safe-area-example__code-inline">.uiforge-fixed-top</code></td>
-              <td style={{ padding: '0.75rem' }}>padding-top: env(safe-area-inset-top)</td>
+            <tr>
+              <td><code className="safe-area-example__code-inline">.uiforge-fixed-top</code></td>
+              <td>padding-top: env(safe-area-inset-top)</td>
             </tr>
-            <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-              <td style={{ padding: '0.75rem' }}><code className="safe-area-example__code-inline">.uiforge-fixed-left</code></td>
-              <td style={{ padding: '0.75rem' }}>padding-left: env(safe-area-inset-left)</td>
+            <tr>
+              <td><code className="safe-area-example__code-inline">.uiforge-fixed-left</code></td>
+              <td>padding-left: env(safe-area-inset-left)</td>
             </tr>
-            <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-              <td style={{ padding: '0.75rem' }}><code className="safe-area-example__code-inline">.uiforge-fixed-right</code></td>
-              <td style={{ padding: '0.75rem' }}>padding-right: env(safe-area-inset-right)</td>
+            <tr>
+              <td><code className="safe-area-example__code-inline">.uiforge-fixed-right</code></td>
+              <td>padding-right: env(safe-area-inset-right)</td>
             </tr>
-            <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-              <td style={{ padding: '0.75rem' }}><code className="safe-area-example__code-inline">.uiforge-fixed-all</code></td>
-              <td style={{ padding: '0.75rem' }}>All four safe-area insets as padding</td>
+            <tr>
+              <td><code className="safe-area-example__code-inline">.uiforge-fixed-all</code></td>
+              <td>All four safe-area insets as padding</td>
             </tr>
           </tbody>
         </table>
@@ -154,7 +154,7 @@ export function SafeAreaExample() {
           customize spacing, sizing, and typography globally.
         </p>
 
-        <h4 style={{ marginTop: '1rem', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 600 }}>
+        <h4 className="safe-area-example__subheading">
           Avatar Size Tokens
         </h4>
         <div className="safe-area-example__token-demo">
@@ -176,7 +176,7 @@ export function SafeAreaExample() {
           </div>
         </div>
 
-        <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 600 }}>
+        <h4 className="safe-area-example__subheading safe-area-example__subheading--spaced">
           Customizing Tokens
         </h4>
         <div className="safe-area-example__code-block">

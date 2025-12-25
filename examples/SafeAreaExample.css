@@ -171,6 +171,62 @@
   color: #6b7280;
 }
 
+/* Close button for header */
+.safe-area-example__close-button {
+  border: none;
+  background: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.safe-area-example__close-button:hover {
+  color: #1f2937;
+}
+
+/* Section with dynamic margin */
+.safe-area-example__section--with-header {
+  margin-top: 80px;
+}
+
+/* Subheading styles */
+.safe-area-example__subheading {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.safe-area-example__subheading--spaced {
+  margin-top: 1.5rem;
+}
+
+/* Table styles */
+.safe-area-example__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.safe-area-example__table thead tr {
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.safe-area-example__table th {
+  text-align: left;
+  padding: 0.75rem;
+  color: #374151;
+}
+
+.safe-area-example__table tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.safe-area-example__table td {
+  padding: 0.75rem;
+}
+
 /* Toggle container */
 .safe-area-example__toggle-container {
   display: flex;
