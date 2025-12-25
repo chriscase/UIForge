@@ -6,10 +6,8 @@ import { blocksToHTML, blocksToMarkdown } from '../src/components/BlocksEditorUt
 import { UIForgeComboBox, ComboBoxOption } from '../src/components/ComboBox'
 import { UIForgeActivityStream, ActivityEvent } from '../src/components/ActivityStream'
 import { UIForgeVideo, UIForgeVideoPreview } from '../src/components/Video'
+import { useTheme, AppTheme } from './ThemeContext'
 import './App.css'
-
-// Global theme type
-type AppTheme = 'light' | 'dark'
 
 // Sample data for the grid
 interface User {
@@ -109,8 +107,8 @@ interface AppProps {
 }
 
 function App({ onNavigate }: AppProps) {
-  // Global theme state
-  const [globalTheme, setGlobalTheme] = useState<AppTheme>('light')
+  // Use global theme from context
+  const { theme: globalTheme, setTheme: setGlobalTheme } = useTheme()
   
   const [users, setUsers] = useState<User[]>(sampleUsers)
   const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set())
@@ -441,31 +439,33 @@ function App({ onNavigate }: AppProps) {
   }
 
   return (
-    <div className={`app ${globalTheme === 'dark' ? 'app--dark' : ''}`} data-theme={globalTheme}>
+    <div className={`app ${globalTheme === 'light' ? 'app--light' : 'app--dark'}`} data-theme={globalTheme}>
       <header className="app-header">
-        <div className="app-header__top">
+        <div className="app-header__nav">
           {onNavigate && (
-            <button className="back-button back-button--header" onClick={() => onNavigate('/')}>
+            <button className="app-header__back-btn" onClick={() => onNavigate('/')}>
               ← Back to Home
             </button>
           )}
-          <div className="theme-toggle">
-            <label htmlFor="global-theme" className="theme-toggle__label">
+          <div className="app-header__theme-toggle">
+            <label htmlFor="global-theme" className="app-header__theme-label">
               Theme:
             </label>
             <select
               id="global-theme"
               value={globalTheme}
               onChange={(e) => setGlobalTheme(e.target.value as AppTheme)}
-              className="theme-toggle__select"
+              className="app-header__theme-select"
             >
-              <option value="light">Light</option>
               <option value="dark">Dark</option>
+              <option value="light">Light</option>
             </select>
           </div>
         </div>
-        <h1>UIForge Component Library</h1>
-        <p>A rich user interface library for ReactJS developers</p>
+        <div className="app-header__content">
+          <h1>UIForge Component Library</h1>
+          <p>A rich user interface library for ReactJS developers</p>
+        </div>
       </header>
 
       <main className="app-main">

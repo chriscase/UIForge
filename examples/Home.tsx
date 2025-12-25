@@ -1,3 +1,4 @@
+import { useTheme, AppTheme } from './ThemeContext'
 import './Home.css'
 
 interface ComponentCardProps {
@@ -33,9 +34,27 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ onNavigate }) => {
+  const { theme, setTheme } = useTheme()
+
   return (
-    <div className="home">
+    <div className="home" data-theme={theme}>
       <header className="home-header">
+        <div className="home-header__nav">
+          <div className="home-header__theme-toggle">
+            <label htmlFor="home-theme" className="home-header__theme-label">
+              Theme:
+            </label>
+            <select
+              id="home-theme"
+              value={theme}
+              onChange={(e) => setTheme(e.target.value as AppTheme)}
+              className="home-header__theme-select"
+            >
+              <option value="dark">Dark</option>
+              <option value="light">Light</option>
+            </select>
+          </div>
+        </div>
         <h1>UIForge Component Library</h1>
         <p>A rich, modern UI component library for React applications</p>
       </header>

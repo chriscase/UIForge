@@ -6,24 +6,63 @@
 
 .home-header {
   text-align: center;
-  padding: 4rem 2rem 2rem;
-  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-  border-bottom: 1px solid var(--border-color);
+  padding: 2rem 2rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.home-header__nav {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 1rem 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.home-header__theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+}
+
+.home-header__theme-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.home-header__theme-select {
+  padding: 0.375rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.home-header__theme-select:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.home-header__theme-select option {
+  background-color: #1f2937;
+  color: #f9fafb;
 }
 
 .home-header h1 {
   font-size: 3rem;
   font-weight: 700;
   margin: 0 0 1rem 0;
-  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: white;
 }
 
 .home-header p {
   font-size: 1.25rem;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.9);
   margin: 0;
 }
 
