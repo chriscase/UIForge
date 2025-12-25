@@ -33,6 +33,17 @@ export type {
   ActivityStreamDensity,
 } from './components/ActivityStream'
 
+export {
+  UIForgeActivityItem,
+  ActivityItemProvider,
+  useActivityItemContext,
+} from './components/ActivityItem'
+export type {
+  UIForgeActivityItemProps,
+  ActivityItemEvent,
+  ActivityItemContextValue,
+} from './components/ActivityItem'
+
 export { UIForgeVideo, UIForgeVideoPreview } from './components/Video'
 export type { UIForgeVideoProps, UIForgeVideoPreviewProps } from './components/Video'
 
@@ -61,4 +72,5 @@ import './components/Grid.css'
 import './components/BlocksEditor.css'
 import './components/ComboBox.css'
 import './components/ActivityStream.css'
+import './components/ActivityItem.css'
 import './components/Video.css'

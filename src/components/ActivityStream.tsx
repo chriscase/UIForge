@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo, RefObject } from 'react'
 import { ActivityIcons, UIIcons } from '../icons/iconMaps'
 import { useResponsive } from '../hooks/useResponsive'
+import { ActivityItemProvider } from './ActivityItem'
 import './ActivityStream.css'
 
 /**
@@ -189,6 +190,14 @@ export interface UIForgeActivityStreamProps {
    * If not provided, an internal ref is used.
    */
   containerRef?: RefObject<HTMLElement | null>
+  /**
+   * Whether to show metadata (timestamps, descriptions, etc.) on activity items.
+   * When false, hides timestamps and truncates long content for a denser display.
+   * When undefined, metadata is shown by default but may be auto-hidden on narrow containers
+   * if responsive is true.
+   * @default true
+   */
+  showMeta?: boolean
   /**
    * Custom icon renderer
    */
@@ -423,6 +432,7 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
   responsive = true,
   compactBreakpointPx = 640,
   containerRef: externalContainerRef,
+  showMeta,
   renderIcon,
   renderEvent,
 }) => {
@@ -475,6 +485,16 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
     }
     return density
   }, [responsive, isNarrow, density])
+
+  // Determine effective showMeta: if not explicitly set, hide metadata on narrow containers
+  const effectiveShowMeta = useMemo(() => {
+    if (showMeta !== undefined) {
+      return showMeta
+    }
+    // By default, show metadata, but hide on very narrow containers in responsive mode
+    // Use a threshold narrower than compact breakpoint for metadata hiding
+    return true
+  }, [showMeta])
 
   // Process events: group and add date separators
   const processedItems = useMemo(() => {
@@ -658,58 +678,61 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
   // The outer div receives the style prop (for positioning, margins, etc.)
   // The inner container handles scrolling and receives maxHeight/scale CSS var
   return (
-    <div
-      ref={internalContainerRef}
-      className={classes}
-      data-theme={theme}
-      data-density={effectiveDensity}
-      style={style}
-    >
+    <ActivityItemProvider value={{ density: effectiveDensity, showMeta: effectiveShowMeta }}>
       <div
-        ref={scrollRef}
-        className="activity-stream__container"
-        style={{
-          ...(containerStyle as React.CSSProperties),
-          ...(scaleStyle as React.CSSProperties),
-        }}
+        ref={internalContainerRef}
+        className={classes}
+        data-theme={theme}
+        data-density={effectiveDensity}
+        data-show-meta={effectiveShowMeta}
+        style={style}
       >
-        {processedItems.length === 0 ? (
-          <div className="activity-stream__empty">{emptyMessage}</div>
-        ) : (
-          <div className="activity-stream__items">
-            {processedItems.map((item) =>
-              'type' in item && item.type === 'date-separator'
-                ? renderDateSeparator(item as DateSeparator)
-                : renderGroupedEvent(item as GroupedEvent)
-            )}
-          </div>
-        )}
+        <div
+          ref={scrollRef}
+          className="activity-stream__container"
+          style={{
+            ...(containerStyle as React.CSSProperties),
+            ...(scaleStyle as React.CSSProperties),
+          }}
+        >
+          {processedItems.length === 0 ? (
+            <div className="activity-stream__empty">{emptyMessage}</div>
+          ) : (
+            <div className="activity-stream__items">
+              {processedItems.map((item) =>
+                'type' in item && item.type === 'date-separator'
+                  ? renderDateSeparator(item as DateSeparator)
+                  : renderGroupedEvent(item as GroupedEvent)
+              )}
+            </div>
+          )}
 
-        {loading && (
-          <div className="activity-stream__loading">
-            <div className="activity-stream__spinner" />
-            <span>Loading...</span>
-          </div>
-        )}
+          {loading && (
+            <div className="activity-stream__loading">
+              <div className="activity-stream__spinner" />
+              <span>Loading...</span>
+            </div>
+          )}
 
-        {showLoadMore && !loading && hasMore && onLoadMore && (
-          <div
-            className={`activity-stream__load-more ${showMoreVisible ? 'activity-stream__load-more--visible' : ''}`}
-            onClick={onLoadMore}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                onLoadMore()
-              }
-            }}
-            role="button"
-            tabIndex={0}
-            aria-label="Load more activities"
-          >
-            Show more
-          </div>
-        )}
+          {showLoadMore && !loading && hasMore && onLoadMore && (
+            <div
+              className={`activity-stream__load-more ${showMoreVisible ? 'activity-stream__load-more--visible' : ''}`}
+              onClick={onLoadMore}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  onLoadMore()
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              aria-label="Load more activities"
+            >
+              Show more
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </ActivityItemProvider>
   )
 }
