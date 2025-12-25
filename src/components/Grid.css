@@ -1,4 +1,35 @@
 .uiforge-grid {
+  /* CSS Variables for theming */
+  --grid-bg: #ffffff;
+  --grid-text: #1f2937;
+  --grid-text-secondary: #6b7280;
+  --grid-border: #e5e7eb;
+  --grid-border-strong: #d1d5db;
+  --grid-header-bg: #f9fafb;
+  --grid-header-text: #374151;
+  --grid-row-hover: #f9fafb;
+  --grid-row-selected: #eff6ff;
+  --grid-row-selected-hover: #dbeafe;
+  --grid-input-bg: #ffffff;
+  --grid-input-border: #d1d5db;
+  --grid-input-focus: #3b82f6;
+  --grid-button-primary-bg: #3b82f6;
+  --grid-button-primary-hover: #2563eb;
+  --grid-button-secondary-bg: #6b7280;
+  --grid-button-secondary-hover: #4b5563;
+  --grid-button-outline-bg: transparent;
+  --grid-button-outline-hover: #eff6ff;
+  --grid-button-outline-color: #3b82f6;
+  --grid-pagination-bg: #ffffff;
+  --grid-pagination-hover: #f9fafb;
+  --grid-pagination-active-bg: #3b82f6;
+  --grid-pagination-active-color: #ffffff;
+  --grid-editable-hover: #f3f4f6;
+  --grid-edit-save-bg: #10b981;
+  --grid-edit-save-hover: #059669;
+  --grid-edit-cancel-bg: #ef4444;
+  --grid-edit-cancel-hover: #dc2626;
+
   font-family:
     system-ui,
     -apple-system,
@@ -7,6 +38,39 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+/* Dark theme variables */
+.uiforge-grid--dark {
+  --grid-bg: #1f2937;
+  --grid-text: #f9fafb;
+  --grid-text-secondary: #9ca3af;
+  --grid-border: #374151;
+  --grid-border-strong: #4b5563;
+  --grid-header-bg: #111827;
+  --grid-header-text: #e5e7eb;
+  --grid-row-hover: #374151;
+  --grid-row-selected: #1e3a5f;
+  --grid-row-selected-hover: #1e4976;
+  --grid-input-bg: #374151;
+  --grid-input-border: #4b5563;
+  --grid-input-focus: #3b82f6;
+  --grid-button-primary-bg: #3b82f6;
+  --grid-button-primary-hover: #2563eb;
+  --grid-button-secondary-bg: #4b5563;
+  --grid-button-secondary-hover: #374151;
+  --grid-button-outline-bg: transparent;
+  --grid-button-outline-hover: #1e3a5f;
+  --grid-button-outline-color: #60a5fa;
+  --grid-pagination-bg: #374151;
+  --grid-pagination-hover: #4b5563;
+  --grid-pagination-active-bg: #3b82f6;
+  --grid-pagination-active-color: #ffffff;
+  --grid-editable-hover: #374151;
+  --grid-edit-save-bg: #10b981;
+  --grid-edit-save-hover: #059669;
+  --grid-edit-cancel-bg: #ef4444;
+  --grid-edit-cancel-hover: #dc2626;
 }
 
 /* Toolbar */
@@ -27,15 +91,21 @@
 .uiforge-grid__search-input {
   width: 100%;
   padding: 0.5rem 0.75rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--grid-input-border);
   border-radius: 4px;
   font-size: 0.875rem;
   transition: border-color 0.2s;
+  background-color: var(--grid-input-bg);
+  color: var(--grid-text);
+}
+
+.uiforge-grid__search-input::placeholder {
+  color: var(--grid-text-secondary);
 }
 
 .uiforge-grid__search-input:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: var(--grid-input-focus);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -62,44 +132,44 @@
 }
 
 .uiforge-grid__action-button--primary {
-  background-color: #3b82f6;
+  background-color: var(--grid-button-primary-bg);
   color: white;
 }
 
 .uiforge-grid__action-button--primary:hover:not(:disabled) {
-  background-color: #2563eb;
+  background-color: var(--grid-button-primary-hover);
 }
 
 .uiforge-grid__action-button--secondary {
-  background-color: #6b7280;
+  background-color: var(--grid-button-secondary-bg);
   color: white;
 }
 
 .uiforge-grid__action-button--secondary:hover:not(:disabled) {
-  background-color: #4b5563;
+  background-color: var(--grid-button-secondary-hover);
 }
 
 .uiforge-grid__action-button--outline {
-  background-color: transparent;
-  color: #3b82f6;
-  border: 2px solid #3b82f6;
+  background-color: var(--grid-button-outline-bg);
+  color: var(--grid-button-outline-color);
+  border: 2px solid var(--grid-button-outline-color);
 }
 
 .uiforge-grid__action-button--outline:hover:not(:disabled) {
-  background-color: #eff6ff;
+  background-color: var(--grid-button-outline-hover);
 }
 
 /* Table Container */
 .uiforge-grid__table-container {
   overflow-x: auto;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--grid-border);
   border-radius: 4px;
 }
 
 .uiforge-grid__table {
   width: 100%;
   border-collapse: collapse;
-  background-color: white;
+  background-color: var(--grid-bg);
 }
 
 /* Header */
@@ -108,9 +178,9 @@
   text-align: left;
   font-weight: 600;
   font-size: 0.875rem;
-  color: #374151;
-  background-color: #f9fafb;
-  border-bottom: 2px solid #e5e7eb;
+  color: var(--grid-header-text);
+  background-color: var(--grid-header-bg);
+  border-bottom: 2px solid var(--grid-border);
   white-space: nowrap;
 }
 
@@ -125,23 +195,23 @@
 }
 
 .uiforge-grid__row:hover {
-  background-color: #f9fafb;
+  background-color: var(--grid-row-hover);
 }
 
 .uiforge-grid__row--selected {
-  background-color: #eff6ff;
+  background-color: var(--grid-row-selected);
 }
 
 .uiforge-grid__row--selected:hover {
-  background-color: #dbeafe;
+  background-color: var(--grid-row-selected-hover);
 }
 
 /* Cells */
 .uiforge-grid__cell {
   padding: 0.75rem 1rem;
   font-size: 0.875rem;
-  color: #1f2937;
-  border-bottom: 1px solid #e5e7eb;
+  color: var(--grid-text);
+  border-bottom: 1px solid var(--grid-border);
   vertical-align: middle;
 }
 
@@ -162,11 +232,11 @@
 }
 
 .uiforge-grid__cell-content--editable:hover {
-  background-color: #f3f4f6;
+  background-color: var(--grid-editable-hover);
 }
 
 .uiforge-grid__cell-content--editable:focus {
-  outline: 2px solid #3b82f6;
+  outline: 2px solid var(--grid-input-focus);
   outline-offset: -2px;
 }
 
@@ -180,10 +250,12 @@
 .uiforge-grid__edit-input {
   flex: 1;
   padding: 0.25rem 0.5rem;
-  border: 1px solid #3b82f6;
+  border: 1px solid var(--grid-input-focus);
   border-radius: 2px;
   font-size: 0.875rem;
   min-width: 100px;
+  background-color: var(--grid-input-bg);
+  color: var(--grid-text);
 }
 
 .uiforge-grid__edit-input:focus {
@@ -203,21 +275,21 @@
 }
 
 .uiforge-grid__edit-button--save {
-  background-color: #10b981;
+  background-color: var(--grid-edit-save-bg);
   color: white;
 }
 
 .uiforge-grid__edit-button--save:hover {
-  background-color: #059669;
+  background-color: var(--grid-edit-save-hover);
 }
 
 .uiforge-grid__edit-button--cancel {
-  background-color: #ef4444;
+  background-color: var(--grid-edit-cancel-bg);
   color: white;
 }
 
 .uiforge-grid__edit-button--cancel:hover {
-  background-color: #dc2626;
+  background-color: var(--grid-edit-cancel-hover);
 }
 
 /* Empty / Loading states */
@@ -225,7 +297,7 @@
 .uiforge-grid__empty-cell {
   padding: 2rem 1rem;
   text-align: center;
-  color: #6b7280;
+  color: var(--grid-text-secondary);
   font-size: 0.875rem;
 }
 
@@ -241,7 +313,7 @@
 
 .uiforge-grid__pagination-info {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--grid-text-secondary);
   white-space: nowrap;
 }
 
@@ -255,18 +327,18 @@
   min-width: 2rem;
   height: 2rem;
   padding: 0 0.5rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--grid-border-strong);
   border-radius: 4px;
-  background-color: white;
-  color: #374151;
+  background-color: var(--grid-pagination-bg);
+  color: var(--grid-text);
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.15s;
 }
 
 .uiforge-grid__pagination-button:hover:not(:disabled) {
-  background-color: #f9fafb;
-  border-color: #9ca3af;
+  background-color: var(--grid-pagination-hover);
+  border-color: var(--grid-text-secondary);
 }
 
 .uiforge-grid__pagination-button:disabled {
@@ -275,19 +347,19 @@
 }
 
 .uiforge-grid__pagination-button--active {
-  background-color: #3b82f6;
-  color: white;
-  border-color: #3b82f6;
+  background-color: var(--grid-pagination-active-bg);
+  color: var(--grid-pagination-active-color);
+  border-color: var(--grid-pagination-active-bg);
 }
 
 .uiforge-grid__pagination-button--active:hover {
-  background-color: #2563eb;
-  border-color: #2563eb;
+  background-color: var(--grid-button-primary-hover);
+  border-color: var(--grid-button-primary-hover);
 }
 
 .uiforge-grid__pagination-ellipsis {
   padding: 0 0.5rem;
-  color: #9ca3af;
+  color: var(--grid-text-secondary);
 }
 
 .uiforge-grid__page-size {
@@ -295,31 +367,32 @@
   gap: 0.5rem;
   align-items: center;
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--grid-text-secondary);
   white-space: nowrap;
 }
 
 .uiforge-grid__page-size-select {
   padding: 0.25rem 0.5rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--grid-border-strong);
   border-radius: 4px;
-  background-color: white;
+  background-color: var(--grid-pagination-bg);
+  color: var(--grid-text);
   font-size: 0.875rem;
   cursor: pointer;
 }
 
 .uiforge-grid__page-size-select:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: var(--grid-input-focus);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 /* Checkboxes */
-input[type='checkbox'] {
+.uiforge-grid input[type='checkbox'] {
   width: 1rem;
   height: 1rem;
   cursor: pointer;
-  accent-color: #3b82f6;
+  accent-color: var(--grid-input-focus);
 }
 
 /* Responsive */

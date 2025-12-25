@@ -71,6 +71,22 @@ describe('Button', () => {
     expect(button).toHaveClass('uiforge-button')
   })
 
+  describe('Theme prop', () => {
+    it('applies light theme by default', () => {
+      render(<Button>Click me</Button>)
+      const button = screen.getByRole('button')
+      expect(button).toHaveClass('uiforge-button--light')
+      expect(button).toHaveAttribute('data-theme', 'light')
+    })
+
+    it('applies dark theme when specified', () => {
+      render(<Button theme="dark">Click me</Button>)
+      const button = screen.getByRole('button')
+      expect(button).toHaveClass('uiforge-button--dark')
+      expect(button).toHaveAttribute('data-theme', 'dark')
+    })
+  })
+
   describe('Density prop', () => {
     it('applies default density (no condensed class) by default', () => {
       render(<Button>Click me</Button>)

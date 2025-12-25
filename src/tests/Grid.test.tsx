@@ -66,6 +66,24 @@ describe('UIForgeGrid', () => {
       const grid = container.querySelector('.uiforge-grid')
       expect(grid).toHaveClass('custom-grid')
     })
+
+    it('applies light theme by default', () => {
+      const { container } = render(<UIForgeGrid columns={basicColumns} data={sampleData} />)
+
+      const grid = container.querySelector('.uiforge-grid')
+      expect(grid).toHaveClass('uiforge-grid--light')
+      expect(grid).toHaveAttribute('data-theme', 'light')
+    })
+
+    it('applies dark theme when specified', () => {
+      const { container } = render(
+        <UIForgeGrid columns={basicColumns} data={sampleData} theme="dark" />
+      )
+
+      const grid = container.querySelector('.uiforge-grid')
+      expect(grid).toHaveClass('uiforge-grid--dark')
+      expect(grid).toHaveAttribute('data-theme', 'dark')
+    })
   })
 
   describe('Row Selection', () => {

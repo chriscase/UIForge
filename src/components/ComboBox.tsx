@@ -57,6 +57,10 @@ export interface UIForgeComboBoxProps {
   // onSearch optionally accepts an AbortSignal to allow cancellation of inflight requests
   onSearch?: (searchText: string, signal?: AbortSignal) => Promise<ComboBoxOption[]>
   /**
+   * Theme variant ('light' or 'dark')
+   */
+  theme?: 'light' | 'dark'
+  /**
    * Placeholder text
    */
   placeholder?: string
@@ -143,6 +147,7 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
   value,
   onChange,
   onSearch,
+  theme = 'light',
   placeholder = 'Select an option...',
   disabled = false,
   clearable = false,
@@ -547,8 +552,10 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
   }
 
   const baseClass = 'uiforge-combobox'
+  const themeClass = `${baseClass}--${theme}`
   const containerClasses = [
     baseClass,
+    themeClass,
     isOpen && `${baseClass}--open`,
     disabled && `${baseClass}--disabled`,
     className,
@@ -567,6 +574,7 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
       aria-label={ariaLabel}
       aria-disabled={disabled}
       tabIndex={disabled ? -1 : 0}
+      data-theme={theme}
     >
       <div className={`${baseClass}-control`} onClick={handleToggle}>
         {searchable && isOpen ? (

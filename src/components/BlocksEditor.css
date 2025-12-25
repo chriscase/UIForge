@@ -1,6 +1,30 @@
 /* UIForge Blocks Editor Styles */
 
 .uiforge-blocks-editor {
+  /* CSS Variables for theming */
+  --editor-bg: #ffffff;
+  --editor-text: #1f2937;
+  --editor-text-secondary: #6b7280;
+  --editor-text-muted: #9ca3af;
+  --editor-border: #e5e7eb;
+  --editor-border-strong: #d1d5db;
+  --editor-toolbar-bg: #f9fafb;
+  --editor-block-hover: #f9fafb;
+  --editor-block-selected: #eff6ff;
+  --editor-block-selected-border: #3b82f6;
+  --editor-input-bg: #ffffff;
+  --editor-input-focus: #3b82f6;
+  --editor-button-hover: #e5e7eb;
+  --editor-button-active: #dbeafe;
+  --editor-button-active-text: #1e40af;
+  --editor-button-active-border: #93c5fd;
+  --editor-quote-bg: #f9fafb;
+  --editor-code-bg: #1f2937;
+  --editor-code-text: #f9fafb;
+  --editor-inline-code-bg: #f3f4f6;
+  --editor-menu-bg: #ffffff;
+  --editor-menu-item-hover: #f3f4f6;
+
   position: relative;
   width: 100%;
   font-family:
@@ -8,10 +32,36 @@
     'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
+  background-color: var(--editor-bg);
+  border: 1px solid var(--editor-border);
   border-radius: 8px;
   overflow: hidden;
+}
+
+/* Dark theme variables */
+.uiforge-blocks-editor--dark {
+  --editor-bg: #1f2937;
+  --editor-text: #f9fafb;
+  --editor-text-secondary: #d1d5db;
+  --editor-text-muted: #9ca3af;
+  --editor-border: #374151;
+  --editor-border-strong: #4b5563;
+  --editor-toolbar-bg: #111827;
+  --editor-block-hover: #111827;
+  --editor-block-selected: #1e3a5f;
+  --editor-block-selected-border: #3b82f6;
+  --editor-input-bg: #374151;
+  --editor-input-focus: #3b82f6;
+  --editor-button-hover: #374151;
+  --editor-button-active: #1e40af;
+  --editor-button-active-text: #dbeafe;
+  --editor-button-active-border: #60a5fa;
+  --editor-quote-bg: #111827;
+  --editor-code-bg: #0f172a;
+  --editor-code-text: #f9fafb;
+  --editor-inline-code-bg: #374151;
+  --editor-menu-bg: #1f2937;
+  --editor-menu-item-hover: #374151;
 }
 
 /* Toolbar */
@@ -20,8 +70,8 @@
   align-items: center;
   gap: 8px;
   padding: 12px 16px;
-  background-color: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
+  background-color: var(--editor-toolbar-bg);
+  border-bottom: 1px solid var(--editor-border);
   position: sticky;
   top: 0;
   z-index: 10;
@@ -36,27 +86,27 @@
 .uiforge-blocks-editor__toolbar-divider {
   width: 1px;
   height: 24px;
-  background-color: #d1d5db;
+  background-color: var(--editor-border-strong);
 }
 
 .uiforge-blocks-editor__toolbar-select {
   padding: 6px 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--editor-border-strong);
   border-radius: 6px;
-  background-color: #ffffff;
+  background-color: var(--editor-input-bg);
   font-size: 14px;
-  color: #374151;
+  color: var(--editor-text);
   cursor: pointer;
   transition: border-color 0.2s;
 }
 
 .uiforge-blocks-editor__toolbar-select:hover {
-  border-color: #9ca3af;
+  border-color: var(--editor-text-muted);
 }
 
 .uiforge-blocks-editor__toolbar-select:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: var(--editor-input-focus);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -70,26 +120,26 @@
   border: 1px solid transparent;
   border-radius: 6px;
   background-color: transparent;
-  color: #374151;
+  color: var(--editor-text);
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .uiforge-blocks-editor__toolbar-button:hover {
-  background-color: #e5e7eb;
+  background-color: var(--editor-button-hover);
 }
 
 .uiforge-blocks-editor__toolbar-button:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: var(--editor-input-focus);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .uiforge-blocks-editor__toolbar-button.active {
-  background-color: #dbeafe;
-  color: #1e40af;
-  border-color: #93c5fd;
+  background-color: var(--editor-button-active);
+  color: var(--editor-button-active-text);
+  border-color: var(--editor-button-active-border);
 }
 
 /* Content Area */
@@ -110,12 +160,12 @@
 }
 
 .uiforge-blocks-editor__block:hover {
-  background-color: #f9fafb;
+  background-color: var(--editor-block-hover);
 }
 
 .uiforge-blocks-editor__block--selected {
-  background-color: #eff6ff;
-  box-shadow: 0 0 0 2px #3b82f6;
+  background-color: var(--editor-block-selected);
+  box-shadow: 0 0 0 2px var(--editor-block-selected-border);
 }
 
 .uiforge-blocks-editor__block--dragging {
@@ -148,14 +198,14 @@
   padding: 0;
   border: none;
   background-color: transparent;
-  color: #9ca3af;
+  color: var(--editor-text-muted);
   font-size: 16px;
   cursor: grab;
   transition: color 0.2s;
 }
 
 .uiforge-blocks-editor__drag-handle:hover {
-  color: #4b5563;
+  color: var(--editor-text-secondary);
 }
 
 .uiforge-blocks-editor__drag-handle:active {
@@ -171,7 +221,7 @@
   padding: 0;
   border: none;
   background-color: transparent;
-  color: #9ca3af;
+  color: var(--editor-text-muted);
   font-size: 20px;
   cursor: pointer;
   transition: color 0.2s;
@@ -195,20 +245,20 @@
   font-family: inherit;
   font-size: 16px;
   line-height: 1.6;
-  color: #1f2937;
+  color: var(--editor-text);
   resize: vertical;
   transition: all 0.2s;
 }
 
 .uiforge-blocks-editor__block-text:focus {
   outline: none;
-  border-color: #3b82f6;
-  background-color: #ffffff;
+  border-color: var(--editor-input-focus);
+  background-color: var(--editor-input-bg);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .uiforge-blocks-editor__block-text::placeholder {
-  color: #9ca3af;
+  color: var(--editor-text-muted);
 }
 
 /* Text Formatting */
@@ -226,7 +276,7 @@
 
 .uiforge-blocks-editor__block-text--code {
   font-family: 'Monaco', 'Courier New', monospace;
-  background-color: #f3f4f6;
+  background-color: var(--editor-inline-code-bg);
   padding: 2px 6px;
   border-radius: 3px;
   font-size: 14px;
@@ -254,10 +304,10 @@
 /* Quote Styles */
 .uiforge-blocks-editor__quote {
   font-style: italic;
-  color: #6b7280;
-  border-left: 4px solid #d1d5db;
+  color: var(--editor-text-secondary);
+  border-left: 4px solid var(--editor-border-strong);
   padding-left: 16px;
-  background-color: #f9fafb;
+  background-color: var(--editor-quote-bg);
 }
 
 /* Code Block Styles */
@@ -265,14 +315,14 @@
   font-family: 'Monaco', 'Courier New', monospace;
   font-size: 14px;
   line-height: 1.5;
-  background-color: #1f2937;
-  color: #f9fafb;
+  background-color: var(--editor-code-bg);
+  color: var(--editor-code-text);
   padding: 16px;
   border-radius: 6px;
 }
 
 .uiforge-blocks-editor__code::placeholder {
-  color: #9ca3af;
+  color: var(--editor-text-muted);
 }
 
 /* Image Block Styles */
@@ -286,15 +336,17 @@
 .uiforge-blocks-editor__image-alt {
   width: 100%;
   padding: 8px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--editor-border-strong);
   border-radius: 4px;
   font-size: 14px;
+  background-color: var(--editor-input-bg);
+  color: var(--editor-text);
 }
 
 .uiforge-blocks-editor__image-url:focus,
 .uiforge-blocks-editor__image-alt:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: var(--editor-input-focus);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -309,15 +361,15 @@
 .uiforge-blocks-editor__block-menu {
   position: relative;
   padding: 16px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--editor-border);
 }
 
 .uiforge-blocks-editor__add-button {
   padding: 10px 20px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--editor-border-strong);
   border-radius: 6px;
-  background-color: #ffffff;
-  color: #374151;
+  background-color: var(--editor-input-bg);
+  color: var(--editor-text);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -325,13 +377,13 @@
 }
 
 .uiforge-blocks-editor__add-button:hover {
-  background-color: #f9fafb;
-  border-color: #9ca3af;
+  background-color: var(--editor-block-hover);
+  border-color: var(--editor-text-muted);
 }
 
 .uiforge-blocks-editor__add-button:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: var(--editor-input-focus);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -341,14 +393,20 @@
   left: 16px;
   margin-bottom: 8px;
   padding: 8px;
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
+  background-color: var(--editor-menu-bg);
+  border: 1px solid var(--editor-border);
   border-radius: 8px;
   box-shadow:
     0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
   z-index: 20;
   min-width: 200px;
+}
+
+.uiforge-blocks-editor--dark .uiforge-blocks-editor__block-menu-dropdown {
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.3),
+    0 4px 6px -2px rgba(0, 0, 0, 0.2);
 }
 
 .uiforge-blocks-editor__block-menu-item {
@@ -362,13 +420,13 @@
   background-color: transparent;
   text-align: left;
   font-size: 14px;
-  color: #374151;
+  color: var(--editor-text);
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .uiforge-blocks-editor__block-menu-item:hover {
-  background-color: #f3f4f6;
+  background-color: var(--editor-menu-item-hover);
 }
 
 .uiforge-blocks-editor__block-menu-icon {
@@ -378,7 +436,7 @@
   width: 24px;
   height: 24px;
   font-size: 16px;
-  color: #6b7280;
+  color: var(--editor-text-secondary);
 }
 
 /* Paragraph Styles */
@@ -418,81 +476,34 @@
 .uiforge-blocks-editor__toolbar-button:focus-visible,
 .uiforge-blocks-editor__add-button:focus-visible,
 .uiforge-blocks-editor__block-menu-item:focus-visible {
-  outline: 2px solid #3b82f6;
+  outline: 2px solid var(--editor-input-focus);
   outline-offset: 2px;
 }
 
-/* Dark Mode Support (optional) */
+/* Auto dark mode via system preference (applies if no explicit theme set) */
 @media (prefers-color-scheme: dark) {
-  .uiforge-blocks-editor {
-    background-color: #1f2937;
-    border-color: #374151;
-  }
-
-  .uiforge-blocks-editor__toolbar {
-    background-color: #111827;
-    border-color: #374151;
-  }
-
-  .uiforge-blocks-editor__toolbar-select,
-  .uiforge-blocks-editor__add-button {
-    background-color: #374151;
-    border-color: #4b5563;
-    color: #f9fafb;
-  }
-
-  .uiforge-blocks-editor__toolbar-button {
-    color: #f9fafb;
-  }
-
-  .uiforge-blocks-editor__toolbar-button:hover {
-    background-color: #374151;
-  }
-
-  .uiforge-blocks-editor__toolbar-button.active {
-    background-color: #1e40af;
-    color: #dbeafe;
-  }
-
-  .uiforge-blocks-editor__block:hover {
-    background-color: #111827;
-  }
-
-  .uiforge-blocks-editor__block--selected {
-    background-color: #1e3a5f;
-  }
-
-  .uiforge-blocks-editor__block-text {
-    color: #f9fafb;
-  }
-
-  .uiforge-blocks-editor__block-text:focus {
-    background-color: #374151;
-  }
-
-  .uiforge-blocks-editor__quote {
-    color: #d1d5db;
-    background-color: #111827;
-  }
-
-  .uiforge-blocks-editor__code {
-    background-color: #0f172a;
-  }
-
-  .uiforge-blocks-editor__block-menu {
-    border-color: #374151;
-  }
-
-  .uiforge-blocks-editor__block-menu-dropdown {
-    background-color: #1f2937;
-    border-color: #374151;
-  }
-
-  .uiforge-blocks-editor__block-menu-item {
-    color: #f9fafb;
-  }
-
-  .uiforge-blocks-editor__block-menu-item:hover {
-    background-color: #374151;
+  .uiforge-blocks-editor:not([data-theme='light']) {
+    --editor-bg: #1f2937;
+    --editor-text: #f9fafb;
+    --editor-text-secondary: #d1d5db;
+    --editor-text-muted: #9ca3af;
+    --editor-border: #374151;
+    --editor-border-strong: #4b5563;
+    --editor-toolbar-bg: #111827;
+    --editor-block-hover: #111827;
+    --editor-block-selected: #1e3a5f;
+    --editor-block-selected-border: #3b82f6;
+    --editor-input-bg: #374151;
+    --editor-input-focus: #3b82f6;
+    --editor-button-hover: #374151;
+    --editor-button-active: #1e40af;
+    --editor-button-active-text: #dbeafe;
+    --editor-button-active-border: #60a5fa;
+    --editor-quote-bg: #111827;
+    --editor-code-bg: #0f172a;
+    --editor-code-text: #f9fafb;
+    --editor-inline-code-bg: #374151;
+    --editor-menu-bg: #1f2937;
+    --editor-menu-item-hover: #374151;
   }
 }
