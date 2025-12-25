@@ -1,5 +1,9 @@
 import { useState, useMemo } from 'react'
-import { UIForgeActivityStream, ActivityEvent } from '../src/components/ActivityStream'
+import {
+  UIForgeActivityStream,
+  ActivityEvent,
+  ActivityStreamDensity,
+} from '../src/components/ActivityStream'
 import '../src/components/ActivityStream.css'
 import './ActivityStreamExample.css'
 
@@ -13,7 +17,8 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
   const [showTimeline, setShowTimeline] = useState(true)
   const [showDateSeparators, setShowDateSeparators] = useState(true)
   const [loading, setLoading] = useState(false)
-  const [scale, setScale] = useState<number>(1)
+  const [density, setDensity] = useState<ActivityStreamDensity>('comfortable')
+  const [responsive, setResponsive] = useState(true)
 
   // Generate sample user activity data
   /* eslint-disable react-hooks/purity */
@@ -237,33 +242,40 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
           <label>Density:</label>
           <div className="density-toggle">
             <button
-              aria-pressed={scale === 0.75}
-              className={`density-button ${scale === 0.75 ? 'density-button--active' : ''}`}
-              onClick={() => setScale(0.75)}
+              aria-pressed={density === 'condensed'}
+              className={`density-button ${density === 'condensed' ? 'density-button--active' : ''}`}
+              onClick={() => setDensity('condensed')}
+            >
+              Condensed
+            </button>
+            <button
+              aria-pressed={density === 'compact'}
+              className={`density-button ${density === 'compact' ? 'density-button--active' : ''}`}
+              onClick={() => setDensity('compact')}
             >
               Compact
             </button>
             <button
-              aria-pressed={scale === 1}
-              className={`density-button ${scale === 1 ? 'density-button--active' : ''}`}
-              onClick={() => setScale(1)}
+              aria-pressed={density === 'comfortable'}
+              className={`density-button ${density === 'comfortable' ? 'density-button--active' : ''}`}
+              onClick={() => setDensity('comfortable')}
             >
-              Default
+              Comfortable
             </button>
-            <button
-              aria-pressed={scale === 1.25}
-              className={`density-button ${scale === 1.25 ? 'density-button--active' : ''}`}
-              onClick={() => setScale(1.25)}
-            >
-              Spacious
-            </button>
-          </div>
-          <div
-            style={{ marginLeft: 8, fontSize: 13, color: theme === 'dark' ? '#8b949e' : '#57606a' }}
-          >
-            Scale: {scale}
           </div>
         </div>
+
+        <div className="activity-stream-example__control-group">
+          <label>
+            <input
+              type="checkbox"
+              checked={responsive}
+              onChange={(e) => setResponsive(e.target.checked)}
+            />
+            Responsive (auto-compact on narrow)
+          </label>
+        </div>
+
         <div className="activity-stream-example__control-group">
           <label htmlFor="theme-select">Theme:</label>
           <select
@@ -338,7 +350,9 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
               loading={loading}
               onLoadMore={handleLoadMore}
               maxHeight="600px"
-              scale={scale}
+              density={density}
+              responsive={responsive}
+              compactBreakpointPx={640}
               pagination={{
                 currentPage: 0,
                 pageSize: 15,
@@ -351,6 +365,14 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
         <div className="activity-stream-example__features">
           <h3>Key Features</h3>
           <ul>
+            <li>
+              <strong>Density Control:</strong> Choose between comfortable, compact, and condensed
+              density modes for different screen sizes and use cases
+            </li>
+            <li>
+              <strong>Responsive Behavior:</strong> Automatically switches to compact density when
+              container width is below the breakpoint (default: 640px)
+            </li>
             <li>
               <strong>Smart Event Grouping:</strong> Automatically groups consecutive events of the
               same type (e.g., "Created 6 pull requests in myapp/frontend")
@@ -381,9 +403,6 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
               <strong>Fully Accessible:</strong> Keyboard navigation, ARIA attributes, screen reader
               support
             </li>
-            <li>
-              <strong>Responsive Design:</strong> Adapts to mobile and desktop viewports
-            </li>
           </ul>
         </div>
       </div>
@@ -391,7 +410,7 @@ function ActivityStreamExample({ onNavigate }: ActivityStreamExampleProps = {}) 
       <div className="activity-stream-example__code">
         <h3>Usage Examples</h3>
 
-        <h4>Basic Usage</h4>
+        <h4>Basic Usage with Density</h4>
         <pre>
           <code>
             {`import { UIForgeActivityStream } from '@appforgeapps/uiforge'
@@ -410,6 +429,9 @@ const events = [
 <UIForgeActivityStream
   events={events}
   theme="dark"
+  density="comfortable"        // 'comfortable' | 'compact' | 'condensed'
+  responsive={true}            // auto-switch to compact on narrow containers
+  compactBreakpointPx={640}    // breakpoint for responsive switching
   enableGrouping={true}
   showTimeline={true}
   showDateSeparators={true}

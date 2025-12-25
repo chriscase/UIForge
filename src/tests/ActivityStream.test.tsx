@@ -422,4 +422,87 @@ describe('UIForgeActivityStream', () => {
       expect(events[0]).toHaveAttribute('data-event-id', '1')
     })
   })
+
+  describe('Density prop', () => {
+    it('applies comfortable density class by default', () => {
+      const { container } = render(<UIForgeActivityStream events={mockEvents} />)
+
+      const activityStream = container.querySelector('.activity-stream')
+      expect(activityStream).toHaveClass('activity-stream--comfortable')
+      expect(activityStream).toHaveAttribute('data-density', 'comfortable')
+    })
+
+    it('applies compact density class when density is compact', () => {
+      const { container } = render(<UIForgeActivityStream events={mockEvents} density="compact" />)
+
+      const activityStream = container.querySelector('.activity-stream')
+      expect(activityStream).toHaveClass('activity-stream--compact')
+      expect(activityStream).toHaveAttribute('data-density', 'compact')
+    })
+
+    it('applies condensed density class when density is condensed', () => {
+      const { container } = render(
+        <UIForgeActivityStream events={mockEvents} density="condensed" />
+      )
+
+      const activityStream = container.querySelector('.activity-stream')
+      expect(activityStream).toHaveClass('activity-stream--condensed')
+      expect(activityStream).toHaveAttribute('data-density', 'condensed')
+    })
+  })
+
+  describe('Responsive prop', () => {
+    it('defaults to responsive=true', () => {
+      // By default, responsive is true but we can't easily test the ResizeObserver behavior
+      // Just verify the component renders without error
+      const { container } = render(<UIForgeActivityStream events={mockEvents} />)
+      expect(container.querySelector('.activity-stream')).toBeInTheDocument()
+    })
+
+    it('accepts responsive=false to disable responsive behavior', () => {
+      const { container } = render(
+        <UIForgeActivityStream events={mockEvents} responsive={false} />
+      )
+
+      const activityStream = container.querySelector('.activity-stream')
+      expect(activityStream).toHaveClass('activity-stream--comfortable')
+    })
+  })
+
+  describe('Style prop', () => {
+    it('applies custom inline styles', () => {
+      const customStyle = { backgroundColor: 'red', padding: '20px' }
+      const { container } = render(
+        <UIForgeActivityStream events={mockEvents} style={customStyle} />
+      )
+
+      const activityStream = container.querySelector('.activity-stream')
+      expect(activityStream).toHaveStyle({ backgroundColor: 'rgb(255, 0, 0)' })
+      expect(activityStream).toHaveStyle({ padding: '20px' })
+    })
+  })
+
+  describe('Legacy scale prop', () => {
+    it('applies scale-compact class when scale is less than 1', () => {
+      const { container } = render(<UIForgeActivityStream events={mockEvents} scale={0.8} />)
+
+      const activityStream = container.querySelector('.activity-stream')
+      expect(activityStream).toHaveClass('activity-stream--scale-compact')
+    })
+
+    it('applies scale-spacious class when scale is greater than 1', () => {
+      const { container } = render(<UIForgeActivityStream events={mockEvents} scale={1.2} />)
+
+      const activityStream = container.querySelector('.activity-stream')
+      expect(activityStream).toHaveClass('activity-stream--scale-spacious')
+    })
+
+    it('does not apply scale classes when scale is 1', () => {
+      const { container } = render(<UIForgeActivityStream events={mockEvents} scale={1} />)
+
+      const activityStream = container.querySelector('.activity-stream')
+      expect(activityStream).not.toHaveClass('activity-stream--scale-compact')
+      expect(activityStream).not.toHaveClass('activity-stream--scale-spacious')
+    })
+  })
 })
