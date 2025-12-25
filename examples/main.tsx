@@ -17,7 +17,11 @@ function Router() {
   // Default to dark theme and persist in localStorage
   const [theme, setTheme] = useState<AppTheme>(() => {
     const saved = localStorage.getItem('uiforge-theme')
-    return (saved as AppTheme) || 'dark'
+    // Validate saved value is a valid theme
+    if (saved === 'light' || saved === 'dark') {
+      return saved
+    }
+    return 'dark'
   })
 
   // Persist theme to localStorage
@@ -25,7 +29,12 @@ function Router() {
     localStorage.setItem('uiforge-theme', theme)
     // Also update document-level class for global styling
     document.documentElement.setAttribute('data-theme', theme)
-    document.body.className = theme === 'light' ? 'light-mode' : ''
+    // Use classList to preserve any existing classes on body
+    if (theme === 'light') {
+      document.body.classList.add('light-mode')
+    } else {
+      document.body.classList.remove('light-mode')
+    }
   }, [theme])
 
   const navigate = (path: string) => {
