@@ -458,7 +458,7 @@ const events = [
     currentPage: 0,
     pageSize: 20,
     hasMore: true,
-  }}}
+  }}
 />`}
           </code>
         </pre>
