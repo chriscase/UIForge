@@ -1,0 +1,131 @@
+/* ===========================================
+   UIForge CSS Custom Properties (Design Tokens)
+   
+   These tokens allow consumers to customize UIForge component spacing,
+   sizing, and typography. Override these values in your own CSS to
+   match your application's design system.
+   =========================================== */
+
+:root {
+  /* ===========================================
+     Spacing Tokens
+     =========================================== */
+
+  /* General gap/spacing used across components */
+  --uiforge-gap: 8px;
+  --uiforge-gap-xs: 4px;
+  --uiforge-gap-sm: 6px;
+  --uiforge-gap-md: 8px;
+  --uiforge-gap-lg: 12px;
+  --uiforge-gap-xl: 16px;
+
+  /* ===========================================
+     Size Tokens
+     =========================================== */
+
+  /* Item heights for list items, rows, etc. */
+  --uiforge-item-height: 40px;
+  --uiforge-item-height-sm: 32px;
+  --uiforge-item-height-lg: 48px;
+
+  /* Avatar/icon sizes */
+  --uiforge-avatar-size: 32px;
+  --uiforge-avatar-size-sm: 24px;
+  --uiforge-avatar-size-lg: 40px;
+  --uiforge-avatar-size-xl: 48px;
+
+  /* Icon sizes */
+  --uiforge-icon-size: 20px;
+  --uiforge-icon-size-sm: 16px;
+  --uiforge-icon-size-lg: 24px;
+
+  /* ===========================================
+     Typography Tokens
+     =========================================== */
+
+  /* Font sizes */
+  --uiforge-font-size: 14px;
+  --uiforge-font-size-xs: 11px;
+  --uiforge-font-size-sm: 12px;
+  --uiforge-font-size-md: 14px;
+  --uiforge-font-size-lg: 16px;
+  --uiforge-font-size-xl: 18px;
+
+  /* Line heights */
+  --uiforge-line-height: 1.5;
+  --uiforge-line-height-tight: 1.25;
+  --uiforge-line-height-relaxed: 1.75;
+
+  /* ===========================================
+     Border Radius Tokens
+     =========================================== */
+
+  --uiforge-border-radius: 6px;
+  --uiforge-border-radius-sm: 4px;
+  --uiforge-border-radius-lg: 8px;
+  --uiforge-border-radius-full: 9999px;
+
+  /* ===========================================
+     Z-Index Tokens
+     =========================================== */
+
+  --uiforge-z-index-dropdown: 1000;
+  --uiforge-z-index-sticky: 1020;
+  --uiforge-z-index-fixed: 1030;
+  --uiforge-z-index-modal-backdrop: 1040;
+  --uiforge-z-index-modal: 1050;
+  --uiforge-z-index-tooltip: 1060;
+}
+
+/* ===========================================
+   Safe-Area Utility Classes
+   
+   These utility classes leverage env(safe-area-inset-*) to ensure
+   fixed/sticky elements respect iOS notch areas and other device
+   safe areas. Apply these classes to fixed elements.
+   =========================================== */
+
+/* Fixed bottom elements - adds padding for iOS home indicator */
+.uiforge-fixed-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Fixed top elements - adds padding for iOS notch */
+.uiforge-fixed-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Fixed left elements - adds padding for left safe area */
+.uiforge-fixed-left {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+
+/* Fixed right elements - adds padding for right safe area */
+.uiforge-fixed-right {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* Fixed elements with all safe-area insets */
+.uiforge-fixed-all {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* Margin-based variants for elements that need margins instead of padding */
+.uiforge-fixed-bottom-margin {
+  margin-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.uiforge-fixed-top-margin {
+  margin-top: env(safe-area-inset-top, 0px);
+}
+
+.uiforge-fixed-left-margin {
+  margin-left: env(safe-area-inset-left, 0px);
+}
+
+.uiforge-fixed-right-margin {
+  margin-right: env(safe-area-inset-right, 0px);
+}

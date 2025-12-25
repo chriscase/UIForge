@@ -234,6 +234,30 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             }
             onNavigate={onNavigate}
           />
+
+          <ComponentCard
+            name="CSS Tokens & Safe-Area"
+            description="Design tokens as CSS custom properties and safe-area utility classes for iOS notch support"
+            icon="🎨"
+            path="/safe-area"
+            preview={
+              <div className="preview-tokens">
+                <div className="preview-token-row">
+                  <span className="preview-token-swatch" style={{ background: '#3b82f6' }}></span>
+                  <span>--uiforge-gap</span>
+                </div>
+                <div className="preview-token-row">
+                  <span className="preview-token-swatch" style={{ background: '#10b981' }}></span>
+                  <span>--uiforge-font-size</span>
+                </div>
+                <div className="preview-token-row">
+                  <span className="preview-token-swatch" style={{ background: '#f59e0b' }}></span>
+                  <span>.uiforge-fixed-bottom</span>
+                </div>
+              </div>
+            }
+            onNavigate={onNavigate}
+          />
         </section>
       </main>
 
