@@ -6,6 +6,11 @@ import { ActivityItemProvider } from './ActivityItem'
 import './ActivityStream.css'
 
 /**
+ * Default container height for virtualized list when maxHeight is not specified
+ */
+const DEFAULT_CONTAINER_HEIGHT = 400
+
+/**
  * Represents a single activity/event in the stream
  */
 export interface ActivityEvent {
@@ -487,7 +492,7 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
     return allIds
   })
   const [showMoreVisible, setShowMoreVisible] = useState(false)
-  const [containerHeight, setContainerHeight] = useState(400)
+  const [containerHeight, setContainerHeight] = useState(DEFAULT_CONTAINER_HEIGHT)
   const internalContainerRef = useRef<HTMLDivElement>(null)
   const containerRef = externalContainerRef || internalContainerRef
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -564,11 +569,13 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
     const updateHeight = () => {
       const container = internalContainerRef.current
       if (container) {
-        // Parse maxHeight if provided, otherwise use container's client height
-        let height = container.clientHeight || 400
+        // Parse maxHeight if provided, otherwise use container's client height.
+        // parseFloat extracts numeric value from strings like '600px' or '100%'.
+        // Note: percentage values will not work correctly; maxHeight should be pixels.
+        let height = container.clientHeight || DEFAULT_CONTAINER_HEIGHT
         if (maxHeight) {
-          const parsedHeight = parseInt(maxHeight, 10)
-          if (!isNaN(parsedHeight)) {
+          const parsedHeight = parseFloat(maxHeight)
+          if (!isNaN(parsedHeight) && parsedHeight > 0) {
             height = parsedHeight
           }
         }
@@ -719,6 +726,9 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
       }
       return renderGroupedEvent(item as GroupedEvent)
     },
+    // Intentionally omitting renderGroupedEvent from dependencies:
+    // renderGroupedEvent is an inline function that changes on every render, but its behavior
+    // only depends on these stable values. Including it would cause unnecessary re-renders.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [expandedEvents, showTimeline, renderIcon, renderEvent, toggleExpand]
   )
