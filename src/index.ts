@@ -30,6 +30,7 @@ export type {
   UIForgeActivityStreamProps,
   ActivityEvent,
   ActivityStreamPagination,
+  ActivityStreamDensity,
 } from './components/ActivityStream'
 
 export { UIForgeVideo, UIForgeVideoPreview } from './components/Video'

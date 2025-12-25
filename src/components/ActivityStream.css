@@ -198,8 +198,125 @@
   --activity-stream-load-more-hover: #30363d;
 }
 
-/* Optional comfortable / spacious variant */
-.activity-stream--spacious {
+/* Density variants */
+
+/* Comfortable density (default) - no changes needed, uses base variables */
+.activity-stream--comfortable {
+  /* Uses default base variables - no overrides needed */
+}
+
+/* Compact density - reduced spacing and smaller icons */
+.activity-stream--compact {
+  --activity-stream-item-padding-y: 4px;
+  --activity-stream-item-padding-x: 10px;
+  --activity-stream-item-gap: 6px;
+  --activity-stream-content-gap: 2px;
+  --activity-stream-header-gap: 4px;
+  --activity-stream-title-line-height: 1.3;
+  --activity-stream-timestamp-margin-top: 1px;
+  --activity-stream-toggle-margin-left: 2px;
+  --activity-stream-description-padding-y: 4px;
+  --activity-stream-description-padding-x: 8px;
+  --activity-stream-child-gap: 4px;
+  --activity-stream-child-margin-top: 4px;
+  --activity-stream-child-padding-left: 10px;
+  --activity-stream-events-gap: 6px;
+  --activity-stream-event-item-padding-y: 4px;
+  --activity-stream-event-title-margin-bottom: 2px;
+  --activity-stream-date-separator-gap: 8px;
+  --activity-stream-date-separator-padding-top: 12px;
+  --activity-stream-date-separator-padding-bottom: 8px;
+  --activity-stream-date-label-padding-right: 6px;
+  --activity-stream-icon-size: 20px;
+  --activity-stream-icon-svg-size: 10px;
+  --activity-stream-timeline-left: 18px;
+  --activity-stream-timeline-top: 22px;
+  --activity-stream-timeline-marker-left: 12px;
+  --activity-stream-timeline-marker-top: 10px;
+  --activity-stream-timeline-marker-size: 8px;
+}
+
+.activity-stream--compact .activity-stream__title {
+  font-size: 13px;
+}
+
+.activity-stream--compact .activity-stream__timestamp {
+  font-size: 11px;
+}
+
+.activity-stream--compact .activity-stream__description {
+  font-size: 12px;
+}
+
+.activity-stream--compact .activity-stream__event-title {
+  font-size: 12px;
+}
+
+.activity-stream--compact .activity-stream__event-description {
+  font-size: 11px;
+}
+
+.activity-stream--compact .activity-stream__date-label {
+  font-size: 12px;
+}
+
+/* Condensed density - minimal spacing for maximum information density */
+.activity-stream--condensed {
+  --activity-stream-item-padding-y: 2px;
+  --activity-stream-item-padding-x: 8px;
+  --activity-stream-item-gap: 4px;
+  --activity-stream-content-gap: 1px;
+  --activity-stream-header-gap: 3px;
+  --activity-stream-title-line-height: 1.2;
+  --activity-stream-timestamp-margin-top: 0px;
+  --activity-stream-toggle-margin-left: 1px;
+  --activity-stream-description-padding-y: 3px;
+  --activity-stream-description-padding-x: 6px;
+  --activity-stream-child-gap: 2px;
+  --activity-stream-child-margin-top: 2px;
+  --activity-stream-child-padding-left: 8px;
+  --activity-stream-events-gap: 4px;
+  --activity-stream-event-item-padding-y: 2px;
+  --activity-stream-event-title-margin-bottom: 1px;
+  --activity-stream-date-separator-gap: 6px;
+  --activity-stream-date-separator-padding-top: 8px;
+  --activity-stream-date-separator-padding-bottom: 6px;
+  --activity-stream-date-label-padding-right: 4px;
+  --activity-stream-icon-size: 18px;
+  --activity-stream-icon-svg-size: 9px;
+  --activity-stream-timeline-left: 16px;
+  --activity-stream-timeline-top: 18px;
+  --activity-stream-timeline-marker-left: 10px;
+  --activity-stream-timeline-marker-top: 8px;
+  --activity-stream-timeline-marker-size: 6px;
+}
+
+.activity-stream--condensed .activity-stream__title {
+  font-size: 12px;
+}
+
+.activity-stream--condensed .activity-stream__timestamp {
+  font-size: 10px;
+}
+
+.activity-stream--condensed .activity-stream__description {
+  font-size: 11px;
+}
+
+.activity-stream--condensed .activity-stream__event-title {
+  font-size: 11px;
+}
+
+.activity-stream--condensed .activity-stream__event-description {
+  font-size: 10px;
+}
+
+.activity-stream--condensed .activity-stream__date-label {
+  font-size: 11px;
+}
+
+/* Legacy spacious variant (maintained for backward compatibility with scale prop) */
+.activity-stream--scale-spacious {
   --activity-stream-item-padding-y: 10px;
   --activity-stream-item-padding-x: 16px;
   --activity-stream-item-gap: 12px;
@@ -229,8 +346,8 @@
   --activity-stream-timeline-marker-size: 12px;
 }
 
-/* Compact variant — reduces density via scalar */
-.activity-stream--compact {
+/* Legacy compact via scale prop (maintained for backward compatibility) */
+.activity-stream--scale-compact {
   --activity-stream-scale: 0.8;
 }
 

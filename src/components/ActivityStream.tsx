@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import React, { useState, useEffect, useRef, useCallback, useMemo, RefObject } from 'react'
 import { ActivityIcons, UIIcons } from '../icons/iconMaps'
+import { useResponsive } from '../hooks/useResponsive'
 import './ActivityStream.css'
 
 /**
@@ -81,6 +82,11 @@ export interface ActivityStreamPagination {
 }
 
 /**
+ * Density options for the activity stream
+ */
+export type ActivityStreamDensity = 'comfortable' | 'compact' | 'condensed'
+
+/**
  * Props for the UIForgeActivityStream component
  */
 export interface UIForgeActivityStreamProps {
@@ -96,6 +102,10 @@ export interface UIForgeActivityStreamProps {
    * Custom className for styling
    */
   className?: string
+  /**
+   * Custom inline styles
+   */
+  style?: React.CSSProperties
   /**
    * Whether to show the "Show more" bar
    */
@@ -151,8 +161,34 @@ export interface UIForgeActivityStreamProps {
   /**
    * Global scale factor (density) for spacing and icon sizes in the stream.
    * Set to values like 0.8 for compact, 1 for default, 1.2 for spacious.
+   * @deprecated Use `density` prop instead for semantic density control.
    */
   scale?: number
+  /**
+   * Density mode for the activity stream.
+   * - 'comfortable': Default spacing and sizing (default)
+   * - 'compact': Reduced spacing and smaller icons
+   * - 'condensed': Minimal spacing for maximum information density
+   */
+  density?: ActivityStreamDensity
+  /**
+   * Whether to enable responsive density switching based on container width.
+   * When true, the component will automatically switch to 'compact' density
+   * when the container width is below the breakpoint.
+   * @default true
+   */
+  responsive?: boolean
+  /**
+   * Breakpoint width in pixels below which responsive mode switches to compact.
+   * Only applies when `responsive` is true.
+   * @default 640
+   */
+  compactBreakpointPx?: number
+  /**
+   * Optional ref to the container element for responsive measurements.
+   * If not provided, an internal ref is used.
+   */
+  containerRef?: RefObject<HTMLElement | null>
   /**
    * Custom icon renderer
    */
@@ -368,6 +404,7 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
   events,
   theme = 'light',
   className = '',
+  style,
   showLoadMore = true,
   loading = false,
   onLoadMore,
@@ -381,7 +418,11 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
   groupingThreshold = 2,
   showDateSeparators = true,
   showTimeline = true,
-  scale = 1,
+  scale,
+  density = 'comfortable',
+  responsive = true,
+  compactBreakpointPx = 640,
+  containerRef: externalContainerRef,
   renderIcon,
   renderEvent,
 }) => {
@@ -420,8 +461,20 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
     return allIds
   })
   const [showMoreVisible, setShowMoreVisible] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const internalContainerRef = useRef<HTMLDivElement>(null)
+  const containerRef = externalContainerRef || internalContainerRef
   const scrollRef = useRef<HTMLDivElement>(null)
+
+  // Responsive density: automatically switch to compact when container is narrow
+  const isNarrow = useResponsive(responsive ? containerRef : null, compactBreakpointPx)
+
+  // Determine the effective density: responsive narrow containers use compact
+  const effectiveDensity = useMemo(() => {
+    if (responsive && isNarrow && density === 'comfortable') {
+      return 'compact'
+    }
+    return density
+  }, [responsive, isNarrow, density])
 
   // Process events: group and add date separators
   const processedItems = useMemo(() => {
@@ -590,15 +643,26 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
   const baseClass = 'activity-stream'
   const themeClass = `${baseClass}--${theme}`
   const timelineClass = showTimeline ? `${baseClass}--with-timeline` : ''
-  let classes = `${baseClass} ${themeClass} ${timelineClass} ${className}`.trim()
-  if (scale && scale < 1) classes = `${classes} ${baseClass}--compact`
-  if (scale && scale > 1) classes = `${classes} ${baseClass}--spacious`
+  const densityClass = `${baseClass}--${effectiveDensity}`
+
+  // Build class list: base classes + density class + legacy scale class support + custom className
+  let classes = `${baseClass} ${themeClass} ${timelineClass} ${densityClass} ${className}`.trim()
+  // Legacy scale prop support: scale < 1 adds --compact, scale > 1 adds --spacious
+  if (scale !== undefined && scale < 1) classes = `${classes} ${baseClass}--scale-compact`
+  if (scale !== undefined && scale > 1) classes = `${classes} ${baseClass}--scale-spacious`
 
   const containerStyle = maxHeight ? { maxHeight } : undefined
-  const scaleStyle = { '--activity-stream-scale': scale } as React.CSSProperties
+  // Apply legacy scale as CSS variable if provided
+  const scaleStyle = scale !== undefined ? { '--activity-stream-scale': scale } as React.CSSProperties : {}
 
   return (
-    <div ref={containerRef} className={classes} data-theme={theme}>
+    <div
+      ref={internalContainerRef}
+      className={classes}
+      data-theme={theme}
+      data-density={effectiveDensity}
+      style={style}
+    >
       <div
         ref={scrollRef}
         className="activity-stream__container"
