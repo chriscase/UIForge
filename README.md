@@ -1239,6 +1239,285 @@ import { UIForgeVideo, UIForgeVideoPreview } from '@appforgeapps/uiforge'
 
 See `examples/VideoExample.tsx` for a complete interactive demo with multiple examples.
 
+## Mobile Responsiveness
+
+UIForge components are designed with mobile-first responsive behavior built in. Components automatically adapt to different screen sizes using **container-based responsiveness** rather than viewport-based media queries. This allows components to respond to their container's width, making them work seamlessly in sidebars, modals, or any constrained layout.
+
+### Responsive Hooks
+
+UIForge provides two powerful hooks for building responsive layouts:
+
+#### useResponsive
+
+A container-width based responsive helper that determines whether a container is "compact" by measuring its width.
+
+```tsx
+import { useRef } from 'react'
+import { useResponsive } from '@appforgeapps/uiforge'
+
+function ResponsiveCard() {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const isCompact = useResponsive(cardRef, 640) // default breakpoint is 640px
+
+  return (
+    <div ref={cardRef} className="card">
+      {isCompact ? (
+        <div>Mobile Layout - Stack vertically</div>
+      ) : (
+        <div>Desktop Layout - Side by side</div>
+      )}
+    </div>
+  )
+}
+```
+
+**Key Benefits:**
+- Container-aware: responds to container width, not just window width
+- Works in any context: sidebars, modals, grid cells, etc.
+- Uses ResizeObserver for efficient updates
+- SSR-safe with sensible defaults
+
+#### useDynamicPageCount
+
+Automatically calculates optimal page size for paginated lists based on container height and item measurements.
+
+```tsx
+import { useRef } from 'react'
+import { useDynamicPageCount } from '@appforgeapps/uiforge'
+
+function PaginatedList({ items }) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const pageSize = useDynamicPageCount(containerRef, {
+    sampleCount: 3,     // Measure first 3 items
+    min: 5,             // Show at least 5 items
+    max: 20,            // Show at most 20 items
+    approxItemHeight: 100
+  })
+
+  return (
+    <div ref={containerRef} style={{ height: '600px', overflow: 'auto' }}>
+      {items.slice(0, pageSize).map(item => (
+        <ListItem key={item.id} {...item} />
+      ))}
+    </div>
+  )
+}
+```
+
+See `examples/UseDynamicPageCountExample.tsx` for a complete demo.
+
+### Responsive Components
+
+Several UIForge components have built-in responsive behavior:
+
+#### ActivityStream Responsive Features
+
+The `UIForgeActivityStream` component automatically adapts to narrow containers:
+
+```tsx
+import { UIForgeActivityStream } from '@appforgeapps/uiforge'
+
+function ActivityFeed() {
+  return (
+    <UIForgeActivityStream
+      events={events}
+      
+      // Density modes
+      density="comfortable"      // 'comfortable' | 'compact' | 'condensed'
+      
+      // Automatic responsive behavior (enabled by default)
+      responsive={true}          // Auto-switch to compact on narrow containers
+      compactBreakpointPx={640}  // Threshold for switching (default: 640px)
+      
+      // Control metadata visibility
+      showMeta={true}            // Show/hide timestamps and descriptions
+      
+      // Virtualization for large lists
+      virtualization={false}     // Enable for 100+ items
+      virtualItemHeight={48}     // Item height when virtualized
+    />
+  )
+}
+```
+
+**Density Modes:**
+- `comfortable`: Default spacing with full metadata (desktop)
+- `compact`: Reduced spacing, ideal for tablets and narrow screens
+- `condensed`: Minimal spacing for maximum information density
+
+**Responsive Behavior:**
+When `responsive={true}` (default), the component automatically switches from `comfortable` to `compact` density when the container width falls below `compactBreakpointPx`.
+
+**Example Use Cases:**
+- Main content area: Use `comfortable` density with responsive switching
+- Sidebar panel: Use `compact` density or enable responsive
+- Dashboard widget: Use `condensed` for maximum information density
+- Large datasets: Enable `virtualization` for 100+ items
+
+```tsx
+// Sidebar example - always compact
+<UIForgeActivityStream 
+  events={events} 
+  density="compact"
+  responsive={false}
+/>
+
+// Responsive main feed - adapts automatically
+<UIForgeActivityStream 
+  events={events} 
+  density="comfortable"
+  responsive={true}
+  compactBreakpointPx={640}
+/>
+
+// Large list with virtualization
+<UIForgeActivityStream 
+  events={manyEvents} 
+  virtualization={true}
+  virtualItemHeight={48}
+  maxHeight="600px"
+  density="compact"
+/>
+```
+
+See `examples/ActivityStreamExample.tsx` for an interactive demo with density controls.
+
+#### Sidebar Responsive Variants
+
+The `UIForgeSidebar` component provides three variants optimized for different screen sizes:
+
+```tsx
+import { useState } from 'react'
+import { UIForgeSidebar, HamburgerButton } from '@appforgeapps/uiforge'
+
+function ResponsiveLayout() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  return (
+    <>
+      {/* Desktop: Static sidebar */}
+      <div className="desktop-only">
+        <UIForgeSidebar variant="static" width="280px">
+          <nav>Navigation items</nav>
+        </UIForgeSidebar>
+      </div>
+
+      {/* Mobile: Drawer sidebar */}
+      <div className="mobile-only">
+        <HamburgerButton
+          isOpen={mobileMenuOpen}
+          controlsId="mobile-nav"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        />
+        <UIForgeSidebar
+          id="mobile-nav"
+          variant="drawer"
+          open={mobileMenuOpen}
+          onOpenChange={setMobileMenuOpen}
+          position="left"
+        >
+          <nav>Navigation items</nav>
+        </UIForgeSidebar>
+      </div>
+
+      {/* Mobile: Bottom sheet variant */}
+      <UIForgeSidebar
+        variant="bottom"
+        open={bottomSheetOpen}
+        onOpenChange={setBottomSheetOpen}
+        height="300px"
+      >
+        <div>Bottom sheet content</div>
+      </UIForgeSidebar>
+    </>
+  )
+}
+```
+
+**Sidebar Variants:**
+- `static`: Always visible, takes up layout space (desktop)
+- `drawer`: Slide-in overlay panel (mobile/tablet)
+- `bottom`: Bottom sheet for mobile actions
+
+See `examples/SidebarExample.tsx` for complete examples of all variants.
+
+#### Video Player Responsive Behavior
+
+The `UIForgeVideo` component automatically adjusts its aspect ratio and embed behavior for different screen sizes:
+
+```tsx
+import { UIForgeVideo } from '@appforgeapps/uiforge'
+
+function VideoSection() {
+  return (
+    <UIForgeVideo
+      url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      aspectRatio="16:9"  // Maintains aspect ratio on all devices
+      controls={true}
+      autoplay={false}
+    />
+  )
+}
+```
+
+The video player automatically:
+- Maintains aspect ratio on all screen sizes
+- Uses responsive embed containers
+- Adapts controls for touch devices
+- Handles safe-area insets on mobile devices
+
+### Best Practices for Responsive Design
+
+1. **Use Container Queries**: Leverage `useResponsive` hook instead of viewport-based media queries for components that may appear in different contexts (sidebars, modals, grid cells).
+
+2. **Choose Appropriate Density**: 
+   - Desktop/wide layouts: `comfortable`
+   - Tablet/medium layouts: `compact` 
+   - Mobile/narrow layouts: `compact` or `condensed`
+   - Enable `responsive={true}` to automatically switch
+
+3. **Virtualize Large Lists**: Enable virtualization for ActivityStream with 100+ items to maintain smooth scrolling on mobile devices.
+
+4. **Test in Constrained Contexts**: Components should work well in sidebars, modals, and grid cells, not just full-width layouts.
+
+5. **Consider Touch Targets**: UIForge components follow WCAG guidelines with minimum 44×44px touch targets by default.
+
+### Migration from Viewport-Based Responsive Design
+
+If you're currently using viewport-based media queries, here's how to migrate to container-based responsiveness:
+
+**Before (viewport-based):**
+```tsx
+function MyComponent() {
+  const isMobile = window.innerWidth < 768
+  
+  return (
+    <div>
+      {isMobile ? <MobileView /> : <DesktopView />}
+    </div>
+  )
+}
+```
+
+**After (container-based):**
+```tsx
+import { useRef } from 'react'
+import { useResponsive } from '@appforgeapps/uiforge'
+
+function MyComponent() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isCompact = useResponsive(containerRef, 768)
+  
+  return (
+    <div ref={containerRef}>
+      {isCompact ? <MobileView /> : <DesktopView />}
+    </div>
+  )
+}
+```
+
+This approach ensures your component adapts to its container, making it reusable in different contexts like sidebars, modals, or grid layouts.
+
 ## Hooks
 
 ### useResponsive
@@ -1284,6 +1563,65 @@ function ResponsiveComponent() {
 **Returns:** `boolean` - `true` when `containerRef.current.clientWidth < breakpointPx`, `false` otherwise.
 
 See `examples/UseResponsiveExample.tsx` for a complete interactive demo.
+
+### useDynamicPageCount
+
+A hook that dynamically calculates the optimal page size for paginated lists based on the container's available height and measured item heights. This ensures you always show the right number of items to fill the viewport without excessive scrolling.
+
+```tsx
+import { useRef } from 'react'
+import { useDynamicPageCount } from '@appforgeapps/uiforge'
+
+function DynamicPaginatedList({ items }) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  
+  const pageSize = useDynamicPageCount(containerRef, {
+    sampleCount: 3,        // Number of items to measure for height
+    min: 3,                // Minimum page size
+    max: 15,               // Maximum page size
+    approxItemHeight: 120  // Fallback height when items aren't rendered
+  })
+
+  return (
+    <div ref={containerRef} style={{ height: '600px', overflow: 'auto' }}>
+      {items.slice(0, pageSize).map(item => (
+        <ListItem key={item.id} {...item} />
+      ))}
+      {items.length > pageSize && (
+        <button onClick={loadMore}>Load More</button>
+      )}
+    </div>
+  )
+}
+```
+
+**Features:**
+
+- **Dynamic Calculation** - Automatically recalculates when container resizes
+- **Smart Sampling** - Measures actual rendered items for accurate height estimation
+- **Responsive** - Adapts to different screen sizes and orientations
+- **Performant** - Uses ResizeObserver and MutationObserver efficiently
+- **Configurable Bounds** - Set min/max limits to control page sizes
+
+**API Reference:**
+
+| Parameter            | Type                                     | Default | Description                                      |
+| -------------------- | ---------------------------------------- | ------- | ------------------------------------------------ |
+| `containerRef`       | `RefObject<HTMLElement \| null> \| null` | -       | Ref to the scrollable container element          |
+| `options.sampleCount`| `number`                                 | `3`     | Number of items to measure for average height    |
+| `options.min`        | `number`                                 | `3`     | Minimum page size to return                      |
+| `options.max`        | `number`                                 | `15`    | Maximum page size to return                      |
+| `options.approxItemHeight` | `number`                           | `120`   | Approximate item height for fallback calculations|
+
+**Returns:** `number` - The calculated page size, clamped to `[min, max]` range.
+
+**Use Cases:**
+- Activity feeds with variable-height items
+- Product listings with images
+- Search results with descriptions
+- Any paginated content where you want to fill the viewport optimally
+
+See `examples/UseDynamicPageCountExample.tsx` for a complete interactive demo.
 
 ## Theming
 
