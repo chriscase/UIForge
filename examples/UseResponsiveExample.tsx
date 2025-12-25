@@ -2,12 +2,16 @@ import { useRef, useState } from 'react'
 import { useResponsive } from '../src/hooks/useResponsive'
 import { Button } from '../src/components/Button'
 
+interface UseResponsiveExampleProps {
+  onNavigate?: (path: string) => void
+}
+
 /**
  * Example demonstrating the useResponsive hook for container-width based responsive layouts.
  * The hook measures the width of a container element using ResizeObserver and returns true
  * when the container is narrower than the specified breakpoint.
  */
-function UseResponsiveExample() {
+function UseResponsiveExample({ onNavigate }: UseResponsiveExampleProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState(800)
 
@@ -20,22 +24,27 @@ function UseResponsiveExample() {
 
   return (
     <div style={{ padding: '2rem', fontFamily: 'system-ui, sans-serif' }}>
-      <h1>useResponsive Hook Example</h1>
-      <p style={{ color: '#666', marginBottom: '2rem' }}>
+      {onNavigate && (
+        <button className="back-button" onClick={() => onNavigate('/')}>
+          ← Back to Home
+        </button>
+      )}
+      <h1 style={{ color: 'var(--text-primary)' }}>useResponsive Hook Example</h1>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
         The <code>useResponsive</code> hook determines whether a container element is "compact" by
         measuring its width with a ResizeObserver. This allows components to adapt to the width of
         their container rather than the global window width.
       </p>
 
       <section style={{ marginBottom: '3rem' }}>
-        <h2>Basic Usage</h2>
-        <p style={{ marginBottom: '1rem' }}>
+        <h2 style={{ color: 'var(--text-primary)' }}>Basic Usage</h2>
+        <p style={{ marginBottom: '1rem', color: 'var(--text-secondary)' }}>
           Drag the slider to resize the container. The layout switches when the container width
           crosses the 640px breakpoint.
         </p>
 
         <div style={{ marginBottom: '1rem' }}>
-          <label htmlFor="width-slider">
+          <label htmlFor="width-slider" style={{ color: 'var(--text-primary)' }}>
             Container Width: <strong>{containerWidth}px</strong>
           </label>
           <br />

@@ -1,15 +1,25 @@
 import { useState } from 'react'
 import { UIForgeSidebar } from '../src/components/Sidebar'
 import { Button } from '../src/components/Button'
+import { HamburgerButton } from '../src/components/HamburgerButton'
 import './SidebarExample.css'
 
-export function SidebarExample() {
+interface SidebarExampleProps {
+  onNavigate?: (path: string) => void
+}
+
+export function SidebarExample({ onNavigate }: SidebarExampleProps) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [bottomOpen, setBottomOpen] = useState(false)
   const [drawerPosition, setDrawerPosition] = useState<'left' | 'right'>('left')
   
   return (
     <div className="sidebar-example">
+      {onNavigate && (
+        <button className="back-button" onClick={() => onNavigate('/')}>
+          ← Back to Home
+        </button>
+      )}
       <h2>UIForgeSidebar Component</h2>
       <p className="sidebar-example__description">
         A reusable sidebar component with three variants: static, drawer, and bottom.
@@ -55,6 +65,12 @@ export function SidebarExample() {
         </p>
         
         <div className="sidebar-example__controls">
+          <HamburgerButton
+            isOpen={drawerOpen}
+            controlsId="main-drawer"
+            ariaLabel="Toggle navigation menu"
+            onClick={() => setDrawerOpen(!drawerOpen)}
+          />
           <Button onClick={() => setDrawerOpen(true)}>
             Open Drawer
           </Button>
@@ -83,6 +99,7 @@ export function SidebarExample() {
         </div>
 
         <UIForgeSidebar
+          id="main-drawer"
           variant="drawer"
           position={drawerPosition}
           open={drawerOpen}

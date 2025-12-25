@@ -27,20 +27,20 @@ function Router() {
     case '/icons':
       return <IconLibrary onNavigate={navigate} />
     case '/video':
-      return <VideoExample />
+      return <VideoExample onNavigate={navigate} />
     case '/use-responsive':
-      return <UseResponsiveExample />
+      return <UseResponsiveExample onNavigate={navigate} />
     case '/use-dynamic-page-count':
-      return <UseDynamicPageCountExample />
+      return <UseDynamicPageCountExample onNavigate={navigate} />
     case '/sidebar':
-      return <SidebarExample />
+      return <SidebarExample onNavigate={navigate} />
     case '/safe-area':
-      return <SafeAreaExample />
+      return <SafeAreaExample onNavigate={navigate} />
     case '/grid':
     case '/blocks-editor':
     case '/combobox':
     case '/button':
-      return <AppDemo />
+      return <AppDemo onNavigate={navigate} />
     default:
       return <Home onNavigate={navigate} />
   }

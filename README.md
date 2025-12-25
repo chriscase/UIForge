@@ -450,7 +450,7 @@ import { Button } from '@appforgeapps/uiforge'
 
 ### Button
 
-A customizable button component with multiple variants and sizes.
+A customizable button component with multiple variants, sizes, and accessibility-focused touch targets.
 
 ```tsx
 import { Button } from '@appforgeapps/uiforge'
@@ -467,7 +467,134 @@ import { Button } from '@appforgeapps/uiforge'
 
 // Disabled state
 <Button disabled>Disabled</Button>
+
+// Touch target density
+// Default: 44×44px minimum for accessibility compliance
+<Button>Accessible Touch Target</Button>
+
+// Condensed: Smaller touch targets for dense UIs (not recommended for touch devices)
+<Button density="condensed">Condensed</Button>
 ```
+
+**Accessibility Features:**
+
+- Default 44×44px minimum touch target for WCAG compliance
+- Use `density="condensed"` only when space is critical and touch interaction is not primary
+- Full keyboard support
+- Focus visible styling
+
+### HamburgerButton
+
+An accessible hamburger menu button for controlling drawer/menu components.
+
+```tsx
+import { HamburgerButton, UIForgeSidebar } from '@appforgeapps/uiforge'
+
+function Navigation() {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <>
+      <HamburgerButton
+        isOpen={isOpen}
+        controlsId="main-drawer"
+        ariaLabel="Toggle navigation menu"
+        onClick={() => setIsOpen(!isOpen)}
+      />
+      <UIForgeSidebar
+        id="main-drawer"
+        variant="drawer"
+        open={isOpen}
+        onOpenChange={setIsOpen}
+      >
+        <nav>Navigation content</nav>
+      </UIForgeSidebar>
+    </>
+  )
+}
+```
+
+**Props:**
+
+| Prop         | Type                      | Default         | Description                              |
+| ------------ | ------------------------- | --------------- | ---------------------------------------- |
+| `isOpen`     | `boolean`                 | required        | Whether the controlled menu/drawer is open |
+| `controlsId` | `string`                  | required        | ID of the element this button controls   |
+| `ariaLabel`  | `string`                  | `"Toggle menu"` | Accessible label for the button          |
+| `size`       | `'small' \| 'medium' \| 'large'` | `'medium'` | Size variant of the button           |
+
+**Accessibility Features:**
+
+- Proper `aria-expanded` attribute reflecting open state
+- `aria-controls` attribute linking to the controlled element
+- 44×44px minimum touch target by default
+- Animated hamburger-to-X transformation for visual feedback
+- Focus visible styling
+
+### UIForgeSidebar
+
+A reusable sidebar component with multiple variants: static, drawer, and bottom sheet.
+
+```tsx
+import { UIForgeSidebar } from '@appforgeapps/uiforge'
+
+// Static sidebar (always visible)
+<UIForgeSidebar variant="static" width="280px">
+  <nav>Navigation</nav>
+</UIForgeSidebar>
+
+// Drawer sidebar (slide-in panel)
+<UIForgeSidebar
+  variant="drawer"
+  open={isOpen}
+  onOpenChange={setIsOpen}
+  position="left"
+>
+  <nav>Mobile navigation</nav>
+</UIForgeSidebar>
+
+// Bottom sheet
+<UIForgeSidebar
+  variant="bottom"
+  open={isOpen}
+  onOpenChange={setIsOpen}
+  height="300px"
+>
+  <div>Bottom sheet content</div>
+</UIForgeSidebar>
+```
+
+**Props Reference:**
+
+| Prop                   | Type                              | Default                  | Description                            |
+| ---------------------- | --------------------------------- | ------------------------ | -------------------------------------- |
+| `variant`              | `'static' \| 'drawer' \| 'bottom'` | `'static'`              | Sidebar variant                        |
+| `open`                 | `boolean`                         | `true`                   | Whether sidebar is open (drawer/bottom) |
+| `onOpenChange`         | `(open: boolean) => void`         | -                        | Callback when open state changes       |
+| `position`             | `'left' \| 'right'`               | `'left'`                 | Position (static/drawer variants)      |
+| `width`                | `string`                          | `'280px'`                | Width (static/drawer variants)         |
+| `height`               | `string`                          | `'200px'`                | Height (bottom variant only)           |
+| `showBackdrop`         | `boolean`                         | `true`                   | Show backdrop overlay (drawer/bottom)  |
+| `closeOnBackdropClick` | `boolean`                         | `true`                   | Close on backdrop click                |
+| `closeOnEscape`        | `boolean`                         | `true`                   | Close on ESC key press                 |
+| `trapFocus`            | `boolean`                         | `true`                   | Trap focus within sidebar (drawer/bottom) |
+| `ariaLabel`            | `string`                          | `'Sidebar navigation'`   | ARIA label for accessibility           |
+| `className`            | `string`                          | -                        | Additional CSS class names             |
+
+**Keyboard Interactions:**
+
+- `Escape` - Close the drawer/bottom sheet
+- `Tab` - Navigate through focusable elements (focus is trapped within the drawer when open)
+- `Shift + Tab` - Navigate backwards through focusable elements
+
+**Accessibility Features:**
+
+- `role="dialog"` and `aria-modal="true"` for drawer/bottom variants
+- Focus trapping prevents tab navigation outside the drawer when open
+- Focus returns to the triggering element when drawer closes
+- ESC key closes the drawer
+- Backdrop click closes the drawer
+- Body scroll is disabled when drawer is open
 
 ### UIForgeBlocksEditor
 

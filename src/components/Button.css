@@ -12,11 +12,23 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  /* 
+   * Default: 44px minimum touch target for accessibility
+   * Follows WCAG 2.1 Level AA Success Criterion 2.5.5 (Target Size)
+   */
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .uiforge-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Condensed density - allows smaller touch targets */
+.uiforge-button--condensed {
+  min-width: auto;
+  min-height: auto;
 }
 
 /* Sizes */

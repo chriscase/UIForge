@@ -83,6 +83,17 @@ describe('UIForgeSidebar', () => {
       const sidebar = screen.getByRole('navigation')
       expect(sidebar).toHaveAttribute('aria-label', 'Main navigation')
     })
+
+    it('applies id attribute', () => {
+      render(
+        <UIForgeSidebar id="my-sidebar">
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+      
+      const sidebar = screen.getByRole('navigation')
+      expect(sidebar).toHaveAttribute('id', 'my-sidebar')
+    })
   })
 
   describe('Drawer variant', () => {
@@ -97,6 +108,17 @@ describe('UIForgeSidebar', () => {
       expect(sidebar).toBeInTheDocument()
       expect(sidebar).toHaveClass('uiforge-sidebar--drawer')
       expect(sidebar).toHaveClass('uiforge-sidebar--open')
+    })
+
+    it('applies id attribute on drawer variant', () => {
+      render(
+        <UIForgeSidebar variant="drawer" open={true} id="drawer-sidebar">
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+      
+      const sidebar = screen.getByRole('dialog')
+      expect(sidebar).toHaveAttribute('id', 'drawer-sidebar')
     })
 
     it('has correct ARIA attributes when open', () => {

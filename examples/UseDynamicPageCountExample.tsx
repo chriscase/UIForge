@@ -2,11 +2,15 @@ import { useRef, useState } from 'react'
 import { useDynamicPageCount } from '../src/hooks/useDynamicPageCount'
 import { Button } from '../src/components/Button'
 
+interface UseDynamicPageCountExampleProps {
+  onNavigate?: (path: string) => void
+}
+
 /**
  * Example demonstrating the useDynamicPageCount hook for dynamically calculating
  * optimal page sizes based on container dimensions and item measurements.
  */
-function UseDynamicPageCountExample() {
+function UseDynamicPageCountExample({ onNavigate }: UseDynamicPageCountExampleProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerHeight, setContainerHeight] = useState(480)
   const [itemHeight, setItemHeight] = useState(60)
@@ -48,6 +52,11 @@ function UseDynamicPageCountExample() {
 
   return (
     <div style={{ padding: '2rem', fontFamily: 'system-ui, sans-serif' }}>
+      {onNavigate && (
+        <button className="back-button" onClick={() => onNavigate('/')}>
+          ← Back to Home
+        </button>
+      )}
       <h1>useDynamicPageCount Hook Example</h1>
       <p style={{ color: '#666', marginBottom: '2rem' }}>
         The <code>useDynamicPageCount</code> hook calculates the optimal page size for paginated
