@@ -36,8 +36,11 @@ export function useResponsive(
     }
 
     const updateCompactState = () => {
-      // Only consider the element narrow if it has a measurable width
-      // A width of 0 means the element is not yet rendered or measured
+      // Only consider the element narrow if it has a measurable width.
+      // A width of 0 typically means the element is not yet rendered, hidden,
+      // or unmounted. In such cases, we preserve the last known state rather
+      // than resetting, since ResizeObserver will trigger again when the
+      // element becomes visible with its actual dimensions.
       const width = element.clientWidth
       if (width > 0) {
         setIsCompact(width < breakpointPx)

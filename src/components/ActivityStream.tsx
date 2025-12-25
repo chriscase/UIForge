@@ -655,6 +655,8 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
   // Apply legacy scale as CSS variable if provided
   const scaleStyle = scale !== undefined ? { '--activity-stream-scale': scale } as React.CSSProperties : {}
 
+  // The outer div receives the style prop (for positioning, margins, etc.)
+  // The inner container handles scrolling and receives maxHeight/scale CSS var
   return (
     <div
       ref={internalContainerRef}
