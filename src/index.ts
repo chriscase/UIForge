@@ -51,6 +51,8 @@ export * from './icons'
 
 // Export hooks
 export { useResponsive } from './hooks'
+export { useDynamicPageCount } from './hooks'
+export type { UseDynamicPageCountOptions } from './hooks'
 
 // Export all styles
 import './components/Button.css'

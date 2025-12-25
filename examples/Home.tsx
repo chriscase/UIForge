@@ -195,6 +195,24 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             }
             onNavigate={onNavigate}
           />
+
+          <ComponentCard
+            name="useDynamicPageCount"
+            description="Calculate optimal page sizes for paginated lists based on container dimensions"
+            icon="📄"
+            path="/use-dynamic-page-count"
+            preview={
+              <div className="preview-hooks">
+                <div className="preview-hook-item">
+                  <span>📏</span> PageSize: 8
+                </div>
+                <div className="preview-hook-item">
+                  <span>🔄</span> Auto-resize
+                </div>
+              </div>
+            }
+            onNavigate={onNavigate}
+          />
         </section>
       </main>
 
