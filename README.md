@@ -1112,6 +1112,52 @@ import { UIForgeVideo, UIForgeVideoPreview } from '@appforgeapps/uiforge'
 
 See `examples/VideoExample.tsx` for a complete interactive demo with multiple examples.
 
+## Hooks
+
+### useResponsive
+
+A container-width based responsive helper hook that determines whether a container element is "compact" by measuring its width with a `ResizeObserver`. This allows components to adapt to the width of their container rather than the global `window.innerWidth`.
+
+```tsx
+import { useRef } from 'react'
+import { useResponsive } from '@appforgeapps/uiforge'
+
+function ResponsiveComponent() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  
+  // Returns true when container width < 640px
+  const isCompact = useResponsive(containerRef, 640)
+
+  return (
+    <div ref={containerRef}>
+      {isCompact ? (
+        <MobileLayout />
+      ) : (
+        <DesktopLayout />
+      )}
+    </div>
+  )
+}
+```
+
+**Features:**
+
+- **Container-based** - Responds to container width, not viewport width
+- **ResizeObserver** - Efficient observation of element size changes
+- **SSR Safe** - Returns `false` by default when ref is null
+- **Customizable** - Specify any breakpoint in pixels
+
+**API Reference:**
+
+| Parameter      | Type                                     | Default | Description                                |
+| -------------- | ---------------------------------------- | ------- | ------------------------------------------ |
+| `containerRef` | `RefObject<HTMLElement \| null> \| null` | -       | Ref to the container element to observe    |
+| `breakpointPx` | `number`                                 | `640`   | Width threshold in pixels                  |
+
+**Returns:** `boolean` - `true` when `containerRef.current.clientWidth < breakpointPx`, `false` otherwise.
+
+See `examples/UseResponsiveExample.tsx` for a complete interactive demo.
+
 ## Theming
 
 UIForge components support comprehensive theming through CSS variables. See [THEMING.md](./THEMING.md) for a complete guide on:

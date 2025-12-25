@@ -177,6 +177,24 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             }
             onNavigate={onNavigate}
           />
+
+          <ComponentCard
+            name="useResponsive"
+            description="Container-width based responsive hook using ResizeObserver for adaptive layouts"
+            icon="📐"
+            path="/use-responsive"
+            preview={
+              <div className="preview-hooks">
+                <div className="preview-hook-item">
+                  <span>📱</span> Compact: true
+                </div>
+                <div className="preview-hook-item">
+                  <span>🖥️</span> Desktop: false
+                </div>
+              </div>
+            }
+            onNavigate={onNavigate}
+          />
         </section>
       </main>
 
