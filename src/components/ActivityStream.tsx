@@ -1,8 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo, RefObject } from 'react'
+import { FixedSizeList as List, ListChildComponentProps } from 'react-window'
 import { ActivityIcons, UIIcons } from '../icons/iconMaps'
 import { useResponsive } from '../hooks/useResponsive'
 import { ActivityItemProvider } from './ActivityItem'
 import './ActivityStream.css'
+
+/**
+ * Default container height for virtualized list when maxHeight is not specified
+ */
+const DEFAULT_CONTAINER_HEIGHT = 400
 
 /**
  * Represents a single activity/event in the stream
@@ -206,6 +212,19 @@ export interface UIForgeActivityStreamProps {
    * Custom event renderer
    */
   renderEvent?: (event: ActivityEvent) => React.ReactNode
+  /**
+   * Whether to enable virtualization for improved performance with large lists.
+   * When enabled, uses react-window to render only visible items.
+   * Note: Virtualization may affect animations and dynamic height measurements.
+   * @default false
+   */
+  virtualization?: boolean
+  /**
+   * Height of each item in pixels when virtualization is enabled.
+   * Required for react-window's fixed-size list.
+   * @default 48
+   */
+  virtualItemHeight?: number
 }
 
 /**
@@ -435,6 +454,8 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
   showMeta,
   renderIcon,
   renderEvent,
+  virtualization = false,
+  virtualItemHeight = 48,
 }) => {
   const [expandedEvents, setExpandedEvents] = useState<Set<string>>(() => {
     const allIds = new Set<string>()
@@ -471,9 +492,11 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
     return allIds
   })
   const [showMoreVisible, setShowMoreVisible] = useState(false)
+  const [containerHeight, setContainerHeight] = useState(DEFAULT_CONTAINER_HEIGHT)
   const internalContainerRef = useRef<HTMLDivElement>(null)
   const containerRef = externalContainerRef || internalContainerRef
   const scrollRef = useRef<HTMLDivElement>(null)
+  const virtualListRef = useRef<List>(null)
 
   // Responsive density: automatically switch to compact when container is narrow
   const isNarrow = useResponsive(responsive ? containerRef : null, compactBreakpointPx)
@@ -524,6 +547,51 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
 
     setShowMoreVisible(distanceFromBottom <= showMoreThreshold)
   }, [showLoadMore, onLoadMore, showMoreThreshold])
+
+  // Handle virtual list scroll for showing "Load more" bar
+  const handleVirtualScroll = useCallback(
+    ({ scrollOffset }: { scrollOffset: number }) => {
+      if (!showLoadMore || !onLoadMore) return
+
+      const totalHeight = processedItems.length * virtualItemHeight
+      const viewportHeight = containerHeight
+      const distanceFromBottom = totalHeight - scrollOffset - viewportHeight
+
+      setShowMoreVisible(distanceFromBottom <= showMoreThreshold)
+    },
+    [showLoadMore, onLoadMore, showMoreThreshold, processedItems.length, virtualItemHeight, containerHeight]
+  )
+
+  // Measure container height for virtualized list
+  useEffect(() => {
+    if (!virtualization || !internalContainerRef.current) return
+
+    const updateHeight = () => {
+      const container = internalContainerRef.current
+      if (container) {
+        // Parse maxHeight if provided, otherwise use container's client height.
+        // parseFloat extracts numeric value from strings like '600px' or '100%'.
+        // Note: percentage values will not work correctly; maxHeight should be pixels.
+        let height = container.clientHeight || DEFAULT_CONTAINER_HEIGHT
+        if (maxHeight) {
+          const parsedHeight = parseFloat(maxHeight)
+          if (!isNaN(parsedHeight) && parsedHeight > 0) {
+            height = parsedHeight
+          }
+        }
+        setContainerHeight(height)
+      }
+    }
+
+    updateHeight()
+
+    const resizeObserver = new ResizeObserver(updateHeight)
+    resizeObserver.observe(internalContainerRef.current)
+
+    return () => {
+      resizeObserver.disconnect()
+    }
+  }, [virtualization, maxHeight])
 
   useEffect(() => {
     const scrollElement = scrollRef.current
@@ -644,6 +712,27 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
     )
   }
 
+  // Memoized render functions for virtual row
+  const renderItem = useCallback(
+    (item: StreamItem | DateSeparator) => {
+      if ('type' in item && item.type === 'date-separator') {
+        const separator = item as DateSeparator
+        return (
+          <div key={separator.id} className="activity-stream__date-separator">
+            <div className="activity-stream__date-label">{separator.label}</div>
+            <div className="activity-stream__date-line" />
+          </div>
+        )
+      }
+      return renderGroupedEvent(item as GroupedEvent)
+    },
+    // Intentionally omitting renderGroupedEvent from dependencies:
+    // renderGroupedEvent is an inline function that changes on every render, but its behavior
+    // only depends on these stable values. Including it would cause unnecessary re-renders.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [expandedEvents, showTimeline, renderIcon, renderEvent, toggleExpand]
+  )
+
   const renderDateSeparator = (separator: DateSeparator) => {
     return (
       <div key={separator.id} className="activity-stream__date-separator">
@@ -652,6 +741,21 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
       </div>
     )
   }
+
+  // Virtual row renderer for react-window
+  const VirtualRow = useCallback(
+    ({ index, style: rowStyle }: ListChildComponentProps) => {
+      const item = processedItems[index]
+      if (!item) return null
+
+      return (
+        <div style={rowStyle} className="activity-stream__virtual-row">
+          {renderItem(item)}
+        </div>
+      )
+    },
+    [processedItems, renderItem]
+  )
 
   const hasMore =
     pagination?.hasMore !== undefined
@@ -681,57 +785,108 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
     <ActivityItemProvider value={{ density: effectiveDensity, showMeta: effectiveShowMeta }}>
       <div
         ref={internalContainerRef}
-        className={classes}
+        className={`${classes}${virtualization ? ' activity-stream--virtualized' : ''}`}
         data-theme={theme}
         data-density={effectiveDensity}
         data-show-meta={effectiveShowMeta}
+        data-virtualized={virtualization}
         style={style}
       >
-        <div
-          ref={scrollRef}
-          className="activity-stream__container"
-          style={{
-            ...(containerStyle as React.CSSProperties),
-            ...(scaleStyle as React.CSSProperties),
-          }}
-        >
-          {processedItems.length === 0 ? (
-            <div className="activity-stream__empty">{emptyMessage}</div>
-          ) : (
-            <div className="activity-stream__items">
-              {processedItems.map((item) =>
-                'type' in item && item.type === 'date-separator'
-                  ? renderDateSeparator(item as DateSeparator)
-                  : renderGroupedEvent(item as GroupedEvent)
-              )}
-            </div>
-          )}
+        {virtualization ? (
+          // Virtualized rendering with react-window
+          <div
+            className="activity-stream__container activity-stream__container--virtualized"
+            style={scaleStyle as React.CSSProperties}
+          >
+            {processedItems.length === 0 ? (
+              <div className="activity-stream__empty">{emptyMessage}</div>
+            ) : (
+              <List
+                ref={virtualListRef}
+                className="activity-stream__items activity-stream__items--virtualized"
+                height={containerHeight}
+                itemCount={processedItems.length}
+                itemSize={virtualItemHeight}
+                width="100%"
+                onScroll={handleVirtualScroll}
+              >
+                {VirtualRow}
+              </List>
+            )}
 
-          {loading && (
-            <div className="activity-stream__loading">
-              <div className="activity-stream__spinner" />
-              <span>Loading...</span>
-            </div>
-          )}
+            {loading && (
+              <div className="activity-stream__loading">
+                <div className="activity-stream__spinner" />
+                <span>Loading...</span>
+              </div>
+            )}
 
-          {showLoadMore && !loading && hasMore && onLoadMore && (
-            <div
-              className={`activity-stream__load-more ${showMoreVisible ? 'activity-stream__load-more--visible' : ''}`}
-              onClick={onLoadMore}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault()
-                  onLoadMore()
-                }
-              }}
-              role="button"
-              tabIndex={0}
-              aria-label="Load more activities"
-            >
-              Show more
-            </div>
-          )}
-        </div>
+            {showLoadMore && !loading && hasMore && onLoadMore && (
+              <div
+                className={`activity-stream__load-more ${showMoreVisible ? 'activity-stream__load-more--visible' : ''}`}
+                onClick={onLoadMore}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    onLoadMore()
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label="Load more activities"
+              >
+                Show more
+              </div>
+            )}
+          </div>
+        ) : (
+          // Standard rendering without virtualization
+          <div
+            ref={scrollRef}
+            className="activity-stream__container"
+            style={{
+              ...(containerStyle as React.CSSProperties),
+              ...(scaleStyle as React.CSSProperties),
+            }}
+          >
+            {processedItems.length === 0 ? (
+              <div className="activity-stream__empty">{emptyMessage}</div>
+            ) : (
+              <div className="activity-stream__items">
+                {processedItems.map((item) =>
+                  'type' in item && item.type === 'date-separator'
+                    ? renderDateSeparator(item as DateSeparator)
+                    : renderGroupedEvent(item as GroupedEvent)
+                )}
+              </div>
+            )}
+
+            {loading && (
+              <div className="activity-stream__loading">
+                <div className="activity-stream__spinner" />
+                <span>Loading...</span>
+              </div>
+            )}
+
+            {showLoadMore && !loading && hasMore && onLoadMore && (
+              <div
+                className={`activity-stream__load-more ${showMoreVisible ? 'activity-stream__load-more--visible' : ''}`}
+                onClick={onLoadMore}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    onLoadMore()
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label="Load more activities"
+              >
+                Show more
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </ActivityItemProvider>
   )

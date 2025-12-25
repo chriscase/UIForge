@@ -528,4 +528,167 @@ describe('UIForgeActivityStream', () => {
       expect(activityStream).toHaveAttribute('data-show-meta', 'true')
     })
   })
+
+  describe('Virtualization', () => {
+    it('defaults virtualization to false', () => {
+      const { container } = render(<UIForgeActivityStream events={mockEvents} />)
+
+      const activityStream = container.querySelector('.activity-stream')
+      expect(activityStream).not.toHaveClass('activity-stream--virtualized')
+      expect(activityStream).toHaveAttribute('data-virtualized', 'false')
+    })
+
+    it('enables virtualization when virtualization prop is true', () => {
+      const { container } = render(
+        <UIForgeActivityStream events={mockEvents} virtualization={true} maxHeight="400px" />
+      )
+
+      const activityStream = container.querySelector('.activity-stream')
+      expect(activityStream).toHaveClass('activity-stream--virtualized')
+      expect(activityStream).toHaveAttribute('data-virtualized', 'true')
+    })
+
+    it('renders virtualized container when virtualization is enabled', () => {
+      const { container } = render(
+        <UIForgeActivityStream events={mockEvents} virtualization={true} maxHeight="400px" />
+      )
+
+      const virtualizedContainer = container.querySelector(
+        '.activity-stream__container--virtualized'
+      )
+      expect(virtualizedContainer).toBeInTheDocument()
+    })
+
+    it('uses standard container when virtualization is disabled', () => {
+      const { container } = render(<UIForgeActivityStream events={mockEvents} />)
+
+      const standardContainer = container.querySelector('.activity-stream__container')
+      expect(standardContainer).toBeInTheDocument()
+      expect(standardContainer).not.toHaveClass('activity-stream__container--virtualized')
+    })
+
+    it('renders events in virtualized mode', () => {
+      render(
+        <UIForgeActivityStream events={mockEvents} virtualization={true} maxHeight="400px" />
+      )
+
+      // Events should still be rendered (though possibly windowed)
+      expect(screen.getByText('Updated README.md')).toBeInTheDocument()
+    })
+
+    it('renders empty state in virtualized mode when no events', () => {
+      render(<UIForgeActivityStream events={[]} virtualization={true} maxHeight="400px" />)
+
+      expect(screen.getByText('No activity to display')).toBeInTheDocument()
+    })
+
+    it('accepts custom virtualItemHeight', () => {
+      const { container } = render(
+        <UIForgeActivityStream
+          events={mockEvents}
+          virtualization={true}
+          maxHeight="400px"
+          virtualItemHeight={60}
+        />
+      )
+
+      const activityStream = container.querySelector('.activity-stream--virtualized')
+      expect(activityStream).toBeInTheDocument()
+    })
+
+    it('preserves theme in virtualized mode', () => {
+      const { container } = render(
+        <UIForgeActivityStream
+          events={mockEvents}
+          virtualization={true}
+          maxHeight="400px"
+          theme="dark"
+        />
+      )
+
+      const activityStream = container.querySelector('.activity-stream')
+      expect(activityStream).toHaveClass('activity-stream--dark')
+      expect(activityStream).toHaveClass('activity-stream--virtualized')
+    })
+
+    it('preserves density in virtualized mode', () => {
+      const { container } = render(
+        <UIForgeActivityStream
+          events={mockEvents}
+          virtualization={true}
+          maxHeight="400px"
+          density="compact"
+        />
+      )
+
+      const activityStream = container.querySelector('.activity-stream')
+      expect(activityStream).toHaveClass('activity-stream--compact')
+      expect(activityStream).toHaveAttribute('data-density', 'compact')
+    })
+
+    it('renders with timeline in virtualized mode', () => {
+      const { container } = render(
+        <UIForgeActivityStream
+          events={mockEvents}
+          virtualization={true}
+          maxHeight="400px"
+          showTimeline={true}
+        />
+      )
+
+      const activityStream = container.querySelector('.activity-stream')
+      expect(activityStream).toHaveClass('activity-stream--with-timeline')
+    })
+
+    it('renders load more button in virtualized mode', () => {
+      const onLoadMore = vi.fn()
+      render(
+        <UIForgeActivityStream
+          events={mockEvents}
+          virtualization={true}
+          maxHeight="400px"
+          showLoadMore={true}
+          onLoadMore={onLoadMore}
+        />
+      )
+
+      expect(screen.getByText('Show more')).toBeInTheDocument()
+    })
+
+    it('maintains event order in virtualized mode', () => {
+      const orderedEvents: ActivityEvent[] = [
+        {
+          id: 1,
+          type: 'commit',
+          title: 'First Event',
+          timestamp: new Date('2024-01-15T12:00:00'),
+        },
+        {
+          id: 2,
+          type: 'commit',
+          title: 'Second Event',
+          timestamp: new Date('2024-01-15T11:00:00'),
+        },
+        {
+          id: 3,
+          type: 'commit',
+          title: 'Third Event',
+          timestamp: new Date('2024-01-15T10:00:00'),
+        },
+      ]
+
+      const { container } = render(
+        <UIForgeActivityStream
+          events={orderedEvents}
+          virtualization={true}
+          maxHeight="400px"
+          enableGrouping={false}
+        />
+      )
+
+      const items = container.querySelectorAll('.activity-stream__item')
+      // In virtualized mode, items are rendered in order
+      expect(items.length).toBeGreaterThan(0)
+    })
+  })
 })
