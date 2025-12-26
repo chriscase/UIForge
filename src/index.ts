@@ -62,6 +62,9 @@ export type { SafeAreaContainerProps } from './components/SafeAreaContainer'
 export { MobileHeaderLayout } from './components/MobileHeaderLayout'
 export type { MobileHeaderLayoutProps } from './components/MobileHeaderLayout'
 
+export { OverflowMenu } from './components/OverflowMenu'
+export type { OverflowMenuProps, OverflowMenuItem } from './components/OverflowMenu'
+
 // Export video utilities and providers
 export {
   detectProvider,
@@ -95,3 +98,4 @@ import './components/Video.css'
 import './components/Sidebar.css'
 import './components/SafeAreaContainer.css'
 import './components/MobileHeaderLayout.css'
+import './components/OverflowMenu.css'
