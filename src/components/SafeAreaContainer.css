@@ -1,0 +1,30 @@
+/* SafeAreaContainer - A container that applies device safe area insets as padding */
+
+.uiforge-safe-area-container {
+  /*
+   * Apply safe-area-inset-* values with 0px fallback for browsers
+   * that don't support env() function. This ensures no crash and
+   * graceful degradation on older browsers.
+   */
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+}
+
+/* Disable individual insets via modifier classes */
+.uiforge-safe-area-container--disable-top {
+  padding-top: 0;
+}
+
+.uiforge-safe-area-container--disable-right {
+  padding-right: 0;
+}
+
+.uiforge-safe-area-container--disable-bottom {
+  padding-bottom: 0;
+}
+
+.uiforge-safe-area-container--disable-left {
+  padding-left: 0;
+}
