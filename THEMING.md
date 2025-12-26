@@ -517,6 +517,169 @@ For safe-area insets to work, you must set `viewport-fit=cover` in your HTML:
 
 Without this meta tag, `env(safe-area-inset-*)` values will always be `0`.
 
+## Mobile Header Utilities
+
+UIForge provides CSS variables and utility classes specifically for mobile header layouts, making it easy to build responsive headers that adapt to different screen sizes.
+
+### Mobile Header CSS Variables
+
+The `MobileHeaderLayout` component uses these CSS variables for customization:
+
+```css
+:root {
+  --uiforge-mobile-header-height: 56px;
+  --uiforge-mobile-header-padding: 0 8px;
+  --uiforge-mobile-header-bg: transparent;
+  --uiforge-mobile-header-border-color: transparent;
+}
+```
+
+Override these in your own CSS to customize the header:
+
+```css
+:root {
+  /* Taller header */
+  --uiforge-mobile-header-height: 64px;
+  
+  /* More horizontal padding */
+  --uiforge-mobile-header-padding: 0 16px;
+  
+  /* Custom background */
+  --uiforge-mobile-header-bg: #1a1a2e;
+  
+  /* Visible border */
+  --uiforge-mobile-header-border-color: #30363d;
+}
+```
+
+### Mobile-Only Utility Class
+
+The `.uiforge-mobile-only` utility class hides elements at desktop breakpoints (≥600px by default):
+
+```tsx
+// This element will only be visible on mobile screens
+<div className="uiforge-mobile-only">
+  <MobileHeaderLayout
+    left={<BackButton />}
+    title="Mobile View"
+    right={<MenuButton />}
+  />
+</div>
+```
+
+The utility is defined as:
+
+```css
+.uiforge-mobile-only {
+  display: block;
+}
+
+@media (min-width: 600px) {
+  .uiforge-mobile-only {
+    display: none;
+  }
+}
+```
+
+### Overriding the Breakpoint Threshold
+
+CSS media queries don't support CSS variables, so the breakpoint (600px) is hardcoded. To use a different breakpoint, override the class in your own CSS:
+
+```css
+/* Override to use 768px as the breakpoint instead of 600px */
+@media (min-width: 768px) {
+  .uiforge-mobile-only {
+    display: none;
+  }
+}
+
+/* Make sure to also override the hide-on-desktop modifier if using MobileHeaderLayout */
+@media (min-width: 768px) {
+  .uiforge-mobile-header-layout--hide-on-desktop {
+    display: none;
+  }
+}
+```
+
+### Using with MobileHeaderLayout
+
+The `MobileHeaderLayout` component provides built-in support for hiding at desktop sizes via the `hideOnDesktop` prop:
+
+```tsx
+import { MobileHeaderLayout } from '@appforgeapps/uiforge'
+
+// This header will automatically hide at ≥600px
+<MobileHeaderLayout
+  left={<BackButton />}
+  title="Page Title"
+  right={<MenuButton />}
+  hideOnDesktop
+/>
+```
+
+### Complete Mobile Layout Example
+
+Here's a typical mobile-first layout pattern:
+
+```tsx
+import { MobileHeaderLayout, IconButton } from '@appforgeapps/uiforge'
+
+function MobileLayout({ children }) {
+  return (
+    <div className="app-layout">
+      {/* Mobile header - hidden on desktop */}
+      <MobileHeaderLayout
+        left={<IconButton icon={<MenuIcon />} ariaLabel="Menu" />}
+        title="My App"
+        right={<IconButton icon={<SearchIcon />} ariaLabel="Search" />}
+        hideOnDesktop
+      />
+      
+      {/* Main content */}
+      <main className="app-content">
+        {children}
+      </main>
+      
+      {/* Mobile-only bottom navigation */}
+      <nav className="uiforge-mobile-only bottom-nav">
+        <button>Home</button>
+        <button>Search</button>
+        <button>Profile</button>
+      </nav>
+    </div>
+  )
+}
+```
+
+```css
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content {
+  flex: 1;
+  /* Account for header height on mobile */
+  padding-top: var(--uiforge-mobile-header-height);
+}
+
+@media (min-width: 600px) {
+  .app-content {
+    /* No header padding on desktop */
+    padding-top: 0;
+  }
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+```
+
 ## Contributing
 
 Have a great theme? Share it with the community! Submit your custom themes as examples in the `examples/themes/` directory.
