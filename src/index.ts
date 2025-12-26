@@ -59,6 +59,9 @@ export type { UIForgeSidebarProps, SidebarVariant } from './components/Sidebar'
 export { SafeAreaContainer } from './components/SafeAreaContainer'
 export type { SafeAreaContainerProps } from './components/SafeAreaContainer'
 
+export { MobileHeaderLayout } from './components/MobileHeaderLayout'
+export type { MobileHeaderLayoutProps } from './components/MobileHeaderLayout'
+
 // Export video utilities and providers
 export {
   detectProvider,
@@ -91,3 +94,4 @@ import './components/ActivityItem.css'
 import './components/Video.css'
 import './components/Sidebar.css'
 import './components/SafeAreaContainer.css'
+import './components/MobileHeaderLayout.css'

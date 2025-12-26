@@ -277,6 +277,21 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             }
             onNavigate={onNavigate}
           />
+
+          <ComponentCard
+            name="Mobile Header"
+            description="A 3-slot mobile header layout primitive with left/center/right slots, safe-area support, and mobile-only behavior"
+            icon="📱"
+            path="/mobile-header"
+            preview={
+              <div className="preview-mobile-header">
+                <div className="preview-header-slot">←</div>
+                <div className="preview-header-title">Title</div>
+                <div className="preview-header-slot">☰</div>
+              </div>
+            }
+            onNavigate={onNavigate}
+          />
         </section>
       </main>
 

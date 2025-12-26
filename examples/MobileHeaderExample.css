@@ -1,0 +1,235 @@
+/* MobileHeaderExample Styles */
+
+.mobile-header-example {
+  min-height: 100vh;
+  padding: 0;
+  background-color: #0d1117;
+  color: #e6edf3;
+}
+
+.mobile-header-example--light {
+  background-color: #ffffff;
+  color: #1f2937;
+}
+
+.mobile-header-example__back-button {
+  display: inline-block;
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: #58a6ff;
+  background: transparent;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mobile-header-example--light .mobile-header-example__back-button {
+  color: #3b82f6;
+  border-color: #d1d5db;
+}
+
+.mobile-header-example__back-button:hover {
+  background: rgba(88, 166, 255, 0.1);
+}
+
+.mobile-header-example__content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1rem 2rem;
+}
+
+.mobile-header-example__content h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.mobile-header-example__description {
+  color: #8b949e;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.mobile-header-example--light .mobile-header-example__description {
+  color: #6b7280;
+}
+
+.mobile-header-example__section {
+  margin-bottom: 2.5rem;
+}
+
+.mobile-header-example__section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #e6edf3;
+}
+
+.mobile-header-example--light .mobile-header-example__section h2 {
+  color: #1f2937;
+}
+
+.mobile-header-example__section p {
+  color: #8b949e;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.mobile-header-example--light .mobile-header-example__section p {
+  color: #6b7280;
+}
+
+.mobile-header-example__section code {
+  background: #21262d;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+}
+
+.mobile-header-example--light .mobile-header-example__section code {
+  background: #f3f4f6;
+}
+
+.mobile-header-example__demo {
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #161b22;
+}
+
+.mobile-header-example--light .mobile-header-example__demo {
+  border-color: #e5e7eb;
+  background: #f9fafb;
+}
+
+.mobile-header-example__demo--resize {
+  position: relative;
+  min-height: 80px;
+}
+
+.mobile-header-example__desktop-notice {
+  display: none;
+  text-align: center;
+  padding: 1rem;
+  color: #8b949e;
+}
+
+.mobile-header-example--light .mobile-header-example__desktop-notice {
+  color: #6b7280;
+}
+
+@media (min-width: 600px) {
+  .mobile-header-example__demo--resize .mobile-header-example__desktop-notice {
+    display: block;
+  }
+}
+
+.mobile-header-example__desktop-notice p {
+  margin: 0;
+}
+
+.mobile-header-example__hint {
+  font-size: 0.75rem !important;
+  margin-top: 0.25rem !important;
+}
+
+.mobile-header-example__actions {
+  display: flex;
+  gap: 0;
+}
+
+.mobile-header-example__logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mobile-header-example__logo-icon {
+  font-size: 1.25rem;
+}
+
+.mobile-header-example__logo-text {
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+
+.mobile-header-example__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.mobile-header-example__avatar:hover {
+  transform: scale(1.05);
+}
+
+.mobile-header-example__code {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.mobile-header-example--light .mobile-header-example__code {
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+}
+
+.mobile-header-example__code pre {
+  margin: 0;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: #e6edf3;
+}
+
+.mobile-header-example--light .mobile-header-example__code pre {
+  color: #1f2937;
+}
+
+.mobile-header-example__log {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  padding: 0.75rem 1rem;
+  background: #238636;
+  color: white;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Override MobileHeaderLayout styles for demo */
+.mobile-header-example__demo .uiforge-mobile-header-layout {
+  --uiforge-mobile-header-bg: #21262d;
+  --uiforge-mobile-header-border-color: #30363d;
+}
+
+.mobile-header-example--light .mobile-header-example__demo .uiforge-mobile-header-layout {
+  --uiforge-mobile-header-bg: #ffffff;
+  --uiforge-mobile-header-border-color: #e5e7eb;
+}

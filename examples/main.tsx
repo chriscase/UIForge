@@ -8,6 +8,7 @@ import UseResponsiveExample from './UseResponsiveExample'
 import UseDynamicPageCountExample from './UseDynamicPageCountExample'
 import SidebarExample from './SidebarExample'
 import SafeAreaExample from './SafeAreaExample'
+import MobileHeaderExample from './MobileHeaderExample'
 import AppDemo from './App'
 import { ThemeContext, AppTheme } from './ThemeContext'
 import './index.css'
@@ -60,6 +61,8 @@ function Router() {
         return <SidebarExample onNavigate={navigate} />
       case '/safe-area':
         return <SafeAreaExample onNavigate={navigate} />
+      case '/mobile-header':
+        return <MobileHeaderExample onNavigate={navigate} />
       case '/grid':
       case '/blocks-editor':
       case '/combobox':
