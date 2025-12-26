@@ -56,6 +56,9 @@ export type { UIForgeVideoProps, UIForgeVideoPreviewProps } from './components/V
 export { UIForgeSidebar } from './components/Sidebar'
 export type { UIForgeSidebarProps, SidebarVariant } from './components/Sidebar'
 
+export { SafeAreaContainer } from './components/SafeAreaContainer'
+export type { SafeAreaContainerProps } from './components/SafeAreaContainer'
+
 // Export video utilities and providers
 export {
   detectProvider,
@@ -87,3 +90,4 @@ import './components/ActivityStream.css'
 import './components/ActivityItem.css'
 import './components/Video.css'
 import './components/Sidebar.css'
+import './components/SafeAreaContainer.css'
