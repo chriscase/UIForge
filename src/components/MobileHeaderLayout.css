@@ -11,10 +11,14 @@
   --uiforge-mobile-header-padding: 0 8px;
   --uiforge-mobile-header-bg: transparent;
   --uiforge-mobile-header-border-color: transparent;
-  --uiforge-mobile-header-breakpoint: 600px;
 }
 
-/* Mobile-only utility class */
+/*
+ * Mobile-only utility class
+ * Use this class on any element that should be hidden at desktop breakpoints.
+ * Note: CSS media queries don't support CSS variables, so the breakpoint (600px)
+ * is hardcoded. Override this in your own CSS if needed.
+ */
 .uiforge-mobile-only {
   display: block;
 }
@@ -75,7 +79,11 @@
   flex-shrink: 0;
 }
 
-/* Modifier: hide on desktop (default breakpoint 600px) */
+/*
+ * Modifier: hide on desktop (breakpoint 600px)
+ * Note: CSS media queries don't support CSS variables, so the breakpoint is hardcoded.
+ * Override this in your own CSS if you need a different breakpoint.
+ */
 .uiforge-mobile-header-layout--hide-on-desktop {
   display: flex;
 }
