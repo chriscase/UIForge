@@ -5,6 +5,9 @@ export type { ButtonProps, ButtonDensity } from './components/Button'
 export { HamburgerButton } from './components/HamburgerButton'
 export type { HamburgerButtonProps } from './components/HamburgerButton'
 
+export { IconButton } from './components/IconButton'
+export type { IconButtonProps } from './components/IconButton'
+
 export { UIForgeGrid } from './components/Grid'
 export type {
   UIForgeGridProps,
@@ -76,6 +79,7 @@ export type { UseDynamicPageCountOptions } from './hooks'
 import './components/Tokens.css'
 import './components/Button.css'
 import './components/HamburgerButton.css'
+import './components/IconButton.css'
 import './components/Grid.css'
 import './components/BlocksEditor.css'
 import './components/ComboBox.css'
