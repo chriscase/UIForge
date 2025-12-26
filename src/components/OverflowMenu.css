@@ -1,0 +1,243 @@
+/* ===========================================
+   OverflowMenu CSS
+   
+   An accessible popover menu for secondary actions.
+   Supports keyboard navigation, icons, and dark mode.
+   =========================================== */
+
+/* CSS Variables for theming */
+.uiforge-overflow-menu {
+  --overflow-menu-bg: #ffffff;
+  --overflow-menu-border: rgba(0, 0, 0, 0.1);
+  --overflow-menu-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --overflow-menu-item-hover-bg: rgba(0, 0, 0, 0.05);
+  --overflow-menu-item-active-bg: rgba(0, 0, 0, 0.1);
+  --overflow-menu-item-color: inherit;
+  --overflow-menu-item-disabled-color: rgba(0, 0, 0, 0.4);
+  --overflow-menu-focus-ring: var(--uiforge-focus-ring, #3b82f6);
+
+  /* Layout */
+  position: relative;
+  display: inline-flex;
+}
+
+/* Trigger button - Default style */
+.uiforge-overflow-menu__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: none;
+  background-color: transparent;
+  color: currentColor;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-radius: var(--uiforge-border-radius-sm, 4px);
+  padding: 0;
+  font-family: inherit;
+  vertical-align: middle;
+
+  /* 44px minimum touch target for accessibility (WCAG 2.1 Level AA) */
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.uiforge-overflow-menu__trigger:hover:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.uiforge-overflow-menu__trigger:active:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.uiforge-overflow-menu__trigger:focus-visible {
+  outline: 2px solid var(--overflow-menu-focus-ring);
+  outline-offset: 2px;
+}
+
+.uiforge-overflow-menu__trigger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/*
+ * Size variants - All sizes maintain 44px+ minimum touch target for accessibility
+ * (WCAG 2.1 Level AA Success Criterion 2.5.5 Target Size).
+ * The size variants primarily affect the icon size within the button.
+ */
+.uiforge-overflow-menu__trigger--small {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.uiforge-overflow-menu__trigger--small .uiforge-overflow-menu__trigger-icon {
+  font-size: var(--uiforge-font-size-sm, 12px);
+}
+
+.uiforge-overflow-menu__trigger--medium {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.uiforge-overflow-menu__trigger--medium .uiforge-overflow-menu__trigger-icon {
+  font-size: var(--uiforge-font-size-md, 14px);
+}
+
+.uiforge-overflow-menu__trigger--large {
+  min-width: 52px;
+  min-height: 52px;
+}
+
+.uiforge-overflow-menu__trigger--large .uiforge-overflow-menu__trigger-icon {
+  font-size: var(--uiforge-font-size-lg, 16px);
+}
+
+/* Trigger icon (ellipsis) */
+.uiforge-overflow-menu__trigger-icon {
+  letter-spacing: 1px;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+/* Custom trigger wrapper */
+.uiforge-overflow-menu__custom-trigger {
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.uiforge-overflow-menu__custom-trigger:focus-visible {
+  outline: 2px solid var(--overflow-menu-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Menu container */
+.uiforge-overflow-menu__menu {
+  position: absolute;
+  top: 100%;
+  z-index: var(--uiforge-z-index-dropdown, 1000);
+  min-width: 160px;
+  max-width: 280px;
+  margin-top: 4px;
+  padding: 4px 0;
+  background-color: var(--overflow-menu-bg);
+  border: 1px solid var(--overflow-menu-border);
+  border-radius: var(--uiforge-border-radius, 6px);
+  box-shadow: var(--overflow-menu-shadow);
+  box-sizing: border-box;
+}
+
+/* Alignment variants */
+.uiforge-overflow-menu__menu--left {
+  left: 0;
+}
+
+.uiforge-overflow-menu__menu--right {
+  right: 0;
+}
+
+/* Menu item */
+.uiforge-overflow-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--uiforge-gap-sm, 8px);
+  padding: 8px 12px;
+  color: var(--overflow-menu-item-color);
+  font-size: var(--uiforge-font-size, 14px);
+  line-height: var(--uiforge-line-height, 1.5);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.uiforge-overflow-menu__item:hover:not(.uiforge-overflow-menu__item--disabled) {
+  background-color: var(--overflow-menu-item-hover-bg);
+}
+
+.uiforge-overflow-menu__item:active:not(.uiforge-overflow-menu__item--disabled) {
+  background-color: var(--overflow-menu-item-active-bg);
+}
+
+/* Highlighted state (keyboard navigation) */
+.uiforge-overflow-menu__item--highlighted {
+  background-color: var(--overflow-menu-item-hover-bg);
+}
+
+/* Disabled state */
+.uiforge-overflow-menu__item--disabled {
+  color: var(--overflow-menu-item-disabled-color);
+  cursor: not-allowed;
+}
+
+/* Item icon */
+.uiforge-overflow-menu__item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--uiforge-icon-size, 20px);
+  height: var(--uiforge-icon-size, 20px);
+  flex-shrink: 0;
+}
+
+/* Item label */
+.uiforge-overflow-menu__item-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Disabled state for entire menu */
+.uiforge-overflow-menu--disabled {
+  pointer-events: none;
+}
+
+.uiforge-overflow-menu--disabled .uiforge-overflow-menu__trigger {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Dark mode support */
+[data-theme='dark'] .uiforge-overflow-menu {
+  --overflow-menu-bg: #1f2937;
+  --overflow-menu-border: rgba(255, 255, 255, 0.1);
+  --overflow-menu-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --overflow-menu-item-hover-bg: rgba(255, 255, 255, 0.1);
+  --overflow-menu-item-active-bg: rgba(255, 255, 255, 0.15);
+  --overflow-menu-item-disabled-color: rgba(255, 255, 255, 0.4);
+}
+
+[data-theme='dark'] .uiforge-overflow-menu__trigger:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='dark'] .uiforge-overflow-menu__trigger:active:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  .uiforge-overflow-menu--auto-theme {
+    --overflow-menu-bg: #1f2937;
+    --overflow-menu-border: rgba(255, 255, 255, 0.1);
+    --overflow-menu-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --overflow-menu-item-hover-bg: rgba(255, 255, 255, 0.1);
+    --overflow-menu-item-active-bg: rgba(255, 255, 255, 0.15);
+    --overflow-menu-item-disabled-color: rgba(255, 255, 255, 0.4);
+  }
+
+  .uiforge-overflow-menu--auto-theme .uiforge-overflow-menu__trigger:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .uiforge-overflow-menu--auto-theme .uiforge-overflow-menu__trigger:active:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .uiforge-overflow-menu__trigger,
+  .uiforge-overflow-menu__item {
+    transition: none;
+  }
+}
