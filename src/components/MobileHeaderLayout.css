@@ -1,0 +1,98 @@
+/* ===========================================
+   MobileHeaderLayout CSS
+   
+   A 3-slot mobile header layout primitive with left / center / right slots.
+   Uses SafeAreaContainer internally to respect device safe areas.
+   =========================================== */
+
+/* CSS Variables for theming */
+:root {
+  --uiforge-mobile-header-height: 56px;
+  --uiforge-mobile-header-padding: 0 8px;
+  --uiforge-mobile-header-bg: transparent;
+  --uiforge-mobile-header-border-color: transparent;
+  --uiforge-mobile-header-breakpoint: 600px;
+}
+
+/* Mobile-only utility class */
+.uiforge-mobile-only {
+  display: block;
+}
+
+@media (min-width: 600px) {
+  .uiforge-mobile-only {
+    display: none;
+  }
+}
+
+/* Main header container */
+.uiforge-mobile-header-layout {
+  display: flex;
+  align-items: center;
+  height: var(--uiforge-mobile-header-height);
+  padding: var(--uiforge-mobile-header-padding);
+  background-color: var(--uiforge-mobile-header-bg);
+  border-bottom: 1px solid var(--uiforge-mobile-header-border-color);
+  box-sizing: border-box;
+}
+
+/* Left slot - fixed width for touch target consistency */
+.uiforge-mobile-header-layout__left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 44px;
+  flex-shrink: 0;
+}
+
+/* Center slot - flexible width with ellipsis overflow */
+.uiforge-mobile-header-layout__center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0; /* Allow text truncation */
+  padding: 0 8px;
+}
+
+/* Title text styling with ellipsis */
+.uiforge-mobile-header-layout__title {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--uiforge-font-size-lg, 16px);
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Right slot - fixed width for touch target consistency */
+.uiforge-mobile-header-layout__right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 44px;
+  flex-shrink: 0;
+}
+
+/* Modifier: hide on desktop (default breakpoint 600px) */
+.uiforge-mobile-header-layout--hide-on-desktop {
+  display: flex;
+}
+
+@media (min-width: 600px) {
+  .uiforge-mobile-header-layout--hide-on-desktop {
+    display: none;
+  }
+}
+
+/* Dark mode support */
+[data-theme='dark'] .uiforge-mobile-header-layout {
+  --uiforge-mobile-header-border-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .uiforge-mobile-header-layout--auto-theme {
+    --uiforge-mobile-header-border-color: rgba(255, 255, 255, 0.1);
+  }
+}
