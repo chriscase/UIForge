@@ -376,7 +376,7 @@ export const OverflowMenu: React.FC<OverflowMenuProps> = ({
                 role="menuitem"
                 tabIndex={-1}
                 aria-disabled={item.disabled}
-                data-index={selectableIndex}
+                data-index={item.disabled ? undefined : selectableIndex}
                 onClick={() => handleSelect(item)}
                 onMouseEnter={() => {
                   if (!item.disabled) {

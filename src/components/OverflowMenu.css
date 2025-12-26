@@ -60,7 +60,11 @@
   cursor: not-allowed;
 }
 
-/* Size variants */
+/*
+ * Size variants - All sizes maintain 44px+ minimum touch target for accessibility
+ * (WCAG 2.1 Level AA Success Criterion 2.5.5 Target Size).
+ * The size variants primarily affect the icon size within the button.
+ */
 .uiforge-overflow-menu__trigger--small {
   min-width: 44px;
   min-height: 44px;
