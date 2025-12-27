@@ -4,8 +4,10 @@ import './HamburgerButton.css'
 /**
  * Props for the HamburgerButton component
  */
-export interface HamburgerButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'aria-expanded' | 'aria-controls'> {
+export interface HamburgerButtonProps extends Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  'aria-expanded' | 'aria-controls'
+> {
   /**
    * Whether the controlled menu/drawer is open
    */
@@ -47,12 +49,7 @@ export const HamburgerButton: React.FC<HamburgerButtonProps> = ({
   ...props
 }) => {
   const baseClass = 'uiforge-hamburger-button'
-  const classes = [
-    baseClass,
-    `${baseClass}--${size}`,
-    isOpen && `${baseClass}--open`,
-    className,
-  ]
+  const classes = [baseClass, `${baseClass}--${size}`, isOpen && `${baseClass}--open`, className]
     .filter(Boolean)
     .join(' ')
 

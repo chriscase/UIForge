@@ -191,7 +191,10 @@ export const UIForgeSidebar: React.FC<UIForgeSidebarProps> = ({
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
       // Restore focus to the previously focused element when closing
-      if (previousActiveElement.current && typeof previousActiveElement.current.focus === 'function') {
+      if (
+        previousActiveElement.current &&
+        typeof previousActiveElement.current.focus === 'function'
+      ) {
         previousActiveElement.current.focus()
       }
     }

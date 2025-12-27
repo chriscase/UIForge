@@ -298,7 +298,12 @@ export const UIForgeBlocksEditor: React.FC<UIForgeBlocksEditorProps> = ({
   const themeClass = `uiforge-blocks-editor--${theme}`
 
   return (
-    <div className={`uiforge-blocks-editor ${themeClass} ${className}`} ref={editorRef} style={{ maxHeight }} data-theme={theme}>
+    <div
+      className={`uiforge-blocks-editor ${themeClass} ${className}`}
+      ref={editorRef}
+      style={{ maxHeight }}
+      data-theme={theme}
+    >
       {!readOnly && showToolbar && selectedBlockId && (
         <Toolbar
           selectedBlock={blocks.find((b) => b.id === selectedBlockId)}

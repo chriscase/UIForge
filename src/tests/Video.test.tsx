@@ -161,9 +161,7 @@ describe('UIForgeVideo', () => {
 
   describe('hideHeader prop', () => {
     it('shows header with title and description by default', () => {
-      render(
-        <UIForgeVideo title="Test Video" description="Test description" youtubeId="test123" />
-      )
+      render(<UIForgeVideo title="Test Video" description="Test description" youtubeId="test123" />)
       expect(screen.getByText('Test Video')).toBeInTheDocument()
       expect(screen.getByText('Test description')).toBeInTheDocument()
     })

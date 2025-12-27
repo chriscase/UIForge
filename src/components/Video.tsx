@@ -412,7 +412,11 @@ export const UIForgeVideo: React.FC<UIForgeVideoProps> = ({
     aspectRatio: aspectRatio !== 'auto' ? aspectRatio.replace(':', '/') : undefined,
     width: width ? (typeof width === 'number' ? `${width}px` : width) : undefined,
     height: height ? (typeof height === 'number' ? `${height}px` : height) : undefined,
-    maxHeight: maxHeight ? (typeof maxHeight === 'number' ? `${maxHeight}px` : maxHeight) : undefined,
+    maxHeight: maxHeight
+      ? typeof maxHeight === 'number'
+        ? `${maxHeight}px`
+        : maxHeight
+      : undefined,
   }
 
   const displayTitle = title || `${videoInfo.provider.displayName} Video`

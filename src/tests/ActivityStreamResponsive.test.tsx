@@ -83,7 +83,7 @@ describe('UIForgeActivityStream - Responsive Behavior', () => {
       const { container } = render(
         <UIForgeActivityStream events={mockEvents} compactBreakpointPx={800} />
       )
-      
+
       const activityStream = container.querySelector('.activity-stream')
       expect(activityStream).toBeInTheDocument()
       // Verify ResizeObserver is set up
@@ -94,17 +94,15 @@ describe('UIForgeActivityStream - Responsive Behavior', () => {
   describe('Density modes', () => {
     it('applies comfortable density by default', () => {
       const { container } = render(<UIForgeActivityStream events={mockEvents} />)
-      
+
       const activityStream = container.querySelector('.activity-stream')
       expect(activityStream).toHaveClass('activity-stream--comfortable')
       expect(activityStream).toHaveAttribute('data-density', 'comfortable')
     })
 
     it('applies compact density when specified', () => {
-      const { container } = render(
-        <UIForgeActivityStream events={mockEvents} density="compact" />
-      )
-      
+      const { container } = render(<UIForgeActivityStream events={mockEvents} density="compact" />)
+
       const activityStream = container.querySelector('.activity-stream')
       expect(activityStream).toHaveClass('activity-stream--compact')
       expect(activityStream).toHaveAttribute('data-density', 'compact')
@@ -114,7 +112,7 @@ describe('UIForgeActivityStream - Responsive Behavior', () => {
       const { container } = render(
         <UIForgeActivityStream events={mockEvents} density="condensed" />
       )
-      
+
       const activityStream = container.querySelector('.activity-stream')
       expect(activityStream).toHaveClass('activity-stream--condensed')
       expect(activityStream).toHaveAttribute('data-density', 'condensed')
@@ -170,14 +168,14 @@ describe('UIForgeActivityStream - Responsive Behavior', () => {
   describe('showMeta prop', () => {
     it('shows metadata by default', () => {
       const { container } = render(<UIForgeActivityStream events={mockEvents} showMeta={true} />)
-      
+
       const activityStream = container.querySelector('.activity-stream')
       expect(activityStream).not.toHaveAttribute('data-show-meta', 'false')
     })
 
     it('hides metadata when showMeta is false', () => {
       const { container } = render(<UIForgeActivityStream events={mockEvents} showMeta={false} />)
-      
+
       const activityStream = container.querySelector('.activity-stream')
       expect(activityStream).toHaveAttribute('data-show-meta', 'false')
     })
@@ -193,7 +191,7 @@ describe('UIForgeActivityStream - Responsive Behavior', () => {
           maxHeight="400px"
         />
       )
-      
+
       const activityStream = container.querySelector('.activity-stream')
       expect(activityStream).toHaveClass('activity-stream--compact')
       expect(activityStream).toHaveAttribute('data-density', 'compact')
@@ -208,7 +206,7 @@ describe('UIForgeActivityStream - Responsive Behavior', () => {
           maxHeight="400px"
         />
       )
-      
+
       const activityStream = container.querySelector('.activity-stream')
       expect(activityStream).toBeInTheDocument()
     })
@@ -219,15 +217,13 @@ describe('UIForgeActivityStream - Responsive Behavior', () => {
       const { container } = render(
         <UIForgeActivityStream events={mockEvents} density="comfortable" />
       )
-      
+
       expect(container.querySelector('.activity-stream')).toMatchSnapshot()
     })
 
     it('renders compact density consistently', () => {
-      const { container } = render(
-        <UIForgeActivityStream events={mockEvents} density="compact" />
-      )
-      
+      const { container } = render(<UIForgeActivityStream events={mockEvents} density="compact" />)
+
       expect(container.querySelector('.activity-stream')).toMatchSnapshot()
     })
 
@@ -235,15 +231,13 @@ describe('UIForgeActivityStream - Responsive Behavior', () => {
       const { container } = render(
         <UIForgeActivityStream events={mockEvents} density="condensed" />
       )
-      
+
       expect(container.querySelector('.activity-stream')).toMatchSnapshot()
     })
 
     it('renders with showMeta false consistently', () => {
-      const { container } = render(
-        <UIForgeActivityStream events={mockEvents} showMeta={false} />
-      )
-      
+      const { container } = render(<UIForgeActivityStream events={mockEvents} showMeta={false} />)
+
       expect(container.querySelector('.activity-stream')).toMatchSnapshot()
     })
   })

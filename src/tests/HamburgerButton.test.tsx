@@ -85,10 +85,10 @@ describe('HamburgerButton', () => {
     it('calls onClick when clicked', async () => {
       const user = userEvent.setup()
       const handleClick = vi.fn()
-      
+
       render(<HamburgerButton {...defaultProps} onClick={handleClick} />)
       const button = screen.getByRole('button')
-      
+
       await user.click(button)
       expect(handleClick).toHaveBeenCalledTimes(1)
     })
@@ -102,10 +102,10 @@ describe('HamburgerButton', () => {
     it('does not call onClick when disabled', async () => {
       const user = userEvent.setup()
       const handleClick = vi.fn()
-      
+
       render(<HamburgerButton {...defaultProps} onClick={handleClick} disabled />)
       const button = screen.getByRole('button')
-      
+
       await user.click(button)
       expect(handleClick).not.toHaveBeenCalled()
     })

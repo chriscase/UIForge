@@ -78,20 +78,24 @@
 }
 
 /* Small size X transform adjustments */
-.uiforge-hamburger-button--small.uiforge-hamburger-button--open .uiforge-hamburger-button__bar:nth-child(1) {
+.uiforge-hamburger-button--small.uiforge-hamburger-button--open
+  .uiforge-hamburger-button__bar:nth-child(1) {
   transform: translateY(6px) rotate(45deg);
 }
 
-.uiforge-hamburger-button--small.uiforge-hamburger-button--open .uiforge-hamburger-button__bar:nth-child(3) {
+.uiforge-hamburger-button--small.uiforge-hamburger-button--open
+  .uiforge-hamburger-button__bar:nth-child(3) {
   transform: translateY(-6px) rotate(-45deg);
 }
 
 /* Large size X transform adjustments */
-.uiforge-hamburger-button--large.uiforge-hamburger-button--open .uiforge-hamburger-button__bar:nth-child(1) {
+.uiforge-hamburger-button--large.uiforge-hamburger-button--open
+  .uiforge-hamburger-button__bar:nth-child(1) {
   transform: translateY(10px) rotate(45deg);
 }
 
-.uiforge-hamburger-button--large.uiforge-hamburger-button--open .uiforge-hamburger-button__bar:nth-child(3) {
+.uiforge-hamburger-button--large.uiforge-hamburger-button--open
+  .uiforge-hamburger-button__bar:nth-child(3) {
   transform: translateY(-10px) rotate(-45deg);
 }
 

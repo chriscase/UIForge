@@ -21,7 +21,7 @@ describe('UIForgeSidebar', () => {
           <div>Sidebar Content</div>
         </UIForgeSidebar>
       )
-      
+
       const sidebar = screen.getByRole('navigation')
       expect(sidebar).toBeInTheDocument()
       expect(sidebar).toHaveClass('uiforge-sidebar--static')
@@ -34,7 +34,7 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       const sidebar = screen.getByRole('navigation')
       expect(sidebar).toHaveClass('custom-class')
       expect(sidebar).toHaveClass('uiforge-sidebar')
@@ -46,7 +46,7 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       const sidebar = screen.getByRole('navigation')
       expect(sidebar).toHaveStyle({ '--sidebar-width': '320px' })
     })
@@ -57,7 +57,7 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       const sidebar = screen.getByRole('navigation')
       expect(sidebar).toHaveClass('uiforge-sidebar--left')
     })
@@ -68,7 +68,7 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       const sidebar = screen.getByRole('navigation')
       expect(sidebar).toHaveClass('uiforge-sidebar--right')
     })
@@ -79,7 +79,7 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       const sidebar = screen.getByRole('navigation')
       expect(sidebar).toHaveAttribute('aria-label', 'Main navigation')
     })
@@ -90,7 +90,7 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       const sidebar = screen.getByRole('navigation')
       expect(sidebar).toHaveAttribute('id', 'my-sidebar')
     })
@@ -103,7 +103,7 @@ describe('UIForgeSidebar', () => {
           <div>Drawer Content</div>
         </UIForgeSidebar>
       )
-      
+
       const sidebar = screen.getByRole('dialog')
       expect(sidebar).toBeInTheDocument()
       expect(sidebar).toHaveClass('uiforge-sidebar--drawer')
@@ -116,7 +116,7 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       const sidebar = screen.getByRole('dialog')
       expect(sidebar).toHaveAttribute('id', 'drawer-sidebar')
     })
@@ -127,7 +127,7 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       const sidebar = screen.getByRole('dialog')
       expect(sidebar).toHaveAttribute('aria-modal', 'true')
       expect(sidebar).toHaveAttribute('aria-expanded', 'true')
@@ -140,7 +140,7 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       const sidebar = screen.getByRole('dialog', { hidden: true })
       expect(sidebar).toHaveAttribute('aria-modal', 'false')
       expect(sidebar).toHaveAttribute('aria-expanded', 'false')
@@ -153,7 +153,7 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       const backdrop = document.querySelector('.uiforge-sidebar__backdrop')
       expect(backdrop).toBeInTheDocument()
       expect(backdrop).toHaveClass('uiforge-sidebar__backdrop--visible')
@@ -165,7 +165,7 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       const backdrop = document.querySelector('.uiforge-sidebar__backdrop')
       expect(backdrop).toBeInTheDocument()
       expect(backdrop).not.toHaveClass('uiforge-sidebar__backdrop--visible')
@@ -178,10 +178,10 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       const backdrop = document.querySelector('.uiforge-sidebar__backdrop')
       expect(backdrop).toBeInTheDocument()
-      
+
       fireEvent.click(backdrop!)
       expect(handleOpenChange).toHaveBeenCalledWith(false)
     })
@@ -189,16 +189,16 @@ describe('UIForgeSidebar', () => {
     it('does not call onOpenChange when closeOnBackdropClick is false', async () => {
       const handleOpenChange = vi.fn()
       render(
-        <UIForgeSidebar 
-          variant="drawer" 
-          open={true} 
+        <UIForgeSidebar
+          variant="drawer"
+          open={true}
           onOpenChange={handleOpenChange}
           closeOnBackdropClick={false}
         >
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       const backdrop = document.querySelector('.uiforge-sidebar__backdrop')
       fireEvent.click(backdrop!)
       expect(handleOpenChange).not.toHaveBeenCalled()
@@ -207,13 +207,13 @@ describe('UIForgeSidebar', () => {
     it('calls onOpenChange when ESC key is pressed', async () => {
       const user = userEvent.setup()
       const handleOpenChange = vi.fn()
-      
+
       render(
         <UIForgeSidebar variant="drawer" open={true} onOpenChange={handleOpenChange}>
           <button>Focus me</button>
         </UIForgeSidebar>
       )
-      
+
       await user.keyboard('{Escape}')
       expect(handleOpenChange).toHaveBeenCalledWith(false)
     })
@@ -221,18 +221,18 @@ describe('UIForgeSidebar', () => {
     it('does not call onOpenChange on ESC when closeOnEscape is false', async () => {
       const user = userEvent.setup()
       const handleOpenChange = vi.fn()
-      
+
       render(
-        <UIForgeSidebar 
-          variant="drawer" 
-          open={true} 
+        <UIForgeSidebar
+          variant="drawer"
+          open={true}
           onOpenChange={handleOpenChange}
           closeOnEscape={false}
         >
           <button>Focus me</button>
         </UIForgeSidebar>
       )
-      
+
       await user.keyboard('{Escape}')
       expect(handleOpenChange).not.toHaveBeenCalled()
     })
@@ -243,7 +243,7 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       expect(document.body.style.overflow).toBe('hidden')
     })
 
@@ -253,15 +253,15 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       expect(document.body.style.overflow).toBe('hidden')
-      
+
       rerender(
         <UIForgeSidebar variant="drawer" open={false}>
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       expect(document.body.style.overflow).toBe('')
     })
 
@@ -271,7 +271,7 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       const sidebar = screen.getByRole('dialog', { hidden: true })
       expect(sidebar).toHaveClass('uiforge-sidebar--closed')
     })
@@ -284,7 +284,7 @@ describe('UIForgeSidebar', () => {
           <div>Bottom Content</div>
         </UIForgeSidebar>
       )
-      
+
       const sidebar = screen.getByRole('dialog')
       expect(sidebar).toBeInTheDocument()
       expect(sidebar).toHaveClass('uiforge-sidebar--bottom')
@@ -297,7 +297,7 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       const sidebar = screen.getByRole('dialog')
       expect(sidebar).toHaveStyle({ '--sidebar-height': '300px' })
     })
@@ -308,7 +308,7 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       const sidebar = screen.getByRole('dialog')
       expect(sidebar).toHaveAttribute('aria-modal', 'true')
       expect(sidebar).toHaveAttribute('aria-expanded', 'true')
@@ -321,7 +321,7 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       const backdrop = document.querySelector('.uiforge-sidebar__backdrop')
       fireEvent.click(backdrop!)
       expect(handleOpenChange).toHaveBeenCalledWith(false)
@@ -330,13 +330,13 @@ describe('UIForgeSidebar', () => {
     it('calls onOpenChange when ESC key is pressed', async () => {
       const user = userEvent.setup()
       const handleOpenChange = vi.fn()
-      
+
       render(
         <UIForgeSidebar variant="bottom" open={true} onOpenChange={handleOpenChange}>
           <button>Focus me</button>
         </UIForgeSidebar>
       )
-      
+
       await user.keyboard('{Escape}')
       expect(handleOpenChange).toHaveBeenCalledWith(false)
     })
@@ -345,7 +345,7 @@ describe('UIForgeSidebar', () => {
   describe('Focus trapping', () => {
     it('traps focus within drawer when open', async () => {
       const user = userEvent.setup()
-      
+
       render(
         <>
           <button>Outside Button</button>
@@ -356,22 +356,22 @@ describe('UIForgeSidebar', () => {
           </UIForgeSidebar>
         </>
       )
-      
+
       // First button should be focused initially
       const firstButton = screen.getByText('First Button')
       const secondButton = screen.getByText('Second Button')
       const thirdButton = screen.getByText('Third Button')
-      
+
       expect(document.activeElement).toBe(firstButton)
-      
+
       // Tab to second button
       await user.tab()
       expect(document.activeElement).toBe(secondButton)
-      
+
       // Tab to third button
       await user.tab()
       expect(document.activeElement).toBe(thirdButton)
-      
+
       // Tab should wrap to first button
       await user.tab()
       expect(document.activeElement).toBe(firstButton)
@@ -379,7 +379,7 @@ describe('UIForgeSidebar', () => {
 
     it('wraps focus backwards with Shift+Tab', async () => {
       const user = userEvent.setup()
-      
+
       render(
         <UIForgeSidebar variant="drawer" open={true} trapFocus={true}>
           <button>First Button</button>
@@ -387,13 +387,13 @@ describe('UIForgeSidebar', () => {
           <button>Third Button</button>
         </UIForgeSidebar>
       )
-      
+
       const firstButton = screen.getByText('First Button')
       const thirdButton = screen.getByText('Third Button')
-      
+
       // First button should be focused initially
       expect(document.activeElement).toBe(firstButton)
-      
+
       // Shift+Tab should wrap to last button
       await user.tab({ shift: true })
       expect(document.activeElement).toBe(thirdButton)
@@ -401,19 +401,19 @@ describe('UIForgeSidebar', () => {
 
     it('does not trap focus when trapFocus is false', async () => {
       const user = userEvent.setup()
-      
+
       render(
         <UIForgeSidebar variant="drawer" open={true} trapFocus={false}>
           <button>First Button</button>
           <button>Second Button</button>
         </UIForgeSidebar>
       )
-      
+
       // Focus behavior is not trapped, so focus won't be automatically set
       // The focus trapping effect should not be active
       const firstButton = screen.getByText('First Button')
       firstButton.focus()
-      
+
       await user.tab()
       // Focus should move normally (not trapped)
       expect(document.activeElement).not.toBe(firstButton)
@@ -427,7 +427,7 @@ describe('UIForgeSidebar', () => {
           <div>Content</div>
         </UIForgeSidebar>
       )
-      
+
       const backdrop = document.querySelector('.uiforge-sidebar__backdrop')
       expect(backdrop).not.toBeInTheDocument()
     })

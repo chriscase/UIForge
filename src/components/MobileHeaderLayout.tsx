@@ -5,8 +5,10 @@ import './MobileHeaderLayout.css'
 /**
  * Props for the MobileHeaderLayout component
  */
-export interface MobileHeaderLayoutProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
+export interface MobileHeaderLayoutProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'title'
+> {
   /**
    * Content to render in the left slot (typically a back button or hamburger menu).
    * Slot has a fixed min-width of 44px for touch target consistency.
