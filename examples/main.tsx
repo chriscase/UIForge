@@ -9,6 +9,7 @@ import UseDynamicPageCountExample from './UseDynamicPageCountExample'
 import SidebarExample from './SidebarExample'
 import SafeAreaExample from './SafeAreaExample'
 import MobileHeaderExample from './MobileHeaderExample'
+import CourseForgeMobileHeaderExample from './CourseForgeMobileHeaderExample'
 import AppDemo from './App'
 import { ThemeContext, AppTheme } from './ThemeContext'
 import './index.css'
@@ -63,6 +64,8 @@ function Router() {
         return <SafeAreaExample onNavigate={navigate} />
       case '/mobile-header':
         return <MobileHeaderExample onNavigate={navigate} />
+      case '/courseforge-mobile-header':
+        return <CourseForgeMobileHeaderExample onNavigate={navigate} />
       case '/grid':
       case '/blocks-editor':
       case '/combobox':

@@ -1652,6 +1652,19 @@ function App() {
 }
 ```
 
+## Mobile Header Best Practices
+
+For building mobile headers with `MobileHeaderLayout`, `IconButton`, `SafeAreaContainer`, and `OverflowMenu`, see [MOBILE_HEADER_BEST_PRACTICES.md](./MOBILE_HEADER_BEST_PRACTICES.md) for:
+
+- Touch target guidelines (44×44px minimum)
+- ARIA label requirements for accessibility
+- Recommended header height (56px)
+- Safe area usage for notched devices
+- When to use overflow menus vs primary actions
+- Layout vs behavior separation rationale
+
+See `examples/CourseForgeMobileHeaderExample.tsx` for a complete composition example demonstrating these patterns.
+
 ## Development
 
 ### Prerequisites
