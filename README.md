@@ -22,60 +22,82 @@ A rich user interface library for ReactJS developers written by a seasoned user 
 
 ## Component Gallery
 
+Explore UIForge components in action. Each component is fully interactive in our example application.
+
+### Interactive Examples
+
+Run the development server to explore all components interactively:
+
+```bash
+git clone https://github.com/chriscase/UIForge.git
+cd UIForge
+npm install
+npm run dev
+```
+
+Then open [http://localhost:5173](http://localhost:5173) to browse the component library.
+
+### Component Overview
+
+<p align="center">
+  <img src="docs/screenshots/home.png" alt="UIForge Component Library" width="800"/><br/>
+  <em>UIForge Component Library - Browse all available components</em>
+</p>
+
+### Core Components
+
 <table>
   <tr>
     <td align="center" width="50%">
-      <img src="docs/screenshots/home.png" alt="Component Library Home" width="100%"/><br/>
-      <strong>Component Library</strong>
+      <img src="docs/screenshots/grid.png" alt="UIForgeGrid - Data Grid Component" width="100%"/><br/>
+      <strong>UIForgeGrid</strong><br/>
+      <em>Feature-rich data grid with selection, inline editing, search, pagination, and custom actions</em>
     </td>
     <td align="center" width="50%">
-      <img src="docs/screenshots/activity-stream.png" alt="Activity Stream" width="100%"/><br/>
-      <strong>Activity Stream</strong>
+      <img src="docs/screenshots/combobox.png" alt="UIForgeComboBox - Select Component" width="100%"/><br/>
+      <strong>UIForgeComboBox</strong><br/>
+      <em>Powerful select/combo box with icons, hierarchical options, and async search support</em>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="docs/screenshots/grid.png" alt="Data Grid" width="100%"/><br/>
-      <strong>Data Grid</strong>
+      <img src="docs/screenshots/blocks-editor.png" alt="UIForgeBlocksEditor - Content Editor" width="100%"/><br/>
+      <strong>UIForgeBlocksEditor</strong><br/>
+      <em>Rich block-based content editor with drag-and-drop reordering and formatting</em>
     </td>
     <td align="center">
-      <img src="docs/screenshots/combobox.png" alt="ComboBox" width="100%"/><br/>
-      <strong>ComboBox</strong>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="docs/screenshots/blocks-editor.png" alt="Blocks Editor" width="100%"/><br/>
-      <strong>Blocks Editor</strong>
-    </td>
-    <td align="center">
-      <img src="docs/screenshots/icon-library.png" alt="Icon Library" width="100%"/><br/>
-      <strong>Icon Library</strong>
+      <img src="docs/screenshots/activity-stream.png" alt="UIForgeActivityStream - Activity Feed" width="100%"/><br/>
+      <strong>UIForgeActivityStream</strong><br/>
+      <em>GitHub-inspired activity feed with smart grouping and timeline visualization</em>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="docs/screenshots/video.png" alt="Video Component" width="100%"/><br/>
-      <strong>Video</strong>
+      <img src="docs/screenshots/sidebar.png" alt="UIForgeSidebar - Navigation Component" width="100%"/><br/>
+      <strong>UIForgeSidebar</strong><br/>
+      <em>Responsive sidebar with static, drawer, and bottom sheet variants</em>
     </td>
     <td align="center">
-      <img src="docs/screenshots/sidebar.png" alt="Sidebar" width="100%"/><br/>
-      <strong>Sidebar</strong>
+      <img src="docs/screenshots/video.png" alt="UIForgeVideo - Video Player" width="100%"/><br/>
+      <strong>UIForgeVideo</strong><br/>
+      <em>Universal video embedding with support for 30+ platforms</em>
     </td>
   </tr>
   <tr>
     <td align="center">
       <img src="docs/screenshots/button.png" alt="Button Component" width="100%"/><br/>
-      <strong>Button</strong>
+      <strong>Button</strong><br/>
+      <em>Versatile button with multiple variants, sizes, and accessibility features</em>
     </td>
     <td align="center">
-      <img src="docs/screenshots/mobile-header.png" alt="Mobile Header" width="100%"/><br/>
-      <strong>Mobile Header</strong>
+      <img src="docs/screenshots/icon-library.png" alt="Icon Library" width="100%"/><br/>
+      <strong>Icon Library</strong><br/>
+      <em>Comprehensive collection of monochrome SVG icons</em>
     </td>
   </tr>
 </table>
 
-> Screenshots are automatically generated from the component examples. Run `npm run screenshots` to regenerate.
+> 📸 Screenshots are automatically generated from the interactive examples. Run `npm run screenshots` to regenerate.
 
 ## Installation
 
