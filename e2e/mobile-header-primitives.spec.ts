@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, Page } from '@playwright/test'
 
 /**
  * E2E tests for UIForge Mobile Header Primitives
@@ -12,19 +12,22 @@ import { test, expect } from '@playwright/test'
  * - hideOnDesktop behavior at breakpoints
  */
 
+// Breakpoint where hideOnDesktop behavior kicks in (matches MobileHeaderLayout CSS)
+const DESKTOP_BREAKPOINT = 600
+
 // Helper to navigate to Mobile Header example page
-async function navigateToMobileHeader(page: import('@playwright/test').Page) {
+async function navigateToMobileHeader(page: Page) {
   await page.goto('/')
-  // Click on the Mobile Header card in the home page
-  await page.click('text=Mobile Header')
+  // Navigate using the component card
+  await page.locator('.component-card:has-text("Mobile Header")').first().click()
   await page.waitForSelector('.uiforge-mobile-header-layout')
 }
 
 // Helper to navigate to CourseForge Mobile Header example page  
-async function navigateToCourseForgeHeader(page: import('@playwright/test').Page) {
+async function navigateToCourseForgeHeader(page: Page) {
   await page.goto('/')
-  // Click on the CourseForge Mobile Header card in the home page
-  await page.click('text=CourseForge Mobile Header')
+  // Navigate using the component card
+  await page.locator('.component-card:has-text("CourseForge Mobile Header")').click()
   await page.waitForSelector('.uiforge-mobile-header-layout')
 }
 
@@ -214,8 +217,8 @@ test.describe('hideOnDesktop behavior', () => {
     await navigateToMobileHeader(page)
     
     const viewport = page.viewportSize()
-    // Only run on mobile viewports (< 600px)
-    if (!viewport || viewport.width >= 600) {
+    // Only run on mobile viewports (below desktop breakpoint)
+    if (!viewport || viewport.width >= DESKTOP_BREAKPOINT) {
       test.skip()
       return
     }
@@ -232,8 +235,8 @@ test.describe('hideOnDesktop behavior', () => {
     await navigateToMobileHeader(page)
     
     const viewport = page.viewportSize()
-    // Only run on desktop viewports (>= 600px)
-    if (!viewport || viewport.width < 600) {
+    // Only run on desktop viewports (at or above desktop breakpoint)
+    if (!viewport || viewport.width < DESKTOP_BREAKPOINT) {
       test.skip()
       return
     }
