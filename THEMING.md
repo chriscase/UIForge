@@ -554,7 +554,7 @@ Override these in your own CSS to customize the header:
 
 ### Mobile-Only Utility Class
 
-The `.uiforge-mobile-only` utility class hides elements at desktop breakpoints (≥600px by default):
+The `.uiforge-mobile-only` utility class hides elements at desktop breakpoints (≥1024px by default):
 
 ```tsx
 // This element will only be visible on mobile screens
@@ -574,7 +574,7 @@ The utility is defined as:
   display: block;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 1024px) {
   .uiforge-mobile-only {
     display: none;
   }
@@ -583,10 +583,10 @@ The utility is defined as:
 
 ### Overriding the Breakpoint Threshold
 
-CSS media queries don't support CSS variables, so the breakpoint (600px) is hardcoded. To use a different breakpoint, override the class in your own CSS:
+CSS media queries don't support CSS variables, so the breakpoint (1024px) is hardcoded. To use a different breakpoint, override the class in your own CSS:
 
 ```css
-/* Override to use 768px as the breakpoint instead of 600px */
+/* Override to use 768px as the breakpoint instead of 1024px */
 @media (min-width: 768px) {
   .uiforge-mobile-only {
     display: none;
@@ -608,7 +608,7 @@ The `MobileHeaderLayout` component provides built-in support for hiding at deskt
 ```tsx
 import { MobileHeaderLayout } from '@appforgeapps/uiforge'
 
-// This header will automatically hide at ≥600px
+// This header will automatically hide at ≥1024px
 <MobileHeaderLayout
   left={<BackButton />}
   title="Page Title"
@@ -664,7 +664,7 @@ function MobileLayout({ children }) {
   padding-top: var(--uiforge-mobile-header-height);
 }
 
-@media (min-width: 600px) {
+@media (min-width: 1024px) {
   .app-content {
     /* No header padding on desktop */
     padding-top: 0;

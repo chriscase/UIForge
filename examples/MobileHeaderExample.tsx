@@ -212,7 +212,7 @@ export function MobileHeaderExample({ onNavigate }: MobileHeaderExampleProps) {
         <section className="mobile-header-example__section">
           <h2>Hide on Desktop</h2>
           <p>
-            This header uses <code>hideOnDesktop</code> to hide itself at desktop breakpoints (≥600px).
+            This header uses <code>hideOnDesktop</code> to hide itself at desktop breakpoints (≥1024px).
             Resize your browser window to see the effect.
           </p>
           <div className="mobile-header-example__demo mobile-header-example__demo--resize">

@@ -13,7 +13,7 @@ import { test, expect, Page } from '@playwright/test'
  */
 
 // Breakpoint where hideOnDesktop behavior kicks in (matches MobileHeaderLayout CSS)
-const DESKTOP_BREAKPOINT = 600
+const DESKTOP_BREAKPOINT = 1024
 
 // Helper to navigate to Mobile Header example page
 async function navigateToMobileHeader(page: Page) {

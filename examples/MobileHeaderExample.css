@@ -120,7 +120,7 @@
   color: #6b7280;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 1024px) {
   .mobile-header-example__demo--resize .mobile-header-example__desktop-notice {
     display: block;
   }
