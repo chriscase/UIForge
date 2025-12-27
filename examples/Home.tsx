@@ -292,6 +292,21 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             }
             onNavigate={onNavigate}
           />
+
+          <ComponentCard
+            name="CourseForge Mobile Header"
+            description="Example composition patterns for mobile headers in a learning management app: back nav, title, actions, and overflow menu"
+            icon="🎓"
+            path="/courseforge-mobile-header"
+            preview={
+              <div className="preview-mobile-header">
+                <div className="preview-header-slot">←</div>
+                <div className="preview-header-title">Lesson</div>
+                <div className="preview-header-actions">🔖 📤 ⋮</div>
+              </div>
+            }
+            onNavigate={onNavigate}
+          />
         </section>
       </main>
 

@@ -1,0 +1,228 @@
+/* CourseForgeMobileHeaderExample Styles */
+
+.courseforge-example {
+  min-height: 100vh;
+  padding: 0;
+  background-color: #0d1117;
+  color: #e6edf3;
+}
+
+.courseforge-example--light {
+  background-color: #ffffff;
+  color: #1f2937;
+}
+
+.courseforge-example__back-button {
+  display: inline-block;
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: #58a6ff;
+  background: transparent;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.courseforge-example--light .courseforge-example__back-button {
+  color: #3b82f6;
+  border-color: #d1d5db;
+}
+
+.courseforge-example__back-button:hover {
+  background: rgba(88, 166, 255, 0.1);
+}
+
+.courseforge-example__content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1rem 2rem;
+}
+
+.courseforge-example__content h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.courseforge-example__description {
+  color: #8b949e;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.courseforge-example--light .courseforge-example__description {
+  color: #6b7280;
+}
+
+.courseforge-example__section {
+  margin-bottom: 2.5rem;
+}
+
+.courseforge-example__section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #e6edf3;
+}
+
+.courseforge-example--light .courseforge-example__section h2 {
+  color: #1f2937;
+}
+
+.courseforge-example__section p {
+  color: #8b949e;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.courseforge-example--light .courseforge-example__section p {
+  color: #6b7280;
+}
+
+.courseforge-example__section code {
+  background: #21262d;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+}
+
+.courseforge-example--light .courseforge-example__section code {
+  background: #f3f4f6;
+}
+
+.courseforge-example__demo {
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #161b22;
+}
+
+.courseforge-example--light .courseforge-example__demo {
+  border-color: #e5e7eb;
+  background: #f9fafb;
+}
+
+/* Header actions container */
+.courseforge-example__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+/* Active bookmark state */
+.courseforge-example__icon--active {
+  color: #f59e0b;
+}
+
+/* Override MobileHeaderLayout styles for demo */
+.courseforge-example__demo .uiforge-mobile-header-layout {
+  --uiforge-mobile-header-bg: #21262d;
+  --uiforge-mobile-header-border-color: #30363d;
+}
+
+.courseforge-example--light .courseforge-example__demo .uiforge-mobile-header-layout {
+  --uiforge-mobile-header-bg: #ffffff;
+  --uiforge-mobile-header-border-color: #e5e7eb;
+}
+
+/* Best practices grid */
+.courseforge-example__best-practices {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.courseforge-example--light .courseforge-example__best-practices {
+  background: #f9fafb;
+  border-color: #e5e7eb;
+}
+
+.courseforge-example__practice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.courseforge-example__practice {
+  padding: 1rem;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+}
+
+.courseforge-example--light .courseforge-example__practice {
+  background: #ffffff;
+  border-color: #e5e7eb;
+}
+
+.courseforge-example__practice h3 {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #e6edf3;
+}
+
+.courseforge-example--light .courseforge-example__practice h3 {
+  color: #1f2937;
+}
+
+.courseforge-example__practice p {
+  font-size: 0.8125rem !important;
+  line-height: 1.5;
+  margin-bottom: 0 !important;
+}
+
+/* Code block */
+.courseforge-example__code {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.courseforge-example--light .courseforge-example__code {
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+}
+
+.courseforge-example__code pre {
+  margin: 0;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: #e6edf3;
+}
+
+.courseforge-example--light .courseforge-example__code pre {
+  color: #1f2937;
+}
+
+/* Action log toast */
+.courseforge-example__log {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  padding: 0.75rem 1rem;
+  background: #238636;
+  color: white;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: courseforge-slideIn 0.3s ease;
+  z-index: 1000;
+}
+
+@keyframes courseforge-slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
