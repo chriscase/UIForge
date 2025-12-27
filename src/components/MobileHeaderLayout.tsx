@@ -25,7 +25,7 @@ export interface MobileHeaderLayoutProps extends Omit<
    */
   right?: React.ReactNode
   /**
-   * When true, the header is hidden at desktop breakpoints (min-width: 600px by default).
+   * When true, the header is hidden at desktop breakpoints (min-width: 1024px by default).
    * Override the breakpoint in your own CSS by targeting .uiforge-mobile-header-layout--hide-on-desktop.
    * @default false
    */

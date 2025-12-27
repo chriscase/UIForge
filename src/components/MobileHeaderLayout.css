@@ -16,14 +16,14 @@
 /*
  * Mobile-only utility class
  * Use this class on any element that should be hidden at desktop breakpoints.
- * Note: CSS media queries don't support CSS variables, so the breakpoint (600px)
+ * Note: CSS media queries don't support CSS variables, so the breakpoint (1024px)
  * is hardcoded. Override this in your own CSS if needed.
  */
 .uiforge-mobile-only {
   display: block;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 1024px) {
   .uiforge-mobile-only {
     display: none;
   }
@@ -80,7 +80,7 @@
 }
 
 /*
- * Modifier: hide on desktop (breakpoint 600px)
+ * Modifier: hide on desktop (breakpoint 1024px)
  * Note: CSS media queries don't support CSS variables, so the breakpoint is hardcoded.
  * Override this in your own CSS if you need a different breakpoint.
  */
@@ -88,7 +88,7 @@
   display: flex;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 1024px) {
   .uiforge-mobile-header-layout--hide-on-desktop {
     display: none;
   }
