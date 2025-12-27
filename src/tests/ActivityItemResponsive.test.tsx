@@ -1,6 +1,10 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { UIForgeActivityItem, ActivityItemEvent, ActivityItemProvider } from '../components/ActivityItem'
+import {
+  UIForgeActivityItem,
+  ActivityItemEvent,
+  ActivityItemProvider,
+} from '../components/ActivityItem'
 
 describe('UIForgeActivityItem - Responsive Behavior', () => {
   const mockEvent: ActivityItemEvent = {
@@ -79,7 +83,9 @@ describe('UIForgeActivityItem - Responsive Behavior', () => {
       )
 
       expect(screen.getByText('Updated README.md')).toBeInTheDocument()
-      expect(screen.queryByText('Added installation instructions and examples')).not.toBeInTheDocument()
+      expect(
+        screen.queryByText('Added installation instructions and examples')
+      ).not.toBeInTheDocument()
     })
 
     it('handles expansion in compact mode', () => {

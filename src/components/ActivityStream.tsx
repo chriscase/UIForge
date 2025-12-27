@@ -559,7 +559,14 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
 
       setShowMoreVisible(distanceFromBottom <= showMoreThreshold)
     },
-    [showLoadMore, onLoadMore, showMoreThreshold, processedItems.length, virtualItemHeight, containerHeight]
+    [
+      showLoadMore,
+      onLoadMore,
+      showMoreThreshold,
+      processedItems.length,
+      virtualItemHeight,
+      containerHeight,
+    ]
   )
 
   // Measure container height for virtualized list
@@ -777,7 +784,8 @@ export const UIForgeActivityStream: React.FC<UIForgeActivityStreamProps> = ({
 
   const containerStyle = maxHeight ? { maxHeight } : undefined
   // Apply legacy scale as CSS variable if provided
-  const scaleStyle = scale !== undefined ? { '--activity-stream-scale': scale } as React.CSSProperties : {}
+  const scaleStyle =
+    scale !== undefined ? ({ '--activity-stream-scale': scale } as React.CSSProperties) : {}
 
   // The outer div receives the style prop (for positioning, margins, etc.)
   // The inner container handles scrolling and receives maxHeight/scale CSS var

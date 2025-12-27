@@ -4,8 +4,10 @@ import './IconButton.css'
 /**
  * Props for the IconButton component
  */
-export interface IconButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label'> {
+export interface IconButtonProps extends Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  'aria-label'
+> {
   /**
    * The icon element to display. Should be an SVG icon or icon component.
    */
@@ -78,13 +80,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
   const classes = [baseClass, `${baseClass}--${size}`, className].filter(Boolean).join(' ')
 
   return (
-    <button
-      type="button"
-      className={classes}
-      aria-label={ariaLabel}
-      disabled={disabled}
-      {...props}
-    >
+    <button type="button" className={classes} aria-label={ariaLabel} disabled={disabled} {...props}>
       <span className={`${baseClass}__icon`} aria-hidden="true">
         {icon}
       </span>

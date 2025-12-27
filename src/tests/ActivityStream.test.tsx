@@ -460,9 +460,7 @@ describe('UIForgeActivityStream', () => {
     })
 
     it('accepts responsive=false to disable responsive behavior', () => {
-      const { container } = render(
-        <UIForgeActivityStream events={mockEvents} responsive={false} />
-      )
+      const { container } = render(<UIForgeActivityStream events={mockEvents} responsive={false} />)
 
       const activityStream = container.querySelector('.activity-stream')
       expect(activityStream).toHaveClass('activity-stream--comfortable')
@@ -568,9 +566,7 @@ describe('UIForgeActivityStream', () => {
     })
 
     it('renders events in virtualized mode', () => {
-      render(
-        <UIForgeActivityStream events={mockEvents} virtualization={true} maxHeight="400px" />
-      )
+      render(<UIForgeActivityStream events={mockEvents} virtualization={true} maxHeight="400px" />)
 
       // Events should still be rendered (though possibly windowed)
       expect(screen.getByText('Updated README.md')).toBeInTheDocument()

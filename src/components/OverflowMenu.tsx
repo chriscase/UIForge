@@ -220,18 +220,14 @@ export const OverflowMenu: React.FC<OverflowMenuProps> = ({
           if (!isOpen) {
             openMenu()
           } else {
-            setHighlightedIndex((prev) =>
-              prev < selectableItems.length - 1 ? prev + 1 : 0
-            )
+            setHighlightedIndex((prev) => (prev < selectableItems.length - 1 ? prev + 1 : 0))
           }
           break
 
         case 'ArrowUp':
           event.preventDefault()
           if (isOpen) {
-            setHighlightedIndex((prev) =>
-              prev > 0 ? prev - 1 : selectableItems.length - 1
-            )
+            setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : selectableItems.length - 1))
           }
           break
 
@@ -269,9 +265,7 @@ export const OverflowMenu: React.FC<OverflowMenuProps> = ({
   // Scroll highlighted item into view
   useEffect(() => {
     if (isOpen && menuRef.current && highlightedIndex >= 0) {
-      const highlightedElement = menuRef.current.querySelector(
-        `[data-index="${highlightedIndex}"]`
-      )
+      const highlightedElement = menuRef.current.querySelector(`[data-index="${highlightedIndex}"]`)
       if (highlightedElement && typeof highlightedElement.scrollIntoView === 'function') {
         highlightedElement.scrollIntoView({ block: 'nearest' })
       }
@@ -289,18 +283,11 @@ export const OverflowMenu: React.FC<OverflowMenuProps> = ({
   }
 
   const baseClass = 'uiforge-overflow-menu'
-  const containerClasses = [
-    baseClass,
-    disabled && `${baseClass}--disabled`,
-    className,
-  ]
+  const containerClasses = [baseClass, disabled && `${baseClass}--disabled`, className]
     .filter(Boolean)
     .join(' ')
 
-  const menuClasses = [
-    `${baseClass}__menu`,
-    `${baseClass}__menu--${align}`,
-  ]
+  const menuClasses = [`${baseClass}__menu`, `${baseClass}__menu--${align}`]
     .filter(Boolean)
     .join(' ')
 
@@ -350,13 +337,7 @@ export const OverflowMenu: React.FC<OverflowMenuProps> = ({
       )}
 
       {isOpen && (
-        <div
-          ref={menuRef}
-          id={menuId}
-          className={menuClasses}
-          role="menu"
-          aria-label={ariaLabel}
-        >
+        <div ref={menuRef} id={menuId} className={menuClasses} role="menu" aria-label={ariaLabel}>
           {items.map((item) => {
             const selectableIndex = getSelectableIndex(item)
             const isHighlighted = !item.disabled && selectableIndex === highlightedIndex

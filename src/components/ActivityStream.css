@@ -850,7 +850,8 @@
 }
 
 /* Timeline line for virtualized lists - applied to the wrapper div */
-.activity-stream--virtualized.activity-stream--with-timeline .activity-stream__container--virtualized::before {
+.activity-stream--virtualized.activity-stream--with-timeline
+  .activity-stream__container--virtualized::before {
   content: '';
   position: absolute;
   left: var(--activity-stream-timeline-left, 23px);
