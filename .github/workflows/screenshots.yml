@@ -1,0 +1,60 @@
+name: Generate Component Screenshots
+
+on:
+  # Run on push to main when component code changes
+  push:
+    branches: [main]
+    paths:
+      - 'src/components/**'
+      - 'examples/**'
+      - 'scripts/capture-screenshots.ts'
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  screenshots:
+    name: Capture Screenshots
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Start dev server
+        run: |
+          npm run dev &
+          # Wait for server to be ready
+          timeout 60 bash -c 'until curl -s http://localhost:5173 > /dev/null; do sleep 1; done'
+
+      - name: Capture screenshots
+        run: npm run screenshots
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          git add docs/screenshots/
+          if git diff --staged --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push screenshots
+        if: steps.git-check.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "docs: update component screenshots [skip ci]"
+          git push

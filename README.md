@@ -20,6 +20,63 @@ A rich user interface library for ReactJS developers written by a seasoned user 
 - 🎯 **Developer Friendly** - Easy to use and customize
 - 🆓 **Free & Open Source** - MIT licensed
 
+## Component Gallery
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="docs/screenshots/home.png" alt="Component Library Home" width="100%"/><br/>
+      <strong>Component Library</strong>
+    </td>
+    <td align="center" width="50%">
+      <img src="docs/screenshots/activity-stream.png" alt="Activity Stream" width="100%"/><br/>
+      <strong>Activity Stream</strong>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="docs/screenshots/grid.png" alt="Data Grid" width="100%"/><br/>
+      <strong>Data Grid</strong>
+    </td>
+    <td align="center">
+      <img src="docs/screenshots/combobox.png" alt="ComboBox" width="100%"/><br/>
+      <strong>ComboBox</strong>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="docs/screenshots/blocks-editor.png" alt="Blocks Editor" width="100%"/><br/>
+      <strong>Blocks Editor</strong>
+    </td>
+    <td align="center">
+      <img src="docs/screenshots/icon-library.png" alt="Icon Library" width="100%"/><br/>
+      <strong>Icon Library</strong>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="docs/screenshots/video.png" alt="Video Component" width="100%"/><br/>
+      <strong>Video</strong>
+    </td>
+    <td align="center">
+      <img src="docs/screenshots/sidebar.png" alt="Sidebar" width="100%"/><br/>
+      <strong>Sidebar</strong>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="docs/screenshots/button.png" alt="Button Component" width="100%"/><br/>
+      <strong>Button</strong>
+    </td>
+    <td align="center">
+      <img src="docs/screenshots/mobile-header.png" alt="Mobile Header" width="100%"/><br/>
+      <strong>Mobile Header</strong>
+    </td>
+  </tr>
+</table>
+
+> Screenshots are automatically generated from the component examples. Run `npm run screenshots` to regenerate.
+
 ## Installation
 
 ### From NPM (Recommended)

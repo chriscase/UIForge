@@ -32,7 +32,8 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\"",
     "devcontainer:set-exec": "bash scripts/set-exec-devcontainer-scripts.sh",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "screenshots": "npx tsx scripts/capture-screenshots.ts"
   },
   "keywords": [
     "react",
