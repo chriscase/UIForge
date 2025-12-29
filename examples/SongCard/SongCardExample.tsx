@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { SongCard } from './SongCard'
 import { MediaListSkeleton } from '../../src/components/Skeletons/MediaListSkeleton'
 import { useTheme } from '../ThemeContext'
@@ -91,6 +91,36 @@ const SongCardExample: React.FC<SongCardExampleProps> = ({ onBack }) => {
   const [playingId, setPlayingId] = useState<number | null>(null)
   const [notifications, setNotifications] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [useNexaLiveTheme, setUseNexaLiveTheme] = useState(false)
+
+  // Dynamically load/unload NexaLive theme
+  useEffect(() => {
+    if (useNexaLiveTheme) {
+      const link = document.createElement('link')
+      link.id = 'nexalive-theme'
+      link.rel = 'stylesheet'
+      link.href = new URL('../themes/nexalive-theme.css', import.meta.url).href
+      document.head.appendChild(link)
+      document.body.classList.add('nexalive-theme')
+    } else {
+      const link = document.getElementById('nexalive-theme')
+      if (link) {
+        link.remove()
+      }
+      document.body.classList.remove('nexalive-theme')
+    }
+
+    // Cleanup only if this component enabled the theme
+    return () => {
+      if (useNexaLiveTheme) {
+        const link = document.getElementById('nexalive-theme')
+        if (link) {
+          link.remove()
+        }
+        document.body.classList.remove('nexalive-theme')
+      }
+    }
+  }, [useNexaLiveTheme])
 
   const addNotification = (message: string) => {
     setNotifications((prev) => [...prev, message])
@@ -126,6 +156,22 @@ const SongCardExample: React.FC<SongCardExampleProps> = ({ onBack }) => {
           domain-specific use cases. This music-focused component wraps MediaCard with
           music-specific props and actions.
         </p>
+        <div style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+            <input
+              type="checkbox"
+              checked={useNexaLiveTheme}
+              onChange={(e) => setUseNexaLiveTheme(e.target.checked)}
+              style={{ cursor: 'pointer' }}
+            />
+            <span>
+              Use NexaLive Theme (example from <code>examples/themes/nexalive-theme.css</code>)
+            </span>
+          </label>
+          <p style={{ fontSize: '0.875rem', marginTop: '0.5rem', opacity: 0.8 }}>
+            This demonstrates how to create app-specific themes. Based on chriscase/nexalive project.
+          </p>
+        </div>
       </div>
 
       {/* Notifications */}

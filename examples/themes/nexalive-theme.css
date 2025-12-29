@@ -1,0 +1,247 @@
+/* ===========================================
+   NexaLive Theme - Example Application Theme
+   
+   This is a DEMONSTRATION theme showing how to map brand-specific
+   colors, spacing, and typography to UIForge CSS variables.
+   
+   This theme is based on the chriscase/nexalive project (a personal
+   music streaming application) and serves as a concrete example of
+   how to create custom themes for UIForge.
+   
+   **For production use**, copy this file into your own application
+   and customize the brand values to match your design system.
+   
+   This file is an EXAMPLE ONLY and is not part of UIForge core.
+   =========================================== */
+
+:root {
+  /* ===========================================
+     NexaLive Brand Colors (from chriscase/nexalive)
+     
+     These colors are from the NexaLive music streaming app.
+     Replace these with your actual brand colors.
+     =========================================== */
+  
+  /* Primary brand colors */
+  --nexalive-purple-primary: #8b5cf6;
+  --nexalive-purple-dark: #7c3aed;
+  --nexalive-purple-light: #a78bfa;
+  
+  /* Accent colors */
+  --nexalive-pink-accent: #ec4899;
+  --nexalive-pink-light: #f472b6;
+  
+  /* Neutral colors */
+  --nexalive-bg-dark: #0f0a1e;
+  --nexalive-bg-medium: #1a1230;
+  --nexalive-bg-light: #2d2240;
+  --nexalive-text-primary: #f5f3ff;
+  --nexalive-text-secondary: #c4b5fd;
+  --nexalive-text-muted: #a78bfa;
+  --nexalive-border: #4c1d95;
+  
+  /* ===========================================
+     Map NexaLive Colors to UIForge Tokens
+     
+     Override UIForge CSS variables to apply NexaLive branding
+     =========================================== */
+  
+  /* Activity Stream theming */
+  --activity-stream-bg: var(--nexalive-bg-dark);
+  --activity-stream-text: var(--nexalive-text-primary);
+  --activity-stream-text-secondary: var(--nexalive-text-secondary);
+  --activity-stream-border: var(--nexalive-border);
+  --activity-stream-hover-bg: var(--nexalive-bg-medium);
+  --activity-stream-icon-bg: var(--nexalive-bg-light);
+  --activity-stream-icon-color: var(--nexalive-purple-light);
+  --activity-stream-timeline-color: var(--nexalive-border);
+  --activity-stream-link-color: var(--nexalive-purple-primary);
+  --activity-stream-load-more-bg: var(--nexalive-purple-primary);
+  --activity-stream-load-more-text: white;
+  --activity-stream-load-more-hover: var(--nexalive-purple-dark);
+  
+  /* Button theming */
+  --button-primary-bg: var(--nexalive-purple-primary);
+  --button-primary-hover: var(--nexalive-purple-dark);
+  --button-primary-active: var(--nexalive-purple-dark);
+  --button-primary-text: white;
+  
+  --button-secondary-bg: var(--nexalive-pink-accent);
+  --button-secondary-hover: var(--nexalive-pink-light);
+  --button-secondary-active: var(--nexalive-pink-light);
+  --button-secondary-text: white;
+  
+  --button-outline-bg: transparent;
+  --button-outline-hover: var(--nexalive-bg-medium);
+  --button-outline-active: var(--nexalive-bg-light);
+  --button-outline-color: var(--nexalive-purple-primary);
+  
+  /* Grid theming */
+  --grid-bg: var(--nexalive-bg-dark);
+  --grid-text: var(--nexalive-text-primary);
+  --grid-text-secondary: var(--nexalive-text-secondary);
+  --grid-border: var(--nexalive-border);
+  --grid-border-strong: var(--nexalive-purple-dark);
+  --grid-header-bg: var(--nexalive-bg-medium);
+  --grid-header-text: var(--nexalive-text-primary);
+  --grid-row-hover: var(--nexalive-bg-medium);
+  --grid-row-selected: var(--nexalive-bg-light);
+  --grid-row-selected-hover: var(--nexalive-bg-light);
+  --grid-input-bg: var(--nexalive-bg-light);
+  --grid-input-border: var(--nexalive-border);
+  --grid-input-focus: var(--nexalive-purple-primary);
+  --grid-button-primary-bg: var(--nexalive-purple-primary);
+  --grid-button-primary-hover: var(--nexalive-purple-dark);
+  --grid-button-secondary-bg: var(--nexalive-pink-accent);
+  --grid-button-secondary-hover: var(--nexalive-pink-light);
+  --grid-button-outline-bg: transparent;
+  --grid-button-outline-hover: var(--nexalive-bg-medium);
+  --grid-button-outline-color: var(--nexalive-purple-light);
+  --grid-pagination-bg: var(--nexalive-bg-light);
+  --grid-pagination-hover: var(--nexalive-bg-medium);
+  --grid-pagination-active-bg: var(--nexalive-purple-primary);
+  --grid-pagination-active-color: white;
+  --grid-editable-hover: var(--nexalive-bg-light);
+  
+  /* ComboBox theming */
+  --combobox-bg: var(--nexalive-bg-light);
+  --combobox-text: var(--nexalive-text-primary);
+  --combobox-text-secondary: var(--nexalive-text-secondary);
+  --combobox-text-muted: var(--nexalive-text-muted);
+  --combobox-border: var(--nexalive-border);
+  --combobox-border-hover: var(--nexalive-purple-light);
+  --combobox-border-focus: var(--nexalive-purple-primary);
+  --combobox-dropdown-bg: var(--nexalive-bg-medium);
+  --combobox-dropdown-border: var(--nexalive-border);
+  --combobox-option-hover: var(--nexalive-bg-light);
+  --combobox-option-highlighted: var(--nexalive-bg-light);
+  --combobox-option-selected-bg: var(--nexalive-purple-primary);
+  --combobox-option-selected-text: white;
+  --combobox-option-disabled-bg: var(--nexalive-bg-dark);
+  --combobox-option-disabled-text: var(--nexalive-text-muted);
+  --combobox-disabled-bg: var(--nexalive-bg-dark);
+  --combobox-spinner: var(--nexalive-purple-light);
+  
+  /* MediaCard theming */
+  --media-card-bg: var(--nexalive-bg-medium);
+  --media-card-border: var(--nexalive-border);
+  --media-card-text: var(--nexalive-text-primary);
+  --media-card-text-secondary: var(--nexalive-text-secondary);
+  --media-card-hover-bg: var(--nexalive-bg-light);
+  --media-card-focus-ring: var(--nexalive-purple-primary);
+  
+  /* BlocksEditor theming */
+  --editor-bg: var(--nexalive-bg-dark);
+  --editor-text: var(--nexalive-text-primary);
+  --editor-text-secondary: var(--nexalive-text-secondary);
+  --editor-text-muted: var(--nexalive-text-muted);
+  --editor-border: var(--nexalive-border);
+  --editor-border-strong: var(--nexalive-purple-dark);
+  --editor-toolbar-bg: var(--nexalive-bg-medium);
+  --editor-block-hover: var(--nexalive-bg-medium);
+  --editor-block-selected: var(--nexalive-bg-light);
+  --editor-block-selected-border: var(--nexalive-purple-primary);
+  --editor-input-bg: var(--nexalive-bg-light);
+  --editor-input-focus: var(--nexalive-purple-primary);
+  --editor-button-hover: var(--nexalive-bg-light);
+  --editor-button-active: var(--nexalive-purple-primary);
+  --editor-button-active-text: white;
+  --editor-button-active-border: var(--nexalive-purple-light);
+  --editor-quote-bg: var(--nexalive-bg-medium);
+  --editor-code-bg: var(--nexalive-bg-dark);
+  --editor-code-text: var(--nexalive-text-primary);
+  --editor-inline-code-bg: var(--nexalive-bg-light);
+  --editor-menu-bg: var(--nexalive-bg-medium);
+  --editor-menu-item-hover: var(--nexalive-bg-light);
+  
+  /* Sidebar theming */
+  --uiforge-sidebar-bg: var(--nexalive-bg-dark);
+  --uiforge-sidebar-color: var(--nexalive-text-primary);
+  --uiforge-sidebar-border: var(--nexalive-border);
+  --uiforge-sidebar-backdrop: rgba(15, 10, 30, 0.8);
+  
+  /* Icon button theming */
+  --icon-button-bg: transparent;
+  --icon-button-hover-bg: var(--nexalive-bg-medium);
+  --icon-button-active-bg: var(--nexalive-bg-light);
+  --icon-button-color: var(--nexalive-text-primary);
+  --icon-button-focus-ring: var(--nexalive-purple-primary);
+  --icon-button-badge-bg: var(--nexalive-pink-accent);
+  --icon-button-badge-color: white;
+  
+  /* Overflow menu theming */
+  --overflow-menu-bg: var(--nexalive-bg-medium);
+  --overflow-menu-item-hover-bg: var(--nexalive-bg-light);
+  --overflow-menu-item-active-bg: var(--nexalive-purple-primary);
+  --overflow-menu-item-color: var(--nexalive-text-primary);
+  --overflow-menu-item-disabled-color: var(--nexalive-text-muted);
+  --overflow-menu-focus-ring: var(--nexalive-purple-primary);
+  
+  /* Mobile header theming */
+  --uiforge-mobile-header-bg: var(--nexalive-bg-dark);
+  --uiforge-mobile-header-border-color: var(--nexalive-border);
+  
+  /* Focus ring - global */
+  --uiforge-focus-ring: var(--nexalive-purple-primary);
+  
+  /* Skeleton theming */
+  --skeleton-bg: var(--nexalive-bg-light);
+  --skeleton-shimmer-start: var(--nexalive-bg-light);
+  --skeleton-shimmer-middle: var(--nexalive-purple-dark);
+  --skeleton-shimmer-end: var(--nexalive-bg-light);
+  --skeleton-border: var(--nexalive-border);
+  
+  /* ===========================================
+     NexaLive Custom Spacing (Optional)
+     
+     You can also override UIForge spacing tokens if needed.
+     Default values: gap: 8px, gap-lg: 12px, gap-xl: 16px
+     =========================================== */
+  
+  /* Uncomment to use slightly larger gaps */
+  /* --uiforge-gap: 10px;
+  --uiforge-gap-lg: 14px;
+  --uiforge-gap-xl: 20px; */
+  
+  /* ===========================================
+     NexaLive Custom Typography (Optional)
+     =========================================== */
+  
+  /* Uncomment to use a custom font family */
+  /* font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; */
+}
+
+/* ===========================================
+   Example: Apply NexaLive theme to body
+   
+   Add the .nexalive-theme class to your root element
+   or import this CSS file globally in your app.
+   =========================================== */
+
+body.nexalive-theme {
+  background-color: var(--nexalive-bg-dark);
+  color: var(--nexalive-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+/* ===========================================
+   Usage Instructions
+   
+   To use this theme in your application:
+   
+   1. Copy this file into your project's assets/styles folder
+   2. Update the brand color values to match your design system
+   3. Import AFTER UIForge styles:
+      
+      import '@appforgeapps/uiforge/styles.css'
+      import './your-theme.css'  // Your customized version
+   
+   4. Optional: Add a theme class to your root element:
+      <body className="nexalive-theme">
+   
+   **Important**: App themes should live in your application,
+   NOT in UIForge core. This file is an example for demonstration
+   purposes only.
+   
+   Reference: Based on chriscase/nexalive project
+   =========================================== */

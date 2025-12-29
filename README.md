@@ -1711,8 +1711,25 @@ UIForge components support comprehensive theming through CSS variables. See [THE
 - CSS variable reference
 - System preference detection
 - Advanced customization techniques
+- **Example app themes** - Learn from real-world examples like the NexaLive music streaming app theme
 
-Quick example:
+### Example App Themes
+
+UIForge provides concrete example themes in `examples/themes/` to demonstrate how to create custom themes for real applications:
+
+- **NexaLive Theme** (`examples/themes/nexalive-theme.css`) - A purple/pink themed music streaming app example based on the [chriscase/nexalive](https://github.com/chriscase/nexalive) project
+
+**Important:** Example themes are for **demonstration only**. Copy them into your own application and customize the colors to match your brand. See [THEMING.md - Example App Themes](./THEMING.md#example-app-themes) for detailed adoption instructions.
+
+Quick example of import order:
+
+```tsx
+// Import UIForge core styles FIRST, then your custom theme
+import '@appforgeapps/uiforge/styles.css'
+import './my-custom-theme.css'  // Your customized copy of an example theme
+```
+
+Quick component theming example:
 
 ```tsx
 import { useState } from 'react'

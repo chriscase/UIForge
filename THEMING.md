@@ -680,6 +680,167 @@ function MobileLayout({ children }) {
 }
 ```
 
+## Example App Themes
+
+UIForge provides example themes in the `examples/themes/` directory to demonstrate how to create custom themes for real-world applications. These themes are **demonstration only** and should not be used directly in production.
+
+### Available Example Themes
+
+#### NexaLive Theme (`examples/themes/nexalive-theme.css`)
+
+A concrete example theme based on the [chriscase/nexalive](https://github.com/chriscase/nexalive) music streaming application. This theme shows how to:
+
+- Define brand-specific color tokens
+- Map brand colors to UIForge CSS variables
+- Create a cohesive visual identity across all components
+- Override spacing and typography for a custom look
+
+**Key Features:**
+- Purple and pink accent colors for a modern music app aesthetic
+- Dark mode optimized with deep backgrounds
+- Custom button, grid, and component theming
+- Demonstrates mapping for all UIForge components
+
+### How to Adopt Example Themes
+
+Example themes are meant to be **copied and customized** for your own projects. Here's how to adopt them:
+
+#### Step 1: Copy the Theme File
+
+There are several ways to get the example theme into your project:
+
+**Option 1: Download from GitHub (Recommended)**
+```bash
+# Download directly from the UIForge repository
+curl -o src/styles/my-theme.css https://raw.githubusercontent.com/chriscase/UIForge/main/examples/themes/nexalive-theme.css
+```
+
+**Option 2: View and copy manually**
+
+View the theme in the [UIForge repository](https://github.com/chriscase/UIForge/tree/main/examples/themes) and create your own file based on it.
+
+**Option 3: Copy from node_modules (not recommended for production)**
+```bash
+# Only use this during development/exploration
+cp node_modules/@appforgeapps/uiforge/examples/themes/nexalive-theme.css src/styles/my-theme.css
+```
+
+Note: The `examples/` directory is not guaranteed to be present in all package distributions, so downloading directly from GitHub or copying the content manually is more reliable.
+
+#### Step 2: Customize Brand Colors
+
+Edit the copied file to match your brand:
+
+```css
+/* my-theme.css */
+:root {
+  /* Replace with your brand colors */
+  --my-brand-primary: #your-color;
+  --my-brand-secondary: #your-color;
+  --my-brand-accent: #your-color;
+  
+  /* Map to UIForge variables */
+  --button-primary-bg: var(--my-brand-primary);
+  --button-primary-hover: var(--my-brand-primary-dark);
+  /* ... more mappings */
+}
+```
+
+#### Step 3: Import After UIForge Styles
+
+**Important:** Always import your custom theme **after** UIForge's core styles:
+
+```tsx
+// ✅ Correct import order
+import '@appforgeapps/uiforge/styles.css'  // UIForge core styles FIRST
+import './styles/my-theme.css'              // Your custom theme SECOND
+
+// Your app code...
+```
+
+```css
+/* Or in CSS */
+@import '@appforgeapps/uiforge/styles.css';  /* UIForge core FIRST */
+@import './my-theme.css';                    /* Your theme SECOND */
+```
+
+**Why this order matters:** UIForge core styles define default values for CSS variables. Your theme overrides these defaults. If you import your theme first, UIForge will override your customizations.
+
+#### Step 4: Apply Theme Class (Optional)
+
+You can optionally add a theme class to your root element:
+
+```tsx
+function App() {
+  return (
+    <div className="my-brand-theme">
+      {/* Your app content */}
+    </div>
+  )
+}
+```
+
+Or add it to the body:
+
+```tsx
+// In your main entry file
+document.body.classList.add('my-brand-theme')
+```
+
+### Example: Using NexaLive Theme in Your App
+
+```tsx
+// src/main.tsx
+import '@appforgeapps/uiforge/styles.css'
+import './styles/nexalive-theme.css'  // Your customized copy
+import App from './App'
+
+function main() {
+  document.body.classList.add('nexalive-theme')
+  // ... render your app
+}
+```
+
+### Best Practices for App Themes
+
+1. **Copy, Don't Import Directly**: Always copy example themes into your project and customize them. Don't import directly from `node_modules/examples/`.
+
+2. **Version Control**: Keep your theme file in your repository so it's versioned with your application code.
+
+3. **Maintain Brand Tokens**: Define your brand colors as CSS variables first, then map them to UIForge variables. This makes it easier to update your brand colors globally.
+
+4. **Test All Components**: When creating a theme, test it with all UIForge components you're using to ensure consistency.
+
+5. **Document Your Colors**: Add comments in your theme file explaining which colors are used where and why.
+
+6. **Consider Accessibility**: Ensure your custom colors meet WCAG contrast requirements (4.5:1 for normal text, 3:1 for large text).
+
+### Viewing Example Themes
+
+To see example themes in action:
+
+1. Clone the UIForge repository:
+   ```bash
+   git clone https://github.com/chriscase/UIForge.git
+   cd UIForge
+   npm install
+   npm run dev
+   ```
+
+2. Navigate to the SongCard example and toggle the "Use NexaLive Theme" checkbox to see the theme applied.
+
+### Creating Your Own Theme
+
+Use the NexaLive theme as a template:
+
+1. Start with the structure from `examples/themes/nexalive-theme.css`
+2. Replace the brand color variables with your colors
+3. Customize typography and spacing if needed
+4. Test thoroughly with your components
+5. Consider sharing your theme as an example contribution!
+
+**Remember**: App themes should live in **your application**, not in UIForge core. The `examples/themes/` directory is for demonstration purposes only.
+
 ## Contributing
 
 Have a great theme? Share it with the community! Submit your custom themes as examples in the `examples/themes/` directory.
