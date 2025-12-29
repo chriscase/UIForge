@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { SongCard } from './SongCard'
+import { MediaListSkeleton } from '../../src/components/Skeletons/MediaListSkeleton'
 import { useTheme } from '../ThemeContext'
 import './SongCardExample.css'
 
@@ -89,6 +90,7 @@ const SongCardExample: React.FC<SongCardExampleProps> = ({ onBack }) => {
   const { theme } = useTheme()
   const [playingId, setPlayingId] = useState<number | null>(null)
   const [notifications, setNotifications] = useState<string[]>([])
+  const [isLoading, setIsLoading] = useState(false)
 
   const addNotification = (message: string) => {
     setNotifications((prev) => [...prev, message])
@@ -143,6 +145,38 @@ const SongCardExample: React.FC<SongCardExampleProps> = ({ onBack }) => {
           ♪ Now playing: {sampleSongs.find(s => s.id === playingId)?.title}
         </div>
       )}
+
+      {/* Loading State Demo */}
+      <section className="song-card-section">
+        <h2>MediaListSkeleton - Loading State</h2>
+        <p>
+          Generic skeleton placeholder for loading states. Toggle loading to see the shimmer effect.
+        </p>
+        <button 
+          className="back-button" 
+          onClick={() => setIsLoading(!isLoading)}
+          style={{ marginBottom: 'var(--uiforge-gap-lg)' }}
+        >
+          {isLoading ? 'Hide Loading State' : 'Show Loading State'}
+        </button>
+        {isLoading ? (
+          <MediaListSkeleton count={3} theme={theme} ariaLabel="Loading songs" />
+        ) : (
+          <div className="song-card-grid">
+            {sampleSongs.slice(0, 3).map((song) => (
+              <SongCard
+                key={song.id}
+                {...song}
+                theme={theme}
+                variant="default"
+                onPlay={() => handlePlay(song)}
+                onAddToPlaylist={() => handleAddToPlaylist(song)}
+                onShowInfo={() => handleShowInfo(song)}
+              />
+            ))}
+          </div>
+        )}
+      </section>
 
       {/* Variant Demonstrations */}
       <section className="song-card-section">
@@ -249,6 +283,36 @@ const SongCardExample: React.FC<SongCardExampleProps> = ({ onBack }) => {
             <h3>🔧 Flexible</h3>
             <p>Supports render props and slots for custom content</p>
           </div>
+        </div>
+      </section>
+
+      {/* MediaListSkeleton Features */}
+      <section className="song-card-section">
+        <h2>MediaListSkeleton Features</h2>
+        <div className="implementation-card">
+          <h3>Loading State Component</h3>
+          <p>
+            MediaListSkeleton provides a reusable loading placeholder for any list of MediaCard components:
+          </p>
+          <ul>
+            <li>Configurable count for number of skeleton items</li>
+            <li>CSS shimmer animation that respects `prefers-reduced-motion`</li>
+            <li>Uses UIForge design tokens for consistent sizing and spacing</li>
+            <li>SSR-friendly (no client-side JavaScript required)</li>
+            <li>Theme support (light/dark mode)</li>
+            <li>Full accessibility with ARIA labels and status role</li>
+          </ul>
+          <pre className="code-example">
+{`// Basic usage
+<MediaListSkeleton count={5} />
+
+// With conditional rendering
+{isLoading ? (
+  <MediaListSkeleton count={3} theme="dark" />
+) : (
+  songs.map(song => <SongCard key={song.id} {...song} />)
+)}`}
+          </pre>
         </div>
       </section>
     </div>
