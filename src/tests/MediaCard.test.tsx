@@ -72,9 +72,9 @@ describe('MediaCard', () => {
     const handleClick = vi.fn()
     const { container } = render(<MediaCard {...defaultProps} onClick={handleClick} />)
     const card = container.querySelector('.uiforge-media-card')
-    
+
     expect(card).toHaveClass('uiforge-media-card--clickable')
-    
+
     await userEvent.click(card!)
     expect(handleClick).toHaveBeenCalledTimes(1)
   })
@@ -83,11 +83,11 @@ describe('MediaCard', () => {
     const handleClick = vi.fn()
     const { container } = render(<MediaCard {...defaultProps} onClick={handleClick} />)
     const card = container.querySelector('.uiforge-media-card')
-    
+
     card?.focus()
     await userEvent.keyboard('{Enter}')
     expect(handleClick).toHaveBeenCalledTimes(1)
-    
+
     await userEvent.keyboard(' ')
     expect(handleClick).toHaveBeenCalledTimes(2)
   })

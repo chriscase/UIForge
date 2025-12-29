@@ -65,14 +65,14 @@ export interface MediaCardProps {
 
 /**
  * A generic, reusable MediaCard component for displaying media-driven content items.
- * 
+ *
  * Features:
  * - Responsive layout: media left + body right (desktop), stacked (mobile)
  * - Theme token integration for consistent spacing, typography, and elevation
  * - Full accessibility support (alt text, focus states, ARIA labels, keyboard navigation)
  * - Flexible customization via render props and slots
  * - Multiple variants for different use cases
- * 
+ *
  * @example
  * ```tsx
  * <MediaCard
@@ -105,7 +105,7 @@ export const MediaCard: React.FC<MediaCardProps> = ({
   const variantClass = `${baseClass}--${variant}`
   const themeClass = `${baseClass}--${theme}`
   const clickableClass = onClick ? `${baseClass}--clickable` : ''
-  
+
   const classes = [baseClass, variantClass, themeClass, clickableClass, className]
     .filter(Boolean)
     .join(' ')
@@ -128,14 +128,9 @@ export const MediaCard: React.FC<MediaCardProps> = ({
       aria-label={ariaLabel || title}
     >
       <div className={`${baseClass}__media`}>
-        <img
-          src={mediaUrl}
-          alt={mediaAlt}
-          className={`${baseClass}__image`}
-          loading="lazy"
-        />
+        <img src={mediaUrl} alt={mediaAlt} className={`${baseClass}__image`} loading="lazy" />
       </div>
-      
+
       <div className={`${baseClass}__content`}>
         {renderBody ? (
           renderBody()
@@ -143,10 +138,8 @@ export const MediaCard: React.FC<MediaCardProps> = ({
           <>
             <div className={`${baseClass}__body`}>
               <h3 className={`${baseClass}__title`}>{title}</h3>
-              {subtitle && (
-                <p className={`${baseClass}__subtitle`}>{subtitle}</p>
-              )}
-              
+              {subtitle && <p className={`${baseClass}__subtitle`}>{subtitle}</p>}
+
               {meta && Object.keys(meta).length > 0 && (
                 <dl className={`${baseClass}__meta`}>
                   {Object.entries(meta).map(([key, value]) => (
@@ -158,7 +151,7 @@ export const MediaCard: React.FC<MediaCardProps> = ({
                 </dl>
               )}
             </div>
-            
+
             {(actions || renderFooter) && (
               <div className={`${baseClass}__footer`}>
                 {renderFooter ? renderFooter() : actions}
