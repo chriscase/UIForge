@@ -57,13 +57,6 @@ describe('MediaListSkeleton', () => {
     expect(skeleton).toHaveAttribute('aria-label', 'Loading media items')
   })
 
-  it('renders screen reader text', () => {
-    render(<MediaListSkeleton ariaLabel="Loading content" />)
-    const srText = screen.getByText('Loading content')
-    expect(srText).toBeInTheDocument()
-    expect(srText).toHaveClass('sr-only')
-  })
-
   it('renders skeleton structure matching MediaCard layout', () => {
     const { container } = render(<MediaListSkeleton count={1} />)
 

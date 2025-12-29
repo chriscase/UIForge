@@ -117,8 +117,6 @@ export const MediaListSkeleton: React.FC<MediaListSkeletonProps> = ({
           </div>
         </div>
       ))}
-      {/* Screen reader text */}
-      <span className="sr-only">{ariaLabel}</span>
     </div>
   )
 }

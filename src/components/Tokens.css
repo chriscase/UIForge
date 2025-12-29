@@ -129,3 +129,22 @@
 .uiforge-fixed-right-margin {
   margin-right: env(safe-area-inset-right, 0px);
 }
+
+/* ===========================================
+   Screen Reader Only Utility
+   
+   Visually hides content while keeping it accessible to screen readers.
+   Useful for providing additional context to assistive technologies.
+   =========================================== */
+
+.uiforge-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
