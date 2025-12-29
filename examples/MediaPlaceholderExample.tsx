@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { MediaPlaceholder } from '../src/components/MediaPlaceholder'
 import { MediaCard } from '../src/components/MediaCard'
 import { useOptimizedImage } from '../src/hooks/useOptimizedImage'
@@ -22,7 +22,6 @@ interface MediaPlaceholderExampleProps {
  */
 const MediaPlaceholderExample: React.FC<MediaPlaceholderExampleProps> = ({ onBack }) => {
   const { theme } = useTheme()
-  const [showBrokenImage, setShowBrokenImage] = useState(false)
 
   // Example of useOptimizedImage with aspect ratio
   const optimizedImage1 = useOptimizedImage({
