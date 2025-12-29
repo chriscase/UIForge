@@ -110,12 +110,15 @@ const SongCardExample: React.FC<SongCardExampleProps> = ({ onBack }) => {
       document.body.classList.remove('nexalive-theme')
     }
 
+    // Cleanup only if this component enabled the theme
     return () => {
-      const link = document.getElementById('nexalive-theme')
-      if (link) {
-        link.remove()
+      if (useNexaLiveTheme) {
+        const link = document.getElementById('nexalive-theme')
+        if (link) {
+          link.remove()
+        }
+        document.body.classList.remove('nexalive-theme')
       }
-      document.body.classList.remove('nexalive-theme')
     }
   }, [useNexaLiveTheme])
 

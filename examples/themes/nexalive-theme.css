@@ -194,7 +194,8 @@
   /* ===========================================
      NexaLive Custom Spacing (Optional)
      
-     You can also override UIForge spacing tokens if needed
+     You can also override UIForge spacing tokens if needed.
+     Default values: gap: 8px, gap-lg: 12px, gap-xl: 16px
      =========================================== */
   
   /* Uncomment to use slightly larger gaps */

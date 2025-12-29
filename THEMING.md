@@ -707,14 +707,25 @@ Example themes are meant to be **copied and customized** for your own projects. 
 
 #### Step 1: Copy the Theme File
 
-Copy the example theme from `examples/themes/` into your project:
+There are several ways to get the example theme into your project:
 
+**Option 1: Download from GitHub (Recommended)**
 ```bash
-# Example: Copy NexaLive theme to your project
+# Download directly from the UIForge repository
+curl -o src/styles/my-theme.css https://raw.githubusercontent.com/chriscase/UIForge/main/examples/themes/nexalive-theme.css
+```
+
+**Option 2: View and copy manually**
+
+View the theme in the [UIForge repository](https://github.com/chriscase/UIForge/tree/main/examples/themes) and create your own file based on it.
+
+**Option 3: Copy from node_modules (not recommended for production)**
+```bash
+# Only use this during development/exploration
 cp node_modules/@appforgeapps/uiforge/examples/themes/nexalive-theme.css src/styles/my-theme.css
 ```
 
-Or view it in the [UIForge repository](https://github.com/chriscase/UIForge/tree/main/examples/themes) and create your own file based on it.
+Note: The `examples/` directory is not guaranteed to be present in all package distributions, so downloading directly from GitHub or copying the content manually is more reliable.
 
 #### Step 2: Customize Brand Colors
 
