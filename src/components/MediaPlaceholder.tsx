@@ -71,12 +71,12 @@ export interface MediaPlaceholderProps {
  */
 function getInitials(name: string): string {
   if (!name) return '?'
-  
+
   const words = name.trim().split(/\s+/)
   if (words.length === 1) {
     return words[0].charAt(0).toUpperCase()
   }
-  
+
   return (words[0].charAt(0) + words[words.length - 1].charAt(0)).toUpperCase()
 }
 
@@ -102,25 +102,25 @@ const DefaultIcon: React.FC = () => (
 
 /**
  * MediaPlaceholder - A placeholder component for missing or loading media
- * 
+ *
  * Features:
  * - Three display modes: icon, initials, gradient
  * - Multiple size options
  * - Customizable border radius
  * - Theme support (light/dark)
  * - Accessibility support with alt text
- * 
+ *
  * Perfect for:
  * - Missing profile pictures
  * - Loading states for images
  * - Default avatars
  * - Fallback media for MediaCard
- * 
+ *
  * @example
  * ```tsx
  * // Icon placeholder (default)
  * <MediaPlaceholder alt="Profile picture" />
- * 
+ *
  * // Initials placeholder
  * <MediaPlaceholder
  *   type="initials"
@@ -129,7 +129,7 @@ const DefaultIcon: React.FC = () => (
  *   borderRadius="full"
  *   alt="John Doe's avatar"
  * />
- * 
+ *
  * // Gradient placeholder
  * <MediaPlaceholder
  *   type="gradient"
@@ -137,7 +137,7 @@ const DefaultIcon: React.FC = () => (
  *   size="medium"
  *   alt="Album artwork placeholder"
  * />
- * 
+ *
  * // Custom icon
  * <MediaPlaceholder
  *   type="icon"
@@ -164,7 +164,7 @@ export const MediaPlaceholder: React.FC<MediaPlaceholderProps> = ({
   const radiusClass = `${baseClass}--radius-${borderRadius}`
   const themeClass = `${baseClass}--${theme}`
   const gradientClass = type === 'gradient' ? `${baseClass}--gradient-${gradientColor}` : ''
-  
+
   const classes = [
     baseClass,
     typeClass,
@@ -172,12 +172,14 @@ export const MediaPlaceholder: React.FC<MediaPlaceholderProps> = ({
     radiusClass,
     themeClass,
     gradientClass,
-    className
-  ].filter(Boolean).join(' ')
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   // Determine content based on type
   let content: React.ReactNode
-  
+
   if (type === 'initials') {
     const displayInitials = initials || getInitials(name)
     content = <span className={`${baseClass}__initials`}>{displayInitials}</span>
@@ -189,12 +191,7 @@ export const MediaPlaceholder: React.FC<MediaPlaceholderProps> = ({
   }
 
   return (
-    <div
-      className={classes}
-      role="img"
-      aria-label={alt}
-      data-theme={theme}
-    >
+    <div className={classes} role="img" aria-label={alt} data-theme={theme}>
       {content}
     </div>
   )

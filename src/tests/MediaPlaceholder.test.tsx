@@ -56,14 +56,7 @@ describe('MediaPlaceholder', () => {
   })
 
   it('uses custom initials when provided', () => {
-    render(
-      <MediaPlaceholder
-        type="initials"
-        name="John Doe"
-        initials="AB"
-        alt="Custom initials"
-      />
-    )
+    render(<MediaPlaceholder type="initials" name="John Doe" initials="AB" alt="Custom initials" />)
     expect(screen.getByText('AB')).toBeInTheDocument()
     expect(screen.queryByText('JD')).not.toBeInTheDocument()
   })
@@ -74,9 +67,7 @@ describe('MediaPlaceholder', () => {
   })
 
   it('renders gradient type', () => {
-    const { container } = render(
-      <MediaPlaceholder type="gradient" alt="Gradient placeholder" />
-    )
+    const { container } = render(<MediaPlaceholder type="gradient" alt="Gradient placeholder" />)
     const placeholder = container.querySelector('.uif-media-placeholder')
     expect(placeholder).toHaveClass('uif-media-placeholder--gradient')
     expect(placeholder).toHaveClass('uif-media-placeholder--gradient-blue')

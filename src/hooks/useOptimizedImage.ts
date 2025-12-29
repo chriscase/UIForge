@@ -78,34 +78,34 @@ export interface UseOptimizedImageResult {
 
 /**
  * useOptimizedImage - A hook that provides optimized image attributes
- * 
+ *
  * This hook helps you implement best practices for image loading and performance:
- * 
+ *
  * **Performance Best Practices:**
  * 1. **Lazy Loading**: Use `loading="lazy"` for images below the fold
  * 2. **Async Decoding**: Use `decoding="async"` to avoid blocking the main thread
  * 3. **Responsive Images**: Use `srcSet` and `sizes` for different screen sizes
  * 4. **Aspect Ratio**: Use `aspectRatio` to prevent layout shift (CLS)
  * 5. **LQIP (Low Quality Image Placeholder)**: Consider using a blur-up technique
- * 
+ *
  * **Recommended Image Sizes:**
  * - Thumbnails: 64px, 84px, 120px
  * - Cards: 320px, 480px, 640px
  * - Hero images: 1024px, 1280px, 1920px
  * - Always provide WebP/AVIF formats when possible
- * 
+ *
  * **Accessibility:**
  * - Always provide meaningful `alt` text
  * - Use empty `alt=""` for decorative images
  * - Consider adding `title` for additional context
- * 
+ *
  * **LQIP Guidance:**
  * For optimal user experience, consider implementing a Low Quality Image Placeholder (LQIP):
  * 1. Generate a tiny version of the image (e.g., 20px wide, base64 encoded)
  * 2. Display it as background while the full image loads
  * 3. Blur it with CSS `filter: blur(10px)` for a smooth appearance
  * 4. Fade in the full image when loaded
- * 
+ *
  * @example
  * ```tsx
  * // Basic usage
@@ -118,7 +118,7 @@ export interface UseOptimizedImageResult {
  *   })
  *   return <img {...imgProps} />
  * }
- * 
+ *
  * // Responsive images with srcSet
  * function ResponsiveImage() {
  *   const { imgProps } = useOptimizedImage({
@@ -131,7 +131,7 @@ export interface UseOptimizedImageResult {
  *   })
  *   return <img {...imgProps} />
  * }
- * 
+ *
  * // With aspect ratio (prevents layout shift)
  * function AspectRatioImage() {
  *   const { imgProps, containerProps } = useOptimizedImage({
@@ -146,7 +146,7 @@ export interface UseOptimizedImageResult {
  *     </div>
  *   )
  * }
- * 
+ *
  * // Complete example with all options
  * function CompleteExample() {
  *   const { imgProps, containerProps } = useOptimizedImage({
@@ -160,7 +160,7 @@ export interface UseOptimizedImageResult {
  *     width: 1200,
  *     className: 'hero-image'
  *   })
- *   
+ *
  *   return (
  *     <div {...containerProps}>
  *       <img {...imgProps} />
@@ -168,13 +168,11 @@ export interface UseOptimizedImageResult {
  *   )
  * }
  * ```
- * 
+ *
  * @param options - Configuration options for the optimized image
  * @returns Object containing imgProps (and optionally containerProps)
  */
-export function useOptimizedImage(
-  options: UseOptimizedImageOptions
-): UseOptimizedImageResult {
+export function useOptimizedImage(options: UseOptimizedImageOptions): UseOptimizedImageResult {
   const {
     src,
     alt,
