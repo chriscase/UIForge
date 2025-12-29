@@ -65,6 +65,9 @@ export type { MobileHeaderLayoutProps } from './components/MobileHeaderLayout'
 export { OverflowMenu } from './components/OverflowMenu'
 export type { OverflowMenuProps, OverflowMenuItem } from './components/OverflowMenu'
 
+export { MediaCard } from './components/MediaCard'
+export type { MediaCardProps } from './components/MediaCard'
+
 // Export video utilities and providers
 export {
   detectProvider,
@@ -99,3 +102,4 @@ import './components/Sidebar.css'
 import './components/SafeAreaContainer.css'
 import './components/MobileHeaderLayout.css'
 import './components/OverflowMenu.css'
+import './components/MediaCard.css'

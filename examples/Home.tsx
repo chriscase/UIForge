@@ -307,6 +307,25 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             }
             onNavigate={onNavigate}
           />
+
+          <ComponentCard
+            name="MediaCard & SongCard"
+            description="Generic media card component with responsive layout, plus SongCard example showing domain-specific composition"
+            icon="🎵"
+            path="/song-card"
+            preview={
+              <div className="preview-media-card">
+                <div className="preview-album">
+                  <div className="preview-album-art">🎵</div>
+                  <div className="preview-album-info">
+                    <div className="preview-album-title">Song Title</div>
+                    <div className="preview-album-artist">Artist Name</div>
+                  </div>
+                </div>
+              </div>
+            }
+            onNavigate={onNavigate}
+          />
         </section>
       </main>
 

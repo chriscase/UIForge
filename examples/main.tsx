@@ -10,6 +10,7 @@ import SidebarExample from './SidebarExample'
 import SafeAreaExample from './SafeAreaExample'
 import MobileHeaderExample from './MobileHeaderExample'
 import CourseForgeMobileHeaderExample from './CourseForgeMobileHeaderExample'
+import SongCardExample from './SongCard/SongCardExample'
 import AppDemo from './App'
 import { ThemeContext, AppTheme } from './ThemeContext'
 import './index.css'
@@ -66,6 +67,8 @@ function Router() {
         return <MobileHeaderExample onNavigate={navigate} />
       case '/courseforge-mobile-header':
         return <CourseForgeMobileHeaderExample onNavigate={navigate} />
+      case '/song-card':
+        return <SongCardExample onBack={() => navigate('/')} />
       case '/grid':
       case '/blocks-editor':
       case '/combobox':

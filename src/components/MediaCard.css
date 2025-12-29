@@ -1,0 +1,232 @@
+/* ===========================================
+   MediaCard Component Styles
+   
+   A responsive, accessible media card component using UIForge design tokens.
+   Layout: media left + body right (desktop), stacked (mobile)
+   =========================================== */
+
+.uiforge-media-card {
+  /* CSS Variables for theming */
+  --media-card-bg: #ffffff;
+  --media-card-border: #e5e7eb;
+  --media-card-text: #1f2937;
+  --media-card-text-secondary: #6b7280;
+  --media-card-hover-bg: #f9fafb;
+  --media-card-focus-ring: #3b82f6;
+  --media-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --media-card-shadow-hover: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+
+  /* Layout */
+  display: flex;
+  flex-direction: row;
+  gap: var(--uiforge-gap-lg);
+  
+  /* Theming */
+  background-color: var(--media-card-bg);
+  border: 1px solid var(--media-card-border);
+  border-radius: var(--uiforge-border-radius);
+  padding: var(--uiforge-gap-lg);
+  
+  /* Typography */
+  font-family: system-ui, -apple-system, sans-serif;
+  color: var(--media-card-text);
+  
+  /* Elevation */
+  box-shadow: var(--media-card-shadow);
+  transition: all 0.2s ease-in-out;
+}
+
+/* Dark theme variables */
+.uiforge-media-card--dark {
+  --media-card-bg: #1f2937;
+  --media-card-border: #374151;
+  --media-card-text: #f9fafb;
+  --media-card-text-secondary: #9ca3af;
+  --media-card-hover-bg: #374151;
+  --media-card-focus-ring: #60a5fa;
+  --media-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --media-card-shadow-hover: 0 4px 6px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Clickable cards */
+.uiforge-media-card--clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.uiforge-media-card--clickable:hover {
+  background-color: var(--media-card-hover-bg);
+  box-shadow: var(--media-card-shadow-hover);
+  transform: translateY(-1px);
+}
+
+.uiforge-media-card--clickable:active {
+  transform: translateY(0);
+}
+
+/* Focus states for accessibility */
+.uiforge-media-card:focus-visible {
+  outline: 2px solid var(--media-card-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Media section */
+.uiforge-media-card__media {
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+  border-radius: var(--uiforge-border-radius-sm);
+  background-color: var(--media-card-border);
+}
+
+.uiforge-media-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Content section */
+.uiforge-media-card__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--uiforge-gap-md);
+  min-width: 0; /* Prevents flex item from overflowing */
+}
+
+.uiforge-media-card__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--uiforge-gap-sm);
+}
+
+/* Title and subtitle */
+.uiforge-media-card__title {
+  margin: 0;
+  font-size: var(--uiforge-font-size-lg);
+  font-weight: 600;
+  line-height: var(--uiforge-line-height-tight);
+  color: var(--media-card-text);
+  
+  /* Truncate long titles */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.uiforge-media-card__subtitle {
+  margin: 0;
+  font-size: var(--uiforge-font-size-md);
+  color: var(--media-card-text-secondary);
+  line-height: var(--uiforge-line-height);
+  
+  /* Truncate long subtitles */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Metadata */
+.uiforge-media-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--uiforge-gap-md);
+  margin: 0;
+  font-size: var(--uiforge-font-size-sm);
+  color: var(--media-card-text-secondary);
+}
+
+.uiforge-media-card__meta-item {
+  display: flex;
+  gap: var(--uiforge-gap-xs);
+  margin: 0;
+}
+
+.uiforge-media-card__meta-key {
+  font-weight: 500;
+  margin: 0;
+}
+
+.uiforge-media-card__meta-value {
+  margin: 0;
+}
+
+/* Footer (actions) */
+.uiforge-media-card__footer {
+  display: flex;
+  gap: var(--uiforge-gap-sm);
+  align-items: center;
+  margin-top: auto;
+}
+
+/* =========================================== 
+   Variant: Compact
+   =========================================== */
+.uiforge-media-card--compact {
+  padding: var(--uiforge-gap-md);
+  gap: var(--uiforge-gap-md);
+}
+
+.uiforge-media-card--compact .uiforge-media-card__media {
+  width: 80px;
+  height: 80px;
+}
+
+.uiforge-media-card--compact .uiforge-media-card__title {
+  font-size: var(--uiforge-font-size-md);
+}
+
+.uiforge-media-card--compact .uiforge-media-card__subtitle {
+  font-size: var(--uiforge-font-size-sm);
+}
+
+/* =========================================== 
+   Variant: Featured
+   =========================================== */
+.uiforge-media-card--featured {
+  padding: var(--uiforge-gap-xl);
+  box-shadow: var(--media-card-shadow-hover);
+}
+
+.uiforge-media-card--featured .uiforge-media-card__media {
+  width: 160px;
+  height: 160px;
+}
+
+.uiforge-media-card--featured .uiforge-media-card__title {
+  font-size: var(--uiforge-font-size-xl);
+  font-weight: 700;
+}
+
+/* =========================================== 
+   Responsive Layout: Stacked on Mobile
+   =========================================== */
+@media (max-width: 640px) {
+  .uiforge-media-card {
+    flex-direction: column;
+  }
+  
+  .uiforge-media-card__media {
+    width: 100%;
+    height: 200px;
+  }
+  
+  .uiforge-media-card--compact .uiforge-media-card__media {
+    width: 100%;
+    height: 150px;
+  }
+  
+  .uiforge-media-card--featured .uiforge-media-card__media {
+    width: 100%;
+    height: 250px;
+  }
+  
+  /* Allow text to wrap on mobile */
+  .uiforge-media-card__title,
+  .uiforge-media-card__subtitle {
+    white-space: normal;
+  }
+}

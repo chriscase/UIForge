@@ -1,0 +1,232 @@
+/* ===========================================
+   SongCard Example Page Styles
+   =========================================== */
+
+.song-card-example {
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: var(--page-bg, #ffffff);
+  color: var(--page-text, #1f2937);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.song-card-example[data-theme='dark'] {
+  --page-bg: #111827;
+  --page-text: #f9fafb;
+}
+
+/* Header */
+.song-card-example__header {
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+}
+
+.back-button {
+  background: transparent;
+  border: 1px solid currentColor;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: inherit;
+  margin-bottom: 1rem;
+  transition: all 0.2s;
+}
+
+.back-button:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.song-card-example h1 {
+  font-size: 2.5rem;
+  margin: 0 0 1rem;
+  font-weight: 700;
+}
+
+.song-card-example__description {
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: var(--page-text-secondary, #6b7280);
+  max-width: 800px;
+}
+
+.song-card-example[data-theme='dark'] .song-card-example__description {
+  --page-text-secondary: #9ca3af;
+}
+
+/* Notifications */
+.notifications {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.notification {
+  background-color: #3b82f6;
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.3s ease-out;
+  min-width: 250px;
+  font-size: 0.875rem;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Playing Indicator */
+.playing-indicator {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.3s ease-out;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Sections */
+.song-card-section {
+  max-width: 1200px;
+  margin: 0 auto 4rem;
+}
+
+.song-card-section h2 {
+  font-size: 1.875rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+
+.song-card-section > p {
+  font-size: 1rem;
+  color: var(--page-text-secondary, #6b7280);
+  margin: 0 0 1.5rem;
+}
+
+/* Song Card Grid */
+.song-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  gap: 1.5rem;
+}
+
+.song-card-grid--compact {
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+}
+
+@media (max-width: 768px) {
+  .song-card-grid,
+  .song-card-grid--compact {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Implementation Card */
+.implementation-card {
+  background-color: rgba(59, 130, 246, 0.05);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 8px;
+  padding: 2rem;
+}
+
+.song-card-example[data-theme='dark'] .implementation-card {
+  background-color: rgba(59, 130, 246, 0.1);
+  border-color: rgba(96, 165, 250, 0.3);
+}
+
+.implementation-card h3 {
+  margin: 0 0 1rem;
+  font-size: 1.5rem;
+}
+
+.implementation-card p {
+  margin: 0 0 1rem;
+  line-height: 1.75;
+}
+
+.implementation-card ul {
+  margin: 0 0 1rem;
+  padding-left: 1.5rem;
+  line-height: 1.75;
+}
+
+.code-example {
+  background-color: #1f2937;
+  color: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Features Grid */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.feature-card {
+  background-color: rgba(156, 163, 175, 0.1);
+  border: 1px solid rgba(156, 163, 175, 0.2);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.song-card-example[data-theme='dark'] .feature-card {
+  background-color: rgba(75, 85, 99, 0.3);
+  border-color: rgba(107, 114, 128, 0.4);
+}
+
+.feature-card h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.feature-card p {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--page-text-secondary, #6b7280);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .song-card-example {
+    padding: 1rem;
+  }
+
+  .song-card-example h1 {
+    font-size: 2rem;
+  }
+
+  .notifications {
+    left: 1rem;
+    right: 1rem;
+  }
+
+  .notification {
+    min-width: auto;
+  }
+}
