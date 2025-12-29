@@ -1,0 +1,18 @@
+/* ===========================================
+   SongCard Example Styles
+   =========================================== */
+
+.song-card {
+  /* Additional song-specific styling if needed */
+}
+
+.song-card-actions {
+  display: flex;
+  gap: var(--uiforge-gap-sm, 6px);
+  flex-wrap: wrap;
+}
+
+/* Ensure buttons in actions don't grow too large */
+.song-card-actions button {
+  white-space: nowrap;
+}

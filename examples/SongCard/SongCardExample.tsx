@@ -1,0 +1,258 @@
+import React, { useState } from 'react'
+import { SongCard } from './SongCard'
+import { useTheme } from '../ThemeContext'
+import './SongCardExample.css'
+
+/**
+ * Sample song data for demonstration
+ */
+const sampleSongs = [
+  {
+    id: 1,
+    title: 'Bohemian Rhapsody',
+    artist: 'Queen',
+    album: 'A Night at the Opera',
+    albumArtUrl: 'https://picsum.photos/seed/song1/400/400',
+    year: 1975,
+    duration: '5:55',
+    genre: 'Rock',
+    versionCount: 3,
+  },
+  {
+    id: 2,
+    title: 'Imagine',
+    artist: 'John Lennon',
+    album: 'Imagine',
+    albumArtUrl: 'https://picsum.photos/seed/song2/400/400',
+    year: 1971,
+    duration: '3:03',
+    genre: 'Pop',
+    versionCount: 1,
+  },
+  {
+    id: 3,
+    title: 'Billie Jean',
+    artist: 'Michael Jackson',
+    album: 'Thriller',
+    albumArtUrl: 'https://picsum.photos/seed/song3/400/400',
+    year: 1982,
+    duration: '4:54',
+    genre: 'Pop',
+    versionCount: 2,
+  },
+  {
+    id: 4,
+    title: 'Smells Like Teen Spirit',
+    artist: 'Nirvana',
+    album: 'Nevermind',
+    albumArtUrl: 'https://picsum.photos/seed/song4/400/400',
+    year: 1991,
+    duration: '5:01',
+    genre: 'Grunge',
+    versionCount: 1,
+  },
+  {
+    id: 5,
+    title: 'Hotel California',
+    artist: 'Eagles',
+    album: 'Hotel California',
+    albumArtUrl: 'https://picsum.photos/seed/song5/400/400',
+    year: 1976,
+    duration: '6:30',
+    genre: 'Rock',
+    versionCount: 2,
+  },
+  {
+    id: 6,
+    title: 'Sweet Child O\' Mine',
+    artist: 'Guns N\' Roses',
+    album: 'Appetite for Destruction',
+    albumArtUrl: 'https://picsum.photos/seed/song6/400/400',
+    year: 1987,
+    duration: '5:56',
+    genre: 'Hard Rock',
+    versionCount: 1,
+  },
+]
+
+interface SongCardExampleProps {
+  onBack: () => void
+}
+
+/**
+ * SongCardExample - Interactive gallery demonstrating the SongCard component
+ * 
+ * This example shows how MediaCard can be composed into domain-specific components
+ * like SongCard for music applications.
+ */
+const SongCardExample: React.FC<SongCardExampleProps> = ({ onBack }) => {
+  const { theme } = useTheme()
+  const [playingId, setPlayingId] = useState<number | null>(null)
+  const [notifications, setNotifications] = useState<string[]>([])
+
+  const addNotification = (message: string) => {
+    setNotifications((prev) => [...prev, message])
+    setTimeout(() => {
+      setNotifications((prev) => prev.slice(1))
+    }, 3000)
+  }
+
+  const handlePlay = (song: typeof sampleSongs[0]) => {
+    setPlayingId(song.id)
+    addNotification(`Playing: ${song.title} by ${song.artist}`)
+    // Simulate stopping after 3 seconds
+    setTimeout(() => setPlayingId(null), 3000)
+  }
+
+  const handleAddToPlaylist = (song: typeof sampleSongs[0]) => {
+    addNotification(`Added to playlist: ${song.title}`)
+  }
+
+  const handleShowInfo = (song: typeof sampleSongs[0]) => {
+    addNotification(`Showing info for: ${song.title}`)
+  }
+
+  return (
+    <div className="song-card-example" data-theme={theme}>
+      <div className="song-card-example__header">
+        <button className="back-button" onClick={onBack}>
+          ← Back to Home
+        </button>
+        <h1>SongCard Example</h1>
+        <p className="song-card-example__description">
+          SongCard demonstrates how to compose the generic MediaCard component for
+          domain-specific use cases. This music-focused component wraps MediaCard with
+          music-specific props and actions.
+        </p>
+      </div>
+
+      {/* Notifications */}
+      {notifications.length > 0 && (
+        <div className="notifications">
+          {notifications.map((notification, index) => (
+            <div key={index} className="notification">
+              {notification}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Currently Playing Indicator */}
+      {playingId !== null && (
+        <div className="playing-indicator">
+          ♪ Now playing: {sampleSongs.find(s => s.id === playingId)?.title}
+        </div>
+      )}
+
+      {/* Variant Demonstrations */}
+      <section className="song-card-section">
+        <h2>Default Variant</h2>
+        <p>Standard size with all features visible</p>
+        <div className="song-card-grid">
+          {sampleSongs.slice(0, 3).map((song) => (
+            <SongCard
+              key={song.id}
+              {...song}
+              theme={theme}
+              variant="default"
+              onPlay={() => handlePlay(song)}
+              onAddToPlaylist={() => handleAddToPlaylist(song)}
+              onShowInfo={() => handleShowInfo(song)}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section className="song-card-section">
+        <h2>Compact Variant</h2>
+        <p>Smaller cards for denser layouts</p>
+        <div className="song-card-grid song-card-grid--compact">
+          {sampleSongs.slice(0, 4).map((song) => (
+            <SongCard
+              key={song.id}
+              {...song}
+              theme={theme}
+              variant="compact"
+              onPlay={() => handlePlay(song)}
+              onAddToPlaylist={() => handleAddToPlaylist(song)}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section className="song-card-section">
+        <h2>Featured Variant</h2>
+        <p>Larger cards for highlighting content</p>
+        <div className="song-card-grid">
+          {sampleSongs.slice(0, 2).map((song) => (
+            <SongCard
+              key={song.id}
+              {...song}
+              theme={theme}
+              variant="featured"
+              onPlay={() => handlePlay(song)}
+              onAddToPlaylist={() => handleAddToPlaylist(song)}
+              onShowInfo={() => handleShowInfo(song)}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* Implementation Details */}
+      <section className="song-card-section">
+        <h2>Implementation Details</h2>
+        <div className="implementation-card">
+          <h3>How SongCard Uses MediaCard</h3>
+          <p>
+            SongCard is a wrapper around the generic MediaCard component that:
+          </p>
+          <ul>
+            <li>Accepts music-specific props (artist, album, year, duration, genre, versionCount)</li>
+            <li>Transforms them into MediaCard's generic props (title, subtitle, meta)</li>
+            <li>Provides appropriate actions (Play, Add to Playlist, Info)</li>
+            <li>Maintains proper accessibility with ARIA labels</li>
+          </ul>
+          <pre className="code-example">
+{`<SongCard
+  title="Bohemian Rhapsody"
+  artist="Queen"
+  album="A Night at the Opera"
+  albumArtUrl="/album-art.jpg"
+  year={1975}
+  duration="5:55"
+  genre="Rock"
+  versionCount={3}
+  onPlay={() => play()}
+  onAddToPlaylist={() => addToPlaylist()}
+/>`}
+          </pre>
+        </div>
+      </section>
+
+      {/* MediaCard Features */}
+      <section className="song-card-section">
+        <h2>MediaCard Features</h2>
+        <div className="features-grid">
+          <div className="feature-card">
+            <h3>📱 Responsive</h3>
+            <p>Adapts layout for mobile (stacked) and desktop (side-by-side)</p>
+          </div>
+          <div className="feature-card">
+            <h3>🎨 Themeable</h3>
+            <p>Uses UIForge design tokens for consistent styling</p>
+          </div>
+          <div className="feature-card">
+            <h3>♿ Accessible</h3>
+            <p>Full keyboard support, ARIA labels, and focus states</p>
+          </div>
+          <div className="feature-card">
+            <h3>🔧 Flexible</h3>
+            <p>Supports render props and slots for custom content</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+export default SongCardExample
