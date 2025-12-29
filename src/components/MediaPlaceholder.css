@@ -1,0 +1,191 @@
+/* ===========================================
+   MediaPlaceholder Component Styles
+   
+   A versatile placeholder for missing or loading media with support for
+   icons, initials, and gradients.
+   =========================================== */
+
+.uif-media-placeholder {
+  /* Default size and styling from issue spec */
+  width: 84px;
+  height: 84px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--bg-surface-elevated, #f3f4f6);
+  box-shadow: var(--elev-sm, 0 1px 2px rgba(0, 0, 0, 0.05));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Typography and colors */
+  color: var(--text-secondary, #6b7280);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 600;
+  
+  /* Smooth transitions */
+  transition: all 0.2s ease-in-out;
+  
+  /* Prevent content overflow */
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* =========================================== 
+   Theme Variants
+   =========================================== */
+.uif-media-placeholder--light {
+  background: var(--bg-surface-elevated, #f3f4f6);
+  color: var(--text-secondary, #6b7280);
+}
+
+.uif-media-placeholder--dark {
+  background: var(--bg-surface-elevated, #374151);
+  color: var(--text-secondary, #9ca3af);
+}
+
+/* =========================================== 
+   Size Variants
+   =========================================== */
+.uif-media-placeholder--small {
+  width: 64px;
+  height: 64px;
+  font-size: 20px;
+}
+
+.uif-media-placeholder--small svg {
+  width: 28px;
+  height: 28px;
+}
+
+.uif-media-placeholder--medium {
+  width: 84px;
+  height: 84px;
+  font-size: 28px;
+}
+
+.uif-media-placeholder--medium svg {
+  width: 40px;
+  height: 40px;
+}
+
+.uif-media-placeholder--large {
+  width: 120px;
+  height: 120px;
+  font-size: 40px;
+}
+
+.uif-media-placeholder--large svg {
+  width: 56px;
+  height: 56px;
+}
+
+.uif-media-placeholder--xlarge {
+  width: 160px;
+  height: 160px;
+  font-size: 56px;
+}
+
+.uif-media-placeholder--xlarge svg {
+  width: 72px;
+  height: 72px;
+}
+
+/* =========================================== 
+   Border Radius Variants
+   =========================================== */
+.uif-media-placeholder--radius-small {
+  border-radius: 4px;
+}
+
+.uif-media-placeholder--radius-medium {
+  border-radius: 8px;
+}
+
+.uif-media-placeholder--radius-large {
+  border-radius: 12px;
+}
+
+.uif-media-placeholder--radius-full {
+  border-radius: 50%;
+}
+
+/* =========================================== 
+   Type: Icon
+   =========================================== */
+.uif-media-placeholder--icon {
+  /* Icon inherits default styles */
+}
+
+.uif-media-placeholder--icon svg {
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+/* =========================================== 
+   Type: Initials
+   =========================================== */
+.uif-media-placeholder--initials {
+  font-weight: 600;
+  user-select: none;
+}
+
+.uif-media-placeholder__initials {
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* =========================================== 
+   Type: Gradient
+   =========================================== */
+.uif-media-placeholder--gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: transparent; /* Hide any content */
+}
+
+/* Gradient Color Schemes */
+.uif-media-placeholder--gradient-blue {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.uif-media-placeholder--gradient-purple {
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+}
+
+.uif-media-placeholder--gradient-green {
+  background: linear-gradient(135deg, #667eea 0%, #56ab2f 100%);
+}
+
+.uif-media-placeholder--gradient-orange {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.uif-media-placeholder--gradient-pink {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+/* =========================================== 
+   Accessibility
+   =========================================== */
+.uif-media-placeholder:focus-visible {
+  outline: 2px solid var(--focus-ring, #3b82f6);
+  outline-offset: 2px;
+}
+
+/* =========================================== 
+   Responsive Design
+   =========================================== */
+@media (max-width: 640px) {
+  /* Slightly smaller on mobile to save space */
+  .uif-media-placeholder--xlarge {
+    width: 140px;
+    height: 140px;
+    font-size: 48px;
+  }
+  
+  .uif-media-placeholder--large {
+    width: 100px;
+    height: 100px;
+    font-size: 36px;
+  }
+}

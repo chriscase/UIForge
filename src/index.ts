@@ -68,6 +68,9 @@ export type { OverflowMenuProps, OverflowMenuItem } from './components/OverflowM
 export { MediaCard } from './components/MediaCard'
 export type { MediaCardProps } from './components/MediaCard'
 
+export { MediaPlaceholder } from './components/MediaPlaceholder'
+export type { MediaPlaceholderProps } from './components/MediaPlaceholder'
+
 // Export video utilities and providers
 export {
   detectProvider,
@@ -86,6 +89,8 @@ export * from './icons'
 export { useResponsive } from './hooks'
 export { useDynamicPageCount } from './hooks'
 export type { UseDynamicPageCountOptions } from './hooks'
+export { useOptimizedImage } from './hooks'
+export type { UseOptimizedImageOptions, UseOptimizedImageResult } from './hooks'
 
 // Export all styles
 import './components/Tokens.css'
@@ -103,3 +108,4 @@ import './components/SafeAreaContainer.css'
 import './components/MobileHeaderLayout.css'
 import './components/OverflowMenu.css'
 import './components/MediaCard.css'
+import './components/MediaPlaceholder.css'
