@@ -1,0 +1,167 @@
+/* ===========================================
+   MediaListSkeleton Component Styles
+   
+   A loading skeleton component for MediaCard lists with shimmer animation.
+   Uses UIForge design tokens and respects prefers-reduced-motion.
+   =========================================== */
+
+/* Shimmer animation keyframes */
+@keyframes uiforge-skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Root container */
+.uiforge-media-list-skeleton {
+  /* CSS Variables for theming */
+  --skeleton-bg: #f3f4f6;
+  --skeleton-shimmer-start: #f3f4f6;
+  --skeleton-shimmer-middle: #e5e7eb;
+  --skeleton-shimmer-end: #f3f4f6;
+  --skeleton-border: #e5e7eb;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--uiforge-gap-lg);
+  width: 100%;
+}
+
+/* Dark theme variables */
+.uiforge-media-list-skeleton--dark {
+  --skeleton-bg: #374151;
+  --skeleton-shimmer-start: #374151;
+  --skeleton-shimmer-middle: #4b5563;
+  --skeleton-shimmer-end: #374151;
+  --skeleton-border: #4b5563;
+}
+
+/* Individual skeleton item - matches MediaCard layout */
+.uiforge-media-list-skeleton__item {
+  display: flex;
+  flex-direction: row;
+  gap: var(--uiforge-gap-lg);
+  background-color: var(--skeleton-bg);
+  border: 1px solid var(--skeleton-border);
+  border-radius: var(--uiforge-border-radius);
+  padding: var(--uiforge-gap-lg);
+  min-height: 120px;
+}
+
+/* Media/Image skeleton area */
+.uiforge-media-list-skeleton__media {
+  position: relative;
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  background-color: var(--skeleton-bg);
+  border-radius: var(--uiforge-border-radius-sm);
+  overflow: hidden;
+}
+
+/* Content area */
+.uiforge-media-list-skeleton__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0; /* Allow flex items to shrink */
+}
+
+/* Body section */
+.uiforge-media-list-skeleton__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--uiforge-gap-md);
+}
+
+/* Footer section */
+.uiforge-media-list-skeleton__footer {
+  display: flex;
+  gap: var(--uiforge-gap-md);
+  margin-top: var(--uiforge-gap-md);
+}
+
+/* Skeleton line elements */
+.uiforge-media-list-skeleton__line {
+  position: relative;
+  height: 16px;
+  background-color: var(--skeleton-bg);
+  border-radius: var(--uiforge-border-radius-sm);
+  overflow: hidden;
+}
+
+/* Title line */
+.uiforge-media-list-skeleton__line--title {
+  width: 70%;
+  height: 20px;
+}
+
+/* Subtitle line */
+.uiforge-media-list-skeleton__line--subtitle {
+  width: 50%;
+  height: 16px;
+}
+
+/* Meta items container */
+.uiforge-media-list-skeleton__meta {
+  display: flex;
+  gap: var(--uiforge-gap-md);
+}
+
+/* Meta line */
+.uiforge-media-list-skeleton__line--meta {
+  width: 60px;
+  height: 14px;
+}
+
+/* Action button skeleton */
+.uiforge-media-list-skeleton__line--action {
+  width: 80px;
+  height: 32px;
+}
+
+/* Shimmer effect overlay */
+.uiforge-media-list-skeleton__shimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-shimmer-start) 0%,
+    var(--skeleton-shimmer-middle) 50%,
+    var(--skeleton-shimmer-end) 100%
+  );
+  background-size: 200% 100%;
+  animation: uiforge-skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .uiforge-media-list-skeleton__shimmer {
+    animation: none;
+    background: var(--skeleton-shimmer-middle);
+  }
+}
+
+/* Responsive: Stack on mobile */
+@media (max-width: 640px) {
+  .uiforge-media-list-skeleton__item {
+    flex-direction: column;
+  }
+
+  .uiforge-media-list-skeleton__media {
+    width: 100%;
+    height: 200px;
+  }
+
+  .uiforge-media-list-skeleton__line--title,
+  .uiforge-media-list-skeleton__line--subtitle {
+    width: 90%;
+  }
+}

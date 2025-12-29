@@ -71,6 +71,9 @@ export type { MediaCardProps } from './components/MediaCard'
 export { MediaPlaceholder } from './components/MediaPlaceholder'
 export type { MediaPlaceholderProps } from './components/MediaPlaceholder'
 
+export { MediaListSkeleton } from './components/Skeletons/MediaListSkeleton'
+export type { MediaListSkeletonProps } from './components/Skeletons/MediaListSkeleton'
+
 // Export video utilities and providers
 export {
   detectProvider,
@@ -109,3 +112,4 @@ import './components/MobileHeaderLayout.css'
 import './components/OverflowMenu.css'
 import './components/MediaCard.css'
 import './components/MediaPlaceholder.css'
+import './components/Skeletons/MediaListSkeleton.css'
