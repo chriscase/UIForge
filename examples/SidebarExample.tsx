@@ -12,6 +12,8 @@ export function SidebarExample({ onNavigate }: SidebarExampleProps) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [bottomOpen, setBottomOpen] = useState(false)
   const [drawerPosition, setDrawerPosition] = useState<'left' | 'right'>('left')
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [collapsiblePosition, setCollapsiblePosition] = useState<'left' | 'right'>('left')
   
   return (
     <div className="sidebar-example">
@@ -53,6 +55,114 @@ export function SidebarExample({ onNavigate }: SidebarExampleProps) {
               seamlessly into your layout.
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* Collapsible Static Variant Demo */}
+      <section className="sidebar-example__section">
+        <h3>Collapsible Static Variant</h3>
+        <p className="sidebar-example__section-description">
+          A collapsible sidebar for desktop layouts. Click the toggle button to expand/collapse.
+          When collapsed, only icons are visible. Ideal for maximizing content area while keeping navigation accessible.
+        </p>
+
+        <div className="sidebar-example__controls">
+          <Button onClick={() => setSidebarCollapsed(!sidebarCollapsed)}>
+            {sidebarCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+          </Button>
+          <div className="sidebar-example__position-toggle">
+            <label>
+              <input
+                type="radio"
+                name="collapsible-position"
+                value="left"
+                checked={collapsiblePosition === 'left'}
+                onChange={() => setCollapsiblePosition('left')}
+              />
+              Left
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="collapsible-position"
+                value="right"
+                checked={collapsiblePosition === 'right'}
+                onChange={() => setCollapsiblePosition('right')}
+              />
+              Right
+            </label>
+          </div>
+        </div>
+        
+        <div className={`sidebar-example__demo sidebar-example__demo--static sidebar-example__demo--collapsible-${collapsiblePosition}`}>
+          {collapsiblePosition === 'left' && (
+            <UIForgeSidebar
+              variant="static"
+              width="220px"
+              collapsible
+              collapsed={sidebarCollapsed}
+              onCollapsedChange={setSidebarCollapsed}
+              collapsedWidth="70px"
+              position="left"
+              ariaLabel="Collapsible sidebar example"
+            >
+              <nav className="sidebar-example__nav sidebar-example__nav--collapsible">
+                <h4 className="sidebar-example__nav-title uiforge-sidebar-collapsed-hide">Navigation</h4>
+                <ul className="sidebar-example__nav-list">
+                  <li><a href="#dashboard" className="uiforge-sidebar-icon-only"><span>🏠</span><span>Dashboard</span></a></li>
+                  <li><a href="#projects" className="uiforge-sidebar-icon-only"><span>📁</span><span>Projects</span></a></li>
+                  <li><a href="#settings" className="uiforge-sidebar-icon-only"><span>⚙️</span><span>Settings</span></a></li>
+                  <li><a href="#profile" className="uiforge-sidebar-icon-only"><span>👤</span><span>Profile</span></a></li>
+                </ul>
+              </nav>
+            </UIForgeSidebar>
+          )}
+          <div className="sidebar-example__content">
+            <h4>Main Content Area</h4>
+            <p>
+              The collapsible sidebar lets users maximize content space while
+              keeping navigation one click away. Use the toggle button on the
+              sidebar edge or the button above to collapse/expand.
+            </p>
+            <p className="sidebar-example__hint">
+              State: {sidebarCollapsed ? 'Collapsed' : 'Expanded'}
+            </p>
+          </div>
+          {collapsiblePosition === 'right' && (
+            <UIForgeSidebar
+              variant="static"
+              width="220px"
+              collapsible
+              collapsed={sidebarCollapsed}
+              onCollapsedChange={setSidebarCollapsed}
+              collapsedWidth="70px"
+              position="right"
+              ariaLabel="Collapsible sidebar example"
+            >
+              <nav className="sidebar-example__nav sidebar-example__nav--collapsible">
+                <h4 className="sidebar-example__nav-title uiforge-sidebar-collapsed-hide">Navigation</h4>
+                <ul className="sidebar-example__nav-list">
+                  <li><a href="#dashboard" className="uiforge-sidebar-icon-only"><span>🏠</span><span>Dashboard</span></a></li>
+                  <li><a href="#projects" className="uiforge-sidebar-icon-only"><span>📁</span><span>Projects</span></a></li>
+                  <li><a href="#settings" className="uiforge-sidebar-icon-only"><span>⚙️</span><span>Settings</span></a></li>
+                  <li><a href="#profile" className="uiforge-sidebar-icon-only"><span>👤</span><span>Profile</span></a></li>
+                </ul>
+              </nav>
+            </UIForgeSidebar>
+          )}
+        </div>
+
+        <div className="sidebar-example__features">
+          <h5>Collapsible Features:</h5>
+          <ul>
+            <li><code>collapsible</code> prop enables the collapse toggle button</li>
+            <li><code>collapsed</code> and <code>onCollapsedChange</code> for controlled state</li>
+            <li><code>collapsedWidth</code> sets the width when collapsed (default: 60px)</li>
+            <li>Smooth animation transition between states</li>
+            <li>Accessible toggle button with ARIA labels</li>
+            <li>Use <code>.uiforge-sidebar-collapsed-hide</code> to hide elements when collapsed</li>
+            <li>Use <code>.uiforge-sidebar-icon-only</code> to show only icons when collapsed</li>
+          </ul>
         </div>
       </section>
 
@@ -268,6 +378,30 @@ export function SidebarExample({ onNavigate }: SidebarExampleProps) {
                 <td>Height for bottom variant</td>
               </tr>
               <tr>
+                <td><code>collapsible</code></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Enable collapse feature (static variant only)</td>
+              </tr>
+              <tr>
+                <td><code>collapsed</code></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Current collapsed state (controlled)</td>
+              </tr>
+              <tr>
+                <td><code>onCollapsedChange</code></td>
+                <td><code>(collapsed: boolean) =&gt; void</code></td>
+                <td>-</td>
+                <td>Callback when collapsed state changes</td>
+              </tr>
+              <tr>
+                <td><code>collapsedWidth</code></td>
+                <td><code>string</code></td>
+                <td><code>'60px'</code></td>
+                <td>Width when collapsed</td>
+              </tr>
+              <tr>
                 <td><code>showBackdrop</code></td>
                 <td><code>boolean</code></td>
                 <td><code>true</code></td>
@@ -328,7 +462,11 @@ export function SidebarExample({ onNavigate }: SidebarExampleProps) {
 .uiforge-safe-area-bottom { ... }
 .uiforge-safe-area-left { ... }
 .uiforge-safe-area-right { ... }
-.uiforge-safe-area-all { ... }`}</pre>
+.uiforge-safe-area-all { ... }
+
+/* Collapsible sidebar utility classes */
+.uiforge-sidebar-collapsed-hide { /* Hides content when collapsed */ }
+.uiforge-sidebar-icon-only { /* Shows only first child (icon) when collapsed */ }`}</pre>
         </div>
       </section>
     </div>

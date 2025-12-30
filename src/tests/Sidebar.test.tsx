@@ -432,4 +432,231 @@ describe('UIForgeSidebar', () => {
       expect(backdrop).not.toBeInTheDocument()
     })
   })
+
+  describe('Collapsible static sidebar', () => {
+    it('does not render collapse button when collapsible is false', () => {
+      render(
+        <UIForgeSidebar variant="static" collapsible={false}>
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const collapseButton = document.querySelector('.uiforge-sidebar__collapse-button')
+      expect(collapseButton).not.toBeInTheDocument()
+    })
+
+    it('renders collapse button when collapsible is true', () => {
+      render(
+        <UIForgeSidebar variant="static" collapsible={true}>
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const collapseButton = document.querySelector('.uiforge-sidebar__collapse-button')
+      expect(collapseButton).toBeInTheDocument()
+    })
+
+    it('has correct ARIA label when expanded', () => {
+      render(
+        <UIForgeSidebar variant="static" collapsible={true} collapsed={false}>
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const collapseButton = document.querySelector('.uiforge-sidebar__collapse-button')
+      expect(collapseButton).toHaveAttribute('aria-label', 'Collapse sidebar')
+      expect(collapseButton).toHaveAttribute('aria-expanded', 'true')
+    })
+
+    it('has correct ARIA label when collapsed', () => {
+      render(
+        <UIForgeSidebar variant="static" collapsible={true} collapsed={true}>
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const collapseButton = document.querySelector('.uiforge-sidebar__collapse-button')
+      expect(collapseButton).toHaveAttribute('aria-label', 'Expand sidebar')
+      expect(collapseButton).toHaveAttribute('aria-expanded', 'false')
+    })
+
+    it('calls onCollapsedChange when collapse button is clicked', async () => {
+      const handleCollapsedChange = vi.fn()
+      render(
+        <UIForgeSidebar
+          variant="static"
+          collapsible={true}
+          collapsed={false}
+          onCollapsedChange={handleCollapsedChange}
+        >
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const collapseButton = document.querySelector('.uiforge-sidebar__collapse-button')
+      fireEvent.click(collapseButton!)
+      expect(handleCollapsedChange).toHaveBeenCalledWith(true)
+    })
+
+    it('calls onCollapsedChange with false when expand button is clicked', async () => {
+      const handleCollapsedChange = vi.fn()
+      render(
+        <UIForgeSidebar
+          variant="static"
+          collapsible={true}
+          collapsed={true}
+          onCollapsedChange={handleCollapsedChange}
+        >
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const collapseButton = document.querySelector('.uiforge-sidebar__collapse-button')
+      fireEvent.click(collapseButton!)
+      expect(handleCollapsedChange).toHaveBeenCalledWith(false)
+    })
+
+    it('applies collapsible class when collapsible is true', () => {
+      render(
+        <UIForgeSidebar variant="static" collapsible={true}>
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const sidebar = screen.getByRole('navigation')
+      expect(sidebar).toHaveClass('uiforge-sidebar--collapsible')
+    })
+
+    it('applies collapsed class when collapsed is true', () => {
+      render(
+        <UIForgeSidebar variant="static" collapsible={true} collapsed={true}>
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const sidebar = screen.getByRole('navigation')
+      expect(sidebar).toHaveClass('uiforge-sidebar--collapsed')
+    })
+
+    it('does not apply collapsed class when collapsed is false', () => {
+      render(
+        <UIForgeSidebar variant="static" collapsible={true} collapsed={false}>
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const sidebar = screen.getByRole('navigation')
+      expect(sidebar).not.toHaveClass('uiforge-sidebar--collapsed')
+    })
+
+    it('applies custom collapsedWidth via CSS variable', () => {
+      render(
+        <UIForgeSidebar variant="static" collapsible={true} collapsedWidth="80px">
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const sidebar = screen.getByRole('navigation')
+      expect(sidebar).toHaveStyle({ '--sidebar-collapsed-width': '80px' })
+    })
+
+    it('applies default collapsedWidth of 60px', () => {
+      render(
+        <UIForgeSidebar variant="static" collapsible={true}>
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const sidebar = screen.getByRole('navigation')
+      expect(sidebar).toHaveStyle({ '--sidebar-collapsed-width': '60px' })
+    })
+
+    it('does not render collapse button for drawer variant', () => {
+      render(
+        <UIForgeSidebar variant="drawer" open={true} collapsible={true}>
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const collapseButton = document.querySelector('.uiforge-sidebar__collapse-button')
+      expect(collapseButton).not.toBeInTheDocument()
+    })
+
+    it('does not render collapse button for bottom variant', () => {
+      render(
+        <UIForgeSidebar variant="bottom" open={true} collapsible={true}>
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const collapseButton = document.querySelector('.uiforge-sidebar__collapse-button')
+      expect(collapseButton).not.toBeInTheDocument()
+    })
+
+    it('shows correct icon for left position when expanded', () => {
+      render(
+        <UIForgeSidebar variant="static" collapsible={true} collapsed={false} position="left">
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const collapseButton = document.querySelector('.uiforge-sidebar__collapse-button')
+      expect(collapseButton?.textContent).toBe('«')
+    })
+
+    it('shows correct icon for left position when collapsed', () => {
+      render(
+        <UIForgeSidebar variant="static" collapsible={true} collapsed={true} position="left">
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const collapseButton = document.querySelector('.uiforge-sidebar__collapse-button')
+      expect(collapseButton?.textContent).toBe('»')
+    })
+
+    it('shows correct icon for right position when expanded', () => {
+      render(
+        <UIForgeSidebar variant="static" collapsible={true} collapsed={false} position="right">
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const collapseButton = document.querySelector('.uiforge-sidebar__collapse-button')
+      expect(collapseButton?.textContent).toBe('»')
+    })
+
+    it('shows correct icon for right position when collapsed', () => {
+      render(
+        <UIForgeSidebar variant="static" collapsible={true} collapsed={true} position="right">
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const collapseButton = document.querySelector('.uiforge-sidebar__collapse-button')
+      expect(collapseButton?.textContent).toBe('«')
+    })
+
+    it('collapse button is focusable and has correct type', () => {
+      render(
+        <UIForgeSidebar variant="static" collapsible={true}>
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const collapseButton = document.querySelector('.uiforge-sidebar__collapse-button')
+      expect(collapseButton).toHaveAttribute('type', 'button')
+    })
+
+    it('applies correct position class to collapse button', () => {
+      render(
+        <UIForgeSidebar variant="static" collapsible={true} position="right">
+          <div>Content</div>
+        </UIForgeSidebar>
+      )
+
+      const collapseButton = document.querySelector('.uiforge-sidebar__collapse-button')
+      expect(collapseButton).toHaveClass('uiforge-sidebar__collapse-button--right')
+    })
+  })
 })

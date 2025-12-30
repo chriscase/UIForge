@@ -70,6 +70,22 @@ export interface UIForgeSidebarProps {
    * Whether to trap focus within the sidebar (only applies to 'drawer' and 'bottom' variants)
    */
   trapFocus?: boolean
+  /**
+   * Whether the sidebar can be collapsed (only applies to 'static' variant)
+   */
+  collapsible?: boolean
+  /**
+   * Whether the sidebar is currently collapsed (only applies when collapsible is true)
+   */
+  collapsed?: boolean
+  /**
+   * Callback when collapsed state changes (only applies when collapsible is true)
+   */
+  onCollapsedChange?: (collapsed: boolean) => void
+  /**
+   * Width of the sidebar when collapsed (CSS value, defaults to '60px')
+   */
+  collapsedWidth?: string
 }
 
 /**
@@ -114,6 +130,10 @@ export const UIForgeSidebar: React.FC<UIForgeSidebarProps> = ({
   closeOnBackdropClick = true,
   closeOnEscape = true,
   trapFocus = true,
+  collapsible = false,
+  collapsed = false,
+  onCollapsedChange,
+  collapsedWidth = '60px',
 }) => {
   const sidebarRef = useRef<HTMLElement>(null)
   const previousActiveElement = useRef<HTMLElement | null>(null)
@@ -214,6 +234,11 @@ export const UIForgeSidebar: React.FC<UIForgeSidebarProps> = ({
 
   const baseClass = 'uiforge-sidebar'
 
+  // Handle toggle collapsed state
+  const handleToggleCollapse = useCallback(() => {
+    onCollapsedChange?.(!collapsed)
+  }, [collapsed, onCollapsedChange])
+
   // Build class names
   const sidebarClasses = [
     baseClass,
@@ -221,6 +246,8 @@ export const UIForgeSidebar: React.FC<UIForgeSidebarProps> = ({
     `${baseClass}--${position}`,
     isInteractive && open && `${baseClass}--open`,
     isInteractive && !open && `${baseClass}--closed`,
+    variant === 'static' && collapsible && `${baseClass}--collapsible`,
+    variant === 'static' && collapsible && collapsed && `${baseClass}--collapsed`,
     className,
   ]
     .filter(Boolean)
@@ -230,6 +257,7 @@ export const UIForgeSidebar: React.FC<UIForgeSidebarProps> = ({
   const sidebarStyle: React.CSSProperties = {
     '--sidebar-width': width,
     '--sidebar-height': height,
+    '--sidebar-collapsed-width': collapsedWidth,
   } as React.CSSProperties
 
   // Determine the appropriate ARIA attributes based on variant
@@ -253,6 +281,28 @@ export const UIForgeSidebar: React.FC<UIForgeSidebarProps> = ({
 
   const ariaAttributes = getAriaAttributes()
 
+  // Collapse toggle button for static variant
+  const renderCollapseButton = () => {
+    if (variant !== 'static' || !collapsible) return null
+
+    const buttonLabel = collapsed ? 'Expand sidebar' : 'Collapse sidebar'
+    const buttonIcon = position === 'left' 
+      ? (collapsed ? '»' : '«') 
+      : (collapsed ? '«' : '»')
+
+    return (
+      <button
+        type="button"
+        className={`${baseClass}__collapse-button ${baseClass}__collapse-button--${position}`}
+        onClick={handleToggleCollapse}
+        aria-label={buttonLabel}
+        aria-expanded={!collapsed}
+      >
+        <span aria-hidden="true">{buttonIcon}</span>
+      </button>
+    )
+  }
+
   // For static variant, render without backdrop
   if (variant === 'static') {
     return (
@@ -264,6 +314,7 @@ export const UIForgeSidebar: React.FC<UIForgeSidebarProps> = ({
         {...ariaAttributes}
       >
         <div className={`${baseClass}__content`}>{children}</div>
+        {renderCollapseButton()}
       </aside>
     )
   }
