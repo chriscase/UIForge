@@ -111,7 +111,8 @@
 }
 
 .sidebar-example__nav-list a {
-  display: block;
+  display: flex;
+  align-items: center;
   padding: 0.5rem 0.75rem;
   color: var(--text-primary);
   text-decoration: none;
