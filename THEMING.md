@@ -716,8 +716,9 @@ curl -o src/styles/my-theme.css https://raw.githubusercontent.com/chriscase/UIFo
 
 # For production use, verify the file contents before using
 # Or clone the UIForge repo and copy locally:
-# git clone https://github.com/chriscase/UIForge.git /tmp/uiforge
-# cp /tmp/uiforge/examples/themes/nexalive-theme.css src/styles/my-theme.css
+# git clone https://github.com/chriscase/UIForge.git ~/uiforge-temp
+# cp ~/uiforge-temp/examples/themes/nexalive-theme.css src/styles/my-theme.css
+# rm -rf ~/uiforge-temp
 ```
 
 **Option 2: View and copy manually**
