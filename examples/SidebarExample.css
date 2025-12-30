@@ -45,6 +45,17 @@
   height: 300px;
 }
 
+/* Collapsible Demo - allow overflow for the toggle button */
+.sidebar-example__demo--collapsible-left,
+.sidebar-example__demo--collapsible-right {
+  overflow: visible;
+  position: relative;
+}
+
+.sidebar-example__demo--collapsible-right {
+  flex-direction: row;
+}
+
 .sidebar-example__content {
   flex: 1;
   padding: 1rem;
@@ -60,6 +71,20 @@
 .sidebar-example__content p {
   color: var(--text-secondary);
   font-size: 0.875rem;
+}
+
+/* Collapsible nav styles */
+.sidebar-example__nav--collapsible {
+  transition: padding 0.3s ease-in-out;
+}
+
+.uiforge-sidebar--collapsed .sidebar-example__nav--collapsible {
+  padding: 0.5rem;
+}
+
+.uiforge-sidebar--collapsed .sidebar-example__nav-list a {
+  padding: 0.5rem;
+  justify-content: center;
 }
 
 /* Navigation Styles */
@@ -86,7 +111,8 @@
 }
 
 .sidebar-example__nav-list a {
-  display: block;
+  display: flex;
+  align-items: center;
   padding: 0.5rem 0.75rem;
   color: var(--text-primary);
   text-decoration: none;

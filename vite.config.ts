@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts'
-import { resolve } from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,15 +9,20 @@ export default defineConfig({
     dts({
       include: ['src/**/*.ts', 'src/**/*.tsx'],
       exclude: ['src/tests/**/*', 'examples/**/*'],
-      rollupTypes: true
-    })
+      rollupTypes: true,
+    }),
   ],
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+    strictPort: false,
+  },
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: './src/index.ts',
       name: 'UIForge',
       formats: ['es', 'cjs'],
-      fileName: (format) => `uiforge.${format === 'es' ? 'js' : 'cjs'}`
+      fileName: (format) => `uiforge.${format === 'es' ? 'js' : 'cjs'}`,
     },
     rollupOptions: {
       // Externalize peer dependencies
@@ -27,9 +31,9 @@ export default defineConfig({
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
-          'react/jsx-runtime': 'jsxRuntime'
-        }
-      }
-    }
-  }
+          'react/jsx-runtime': 'jsxRuntime',
+        },
+      },
+    },
+  },
 })

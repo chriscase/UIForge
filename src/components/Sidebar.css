@@ -70,6 +70,101 @@
 }
 
 /* ===========================================
+   Collapsible Static Sidebar
+   =========================================== */
+
+.uiforge-sidebar--static.uiforge-sidebar--collapsible {
+  transition: width 0.3s ease-in-out;
+}
+
+.uiforge-sidebar--static.uiforge-sidebar--collapsed {
+  width: var(--sidebar-collapsed-width, 60px);
+}
+
+.uiforge-sidebar--static.uiforge-sidebar--collapsed .uiforge-sidebar__content {
+  overflow: hidden;
+}
+
+/* Collapse Toggle Button */
+.uiforge-sidebar__collapse-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 48px;
+  border: 1px solid var(--uiforge-sidebar-border, #e5e7eb);
+  background-color: var(--uiforge-sidebar-bg, #ffffff);
+  color: var(--uiforge-sidebar-color, #1f2937);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0;
+  z-index: 1;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.uiforge-sidebar__collapse-button:hover {
+  background-color: var(--uiforge-sidebar-border, #e5e7eb);
+}
+
+.uiforge-sidebar__collapse-button:focus {
+  outline: none;
+}
+
+.uiforge-sidebar__collapse-button:focus-visible {
+  outline: 2px solid var(--uiforge-sidebar-focus-ring, #3b82f6);
+  outline-offset: -2px;
+}
+
+/* Position the button on the inner edge of the sidebar */
+.uiforge-sidebar__collapse-button--left {
+  right: -12px;
+  border-radius: 0 6px 6px 0;
+  border-left: none;
+}
+
+.uiforge-sidebar__collapse-button--right {
+  left: -12px;
+  border-radius: 6px 0 0 6px;
+  border-right: none;
+}
+
+/* CSS utility class for hiding content in collapsed state */
+.uiforge-sidebar-collapsed-hide {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.2s ease-in-out,
+    visibility 0.2s ease-in-out;
+}
+
+.uiforge-sidebar--collapsed .uiforge-sidebar-collapsed-hide {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* CSS utility class for showing only icons in collapsed state */
+.uiforge-sidebar-icon-only {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  white-space: nowrap;
+}
+
+.uiforge-sidebar--collapsed .uiforge-sidebar-icon-only {
+  justify-content: center;
+}
+
+.uiforge-sidebar--collapsed .uiforge-sidebar-icon-only > *:not(:first-child) {
+  display: none;
+}
+
+/* ===========================================
    Drawer Variant (Slide-in Panel)
    =========================================== */
 
@@ -209,7 +304,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   .uiforge-sidebar,
-  .uiforge-sidebar__backdrop {
+  .uiforge-sidebar__backdrop,
+  .uiforge-sidebar--collapsible,
+  .uiforge-sidebar__collapse-button,
+  .uiforge-sidebar-collapsed-hide {
     transition: none;
   }
 }
