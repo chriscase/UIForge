@@ -1834,6 +1834,8 @@ Simply open this repository in GitHub Codespaces to get started immediately with
 
 Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines.
 
+**Important for Component Contributors:** UIForge is a library-first project. Before contributing a component, review the [Component Design Guidelines](./COMPONENT_GUIDELINES.md) to ensure your component remains generic, reusable, and composable.
+
 Quick start:
 
 1. Fork the repository
