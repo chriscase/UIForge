@@ -286,9 +286,7 @@ export const UIForgeSidebar: React.FC<UIForgeSidebarProps> = ({
     if (variant !== 'static' || !collapsible) return null
 
     const buttonLabel = collapsed ? 'Expand sidebar' : 'Collapse sidebar'
-    const buttonIcon = position === 'left' 
-      ? (collapsed ? '»' : '«') 
-      : (collapsed ? '«' : '»')
+    const buttonIcon = position === 'left' ? (collapsed ? '»' : '«') : collapsed ? '«' : '»'
 
     return (
       <button
