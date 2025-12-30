@@ -94,8 +94,8 @@ test.describe('Grid Component - Search', () => {
       // Wait for grid to filter
       await page.waitForTimeout(300)
       
-      // Verify Alice is still visible
-      await expect(page.locator('.uiforge-grid td:has-text("Alice")')).toBeVisible()
+      // Verify Alice is still visible (use first() to handle multiple matches)
+      await expect(page.locator('.uiforge-grid td:has-text("Alice")').first()).toBeVisible()
     }
   })
 })
@@ -167,7 +167,7 @@ test.describe('Grid Component - Accessibility', () => {
   })
 
   test('grid table has proper role', async ({ page }) => {
-    const table = page.locator('.uiforge-grid table')
+    const table = page.locator('.uiforge-grid table').first()
     await expect(table).toBeVisible()
     
     // Table should have proper semantic structure

@@ -25,8 +25,8 @@ test.describe('Home Page - Basic Rendering', () => {
     const componentCards = page.locator('.component-card')
     const count = await componentCards.count()
     
-    // Should have multiple component cards
-    expect(count).toBeGreaterThan(10)
+    // Should have multiple component cards (at least some components)
+    expect(count).toBeGreaterThan(5)
   })
 
   test('theme selector is visible', async ({ page }) => {

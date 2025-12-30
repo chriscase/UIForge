@@ -143,15 +143,17 @@ class MarkdownReporter implements Reporter {
       if (headerEndIndex !== -1) {
         const header = existingContent.substring(0, headerEndIndex + 5)
         const previousRuns = existingContent.substring(headerEndIndex + 5)
-        fs.writeFileSync(reportPath, header + reportContent.substring(reportContent.indexOf('## Test Run')))
         
-        // Append previous runs (keep last 5 runs)
-        const runs = previousRuns.split('## Test Run:').filter(r => r.trim())
-        const runsToKeep = runs.slice(0, 4).map(r => '## Test Run:' + r)
+        // Extract the new run content (everything after the header in reportContent)
+        const newRunContent = reportContent.substring(reportContent.indexOf('## Test Run:'))
         
-        if (runsToKeep.length > 0) {
-          fs.appendFileSync(reportPath, runsToKeep.join(''))
-        }
+        // Parse previous runs and keep last 4
+        const runDelimiter = '## Test Run:'
+        const runs = previousRuns.split(runDelimiter).filter(r => r.trim())
+        const runsToKeep = runs.slice(0, 4).map(r => runDelimiter + r)
+        
+        // Write header + new run + previous runs
+        fs.writeFileSync(reportPath, header + newRunContent + runsToKeep.join(''))
       } else {
         fs.writeFileSync(reportPath, reportContent)
       }
