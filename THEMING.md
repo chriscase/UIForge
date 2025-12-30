@@ -709,10 +709,16 @@ Example themes are meant to be **copied and customized** for your own projects. 
 
 There are several ways to get the example theme into your project:
 
-**Option 1: Download from GitHub (Recommended)**
+**Option 1: Download from GitHub (Recommended for exploration)**
 ```bash
 # Download directly from the UIForge repository
 curl -o src/styles/my-theme.css https://raw.githubusercontent.com/chriscase/UIForge/main/examples/themes/nexalive-theme.css
+
+# For production use, verify the file contents before using
+# Or clone the UIForge repo and copy locally:
+# git clone https://github.com/chriscase/UIForge.git ~/uiforge-temp
+# cp ~/uiforge-temp/examples/themes/nexalive-theme.css src/styles/my-theme.css
+# rm -rf ~/uiforge-temp
 ```
 
 **Option 2: View and copy manually**
@@ -840,6 +846,581 @@ Use the NexaLive theme as a template:
 5. Consider sharing your theme as an example contribution!
 
 **Remember**: App themes should live in **your application**, not in UIForge core. The `examples/themes/` directory is for demonstration purposes only.
+
+## Core Tokens vs App Theme Mappings
+
+Understanding the distinction between **core tokens** and **app theme mappings** is crucial for keeping UIForge generic while supporting app-specific customization.
+
+### Core Tokens (UIForge Generic)
+
+Core tokens are the CSS variables defined and used by UIForge components internally. These tokens are **generic** and **semantically named** to work across different applications and design systems.
+
+Examples of core tokens:
+```css
+/* UIForge core tokens - defined in the library */
+--activity-stream-bg
+--activity-stream-text
+--activity-stream-link-color
+--button-primary-bg
+--button-primary-hover
+--grid-bg
+--grid-border
+--media-card-bg
+```
+
+**Key characteristics:**
+- **Generic naming**: Describes the purpose (e.g., `--button-primary-bg`), not specific brand values
+- **Component-scoped**: Often prefixed with component name (e.g., `--activity-stream-*`)
+- **Semantic**: Names describe what they control, not what they look like (e.g., `--text` not `--gray-700`)
+- **Defined in UIForge**: Have default values set by the library
+- **Stable API**: Won't change frequently; safe to override
+
+### App Theme Mappings (Your Application)
+
+App theme mappings are **your brand-specific design tokens** that you map to UIForge's core tokens. This approach keeps your brand values centralized and makes it easy to update your brand colors globally.
+
+Example mapping pattern:
+```css
+/* Your app's theme file (e.g., my-app-theme.css) */
+:root {
+  /* Step 1: Define YOUR brand tokens */
+  --myapp-brand-primary: #ff6b35;
+  --myapp-brand-primary-dark: #e65525;
+  --myapp-brand-secondary: #004e89;
+  --myapp-brand-bg: #f7f7f7;
+  --myapp-brand-text: #1a1a1a;
+  --myapp-brand-border: #d4d4d4;
+  
+  /* Step 2: Map YOUR brand tokens to UIForge core tokens */
+  --button-primary-bg: var(--myapp-brand-primary);
+  --button-primary-hover: var(--myapp-brand-primary-dark);
+  --activity-stream-link-color: var(--myapp-brand-secondary);
+  --activity-stream-bg: var(--myapp-brand-bg);
+  --activity-stream-text: var(--myapp-brand-text);
+  --grid-border: var(--myapp-brand-border);
+}
+```
+
+**Benefits of this two-tier approach:**
+
+1. **Centralized brand values**: All your brand colors are defined in one place
+2. **Easy global updates**: Change `--myapp-brand-primary` once, all mapped components update
+3. **Clear separation**: UIForge stays generic; your app stays branded
+4. **Flexibility**: You can map different brand tokens to different components as needed
+5. **Maintainability**: When UIForge adds new components, you map your existing brand tokens
+
+### Complete Mapping Example
+
+Here's how the NexaLive theme demonstrates this pattern:
+
+```css
+/* examples/themes/nexalive-theme.css */
+:root {
+  /* Brand layer: Define all NexaLive-specific colors */
+  --nexalive-purple-primary: #8b5cf6;
+  --nexalive-purple-dark: #7c3aed;
+  --nexalive-bg-dark: #0f0a1e;
+  --nexalive-text-primary: #f5f3ff;
+  /* ... more brand tokens */
+  
+  /* Mapping layer: Connect brand to UIForge components */
+  --button-primary-bg: var(--nexalive-purple-primary);
+  --button-primary-hover: var(--nexalive-purple-dark);
+  --activity-stream-bg: var(--nexalive-bg-dark);
+  --activity-stream-text: var(--nexalive-text-primary);
+  /* ... map all components you use */
+}
+```
+
+This approach keeps UIForge core free of app-specific concerns while giving you complete control over branding.
+
+## Semantic Tokens vs Brand Tokens
+
+When creating your app theme, it's important to understand the difference between **semantic tokens** and **brand tokens**, and follow consistent naming conventions.
+
+### Brand Tokens (Raw Design Values)
+
+Brand tokens represent the **raw design values** from your design system or brand guidelines. These are often specific colors, sizes, or measurements.
+
+**Naming convention:** Use your brand/app prefix + descriptive color/size name
+
+```css
+:root {
+  /* Colors from brand palette */
+  --myapp-blue-500: #3b82f6;
+  --myapp-blue-600: #2563eb;
+  --myapp-blue-700: #1d4ed8;
+  --myapp-red-500: #ef4444;
+  --myapp-gray-50: #f9fafb;
+  --myapp-gray-900: #111827;
+  
+  /* Spacing from design system */
+  --myapp-space-1: 4px;
+  --myapp-space-2: 8px;
+  --myapp-space-4: 16px;
+  
+  /* Typography */
+  --myapp-font-primary: 'Inter', sans-serif;
+  --myapp-font-size-base: 14px;
+}
+```
+
+### Semantic Tokens (Purpose-Based)
+
+Semantic tokens describe **what they're used for**, not what they look like. They reference brand tokens and create meaningful names for specific use cases.
+
+**Naming convention:** Use your app prefix + semantic purpose
+
+```css
+:root {
+  /* Semantic color tokens */
+  --myapp-color-primary: var(--myapp-blue-600);
+  --myapp-color-primary-hover: var(--myapp-blue-700);
+  --myapp-color-danger: var(--myapp-red-500);
+  --myapp-color-bg: var(--myapp-gray-50);
+  --myapp-color-text: var(--myapp-gray-900);
+  
+  /* Semantic spacing tokens */
+  --myapp-gap-default: var(--myapp-space-2);
+  --myapp-gap-large: var(--myapp-space-4);
+  
+  /* Then map semantic tokens to UIForge */
+  --button-primary-bg: var(--myapp-color-primary);
+  --button-primary-hover: var(--myapp-color-primary-hover);
+  --activity-stream-bg: var(--myapp-color-bg);
+  --activity-stream-text: var(--myapp-color-text);
+}
+```
+
+### Three-Tier Token Architecture (Recommended)
+
+For larger applications, consider a three-tier approach:
+
+```css
+:root {
+  /* Tier 1: Brand Tokens (raw palette) */
+  --myapp-blue-600: #2563eb;
+  --myapp-gray-50: #f9fafb;
+  
+  /* Tier 2: Semantic Tokens (purpose-based) */
+  --myapp-color-primary: var(--myapp-blue-600);
+  --myapp-color-surface: var(--myapp-gray-50);
+  
+  /* Tier 3: Component Mappings (UIForge integration) */
+  --button-primary-bg: var(--myapp-color-primary);
+  --grid-bg: var(--myapp-color-surface);
+}
+```
+
+**Benefits:**
+- **Brand layer**: Easy to update raw colors without breaking semantics
+- **Semantic layer**: Clear intent; easier to maintain consistent meanings
+- **Component layer**: Clean integration with UIForge without coupling to brand specifics
+
+### Naming Convention Best Practices
+
+1. **Always prefix your tokens** with your app/brand name to avoid conflicts:
+   ```css
+   /* ✅ Good */
+   --myapp-primary: #3b82f6;
+   --nexalive-purple: #8b5cf6;
+   
+   /* ❌ Avoid - too generic, might conflict */
+   --primary: #3b82f6;
+   --purple: #8b5cf6;
+   ```
+
+2. **Use semantic names for UIForge mappings**, not direct color names:
+   ```css
+   /* ✅ Good - semantic */
+   --button-primary-bg: var(--myapp-color-primary);
+   --button-danger-bg: var(--myapp-color-danger);
+   
+   /* ❌ Avoid - too specific to color */
+   --button-blue-bg: var(--myapp-blue-500);
+   --button-red-bg: var(--myapp-red-500);
+   ```
+
+3. **Be consistent with scale naming** for colors and sizes:
+   ```css
+   /* For colors: 50 (lightest) to 900 (darkest) */
+   --myapp-blue-50: #eff6ff;
+   --myapp-blue-500: #3b82f6;
+   --myapp-blue-900: #1e3a8a;
+   
+   /* For sizes: xs, sm, md, lg, xl */
+   --myapp-space-xs: 4px;
+   --myapp-space-sm: 8px;
+   --myapp-space-md: 16px;
+   --myapp-space-lg: 24px;
+   --myapp-space-xl: 32px;
+   ```
+
+4. **Group related tokens together** in your CSS file with comments:
+   ```css
+   /* Brand Colors - Primary */
+   --myapp-blue-500: #3b82f6;
+   --myapp-blue-600: #2563eb;
+   
+   /* Brand Colors - Neutral */
+   --myapp-gray-50: #f9fafb;
+   --myapp-gray-900: #111827;
+   
+   /* Semantic - Actions */
+   --myapp-color-primary: var(--myapp-blue-600);
+   --myapp-color-primary-hover: var(--myapp-blue-700);
+   ```
+
+## Best Practices: Where to Place App Themes
+
+### ✅ Recommended: App Themes in Your Repository
+
+**App-specific themes should ALWAYS live in your application repository**, not in UIForge core. This keeps UIForge generic and reusable while giving you full control over your branding.
+
+```
+your-app/
+├── src/
+│   ├── styles/
+│   │   ├── theme.css              # Your app theme
+│   │   ├── brand-tokens.css       # Your brand palette (optional)
+│   │   └── components/            # Component-specific overrides
+│   ├── components/
+│   │   ├── SongCard/              # Your domain-specific wrappers
+│   │   └── ...
+│   └── main.tsx                   # Import theme after UIForge styles
+├── package.json
+└── ...
+```
+
+**Import order in your app:**
+```tsx
+// src/main.tsx
+import '@appforgeapps/uiforge/styles.css'  // UIForge core styles FIRST
+import './styles/theme.css'                 // Your theme SECOND
+
+// Now render your app
+```
+
+### ✅ Alternative: Examples Directory (For Demonstration)
+
+The `examples/themes/` directory in UIForge is for **demonstration and reference only**. Use it to:
+- See how other apps have themed UIForge
+- Get inspiration for your own theme
+- Contribute example themes to help the community
+
+**Do NOT import directly from `examples/` in production:**
+```tsx
+// ❌ BAD - Don't do this
+import '@appforgeapps/uiforge/examples/themes/nexalive-theme.css'
+
+// ✅ GOOD - Copy it to your project first
+// 1. Copy examples/themes/nexalive-theme.css to src/styles/my-theme.css
+// 2. Customize the brand colors
+// 3. Import from your project
+import './styles/my-theme.css'
+```
+
+**Why not import directly?**
+- The `examples/` directory may not be included in published npm packages
+- Example themes may change or be removed in future UIForge versions
+- You can't customize example themes without modifying node_modules (bad practice)
+- Your app should own its theme for version control and maintenance
+
+### ❌ Anti-Pattern: App Themes in UIForge Core
+
+**Never add app-specific themes to UIForge core library:**
+
+```css
+/* ❌ BAD - Don't add this to UIForge source code */
+/* src/styles/spotify-theme.css in UIForge repo */
+:root {
+  --spotify-green: #1db954;
+  --button-primary-bg: var(--spotify-green);
+}
+```
+
+**Why this is bad:**
+- Makes UIForge less generic and reusable
+- Creates maintenance burden for app-specific code in the library
+- Other users don't need your app's theme
+- Violates separation of concerns
+- Makes UIForge harder to update
+
+### Sharing Themes with the Community
+
+If you've created a great theme you want to share:
+
+1. **As an example**: Submit a PR adding your theme to `examples/themes/` with clear documentation
+2. **As a separate package**: Publish your theme as a standalone npm package:
+   ```
+   @yourorg/uiforge-theme-yourapp
+   ```
+3. **In your blog/docs**: Write about your theming approach and share the CSS
+
+## Migration Checklist: Adopting UIForge in Your App
+
+Follow this checklist to integrate UIForge with custom theming into your application.
+
+### Step 1: Install UIForge
+
+```bash
+npm install @appforgeapps/uiforge
+# or
+yarn add @appforgeapps/uiforge
+```
+
+### Step 2: Set Up Basic UIForge Integration
+
+1. Import UIForge styles in your main entry file:
+   ```tsx
+   // src/main.tsx or src/index.tsx
+   import '@appforgeapps/uiforge/styles.css'
+   ```
+
+2. Test a basic component:
+   ```tsx
+   import { Button } from '@appforgeapps/uiforge'
+   
+   function App() {
+     return <Button variant="primary">Test Button</Button>
+   }
+   ```
+
+3. Verify it works with default UIForge styling.
+
+### Step 3: Create Your App Theme
+
+1. Create a theme file in your project:
+   ```bash
+   mkdir -p src/styles
+   touch src/styles/theme.css
+   ```
+
+2. Start with an example theme as a template (optional):
+   ```bash
+   # Download the NexaLive example theme from GitHub
+   curl -o src/styles/theme.css https://raw.githubusercontent.com/chriscase/UIForge/main/examples/themes/nexalive-theme.css
+   ```
+   
+   Or copy the structure manually and customize.
+
+3. Define your brand tokens:
+   ```css
+   /* src/styles/theme.css */
+   :root {
+     /* Define your brand colors */
+     --myapp-primary: #your-brand-color;
+     --myapp-primary-dark: #your-darker-color;
+     --myapp-bg: #your-bg-color;
+     --myapp-text: #your-text-color;
+     --myapp-border: #your-border-color;
+   }
+   ```
+
+4. Map your brand tokens to UIForge tokens:
+   ```css
+   :root {
+     /* ... brand tokens above ... */
+     
+     /* Map to UIForge components */
+     --button-primary-bg: var(--myapp-primary);
+     --button-primary-hover: var(--myapp-primary-dark);
+     --activity-stream-bg: var(--myapp-bg);
+     --activity-stream-text: var(--myapp-text);
+     --grid-border: var(--myapp-border);
+     /* Map all components you plan to use */
+   }
+   ```
+
+### Step 4: Import Your Theme
+
+Import your theme **after** UIForge core styles:
+
+```tsx
+// src/main.tsx
+import '@appforgeapps/uiforge/styles.css'  // Core styles FIRST
+import './styles/theme.css'                 // Your theme SECOND
+
+import App from './App'
+// ... rest of your app initialization
+```
+
+### Step 5: Create Domain-Specific Component Wrappers
+
+Create wrappers around UIForge components for your specific domain. This is where **your app's business logic** meets UIForge's generic components.
+
+Example: Creating a `SongCard` wrapper for a music app:
+
+1. Create the wrapper component:
+   ```tsx
+   // src/components/SongCard/SongCard.tsx
+   import React from 'react'
+   import { MediaCard, Button } from '@appforgeapps/uiforge'
+   
+   // Note: This is a simplified example for demonstration.
+   // The complete example in examples/SongCard/ includes additional props
+   // like genre, versionCount, variant, theme, and more actions.
+   interface SongCardProps {
+     title: string
+     artist: string
+     album?: string
+     albumArtUrl: string
+     year?: number
+     duration?: string
+     onPlay?: () => void
+     onAddToPlaylist?: () => void
+   }
+   
+   export const SongCard: React.FC<SongCardProps> = ({
+     title,
+     artist,
+     album,
+     albumArtUrl,
+     year,
+     duration,
+     onPlay,
+     onAddToPlaylist,
+   }) => {
+     // Build metadata from domain-specific props
+     const meta: Record<string, string> = {}
+     if (album) meta.album = album
+     if (year) meta.year = String(year)
+     if (duration) meta.duration = duration
+   
+     // Create domain-specific actions
+     // Note: Simplified for brevity. Full implementation includes
+     // event.stopPropagation(), proper aria-labels, and more buttons.
+     const actions = (
+       <div>
+         {onPlay && (
+           <Button variant="primary" size="small" onClick={onPlay}>
+             ▶ Play
+           </Button>
+         )}
+         {onAddToPlaylist && (
+           <Button variant="outline" size="small" onClick={onAddToPlaylist}>
+             + Playlist
+           </Button>
+         )}
+       </div>
+     )
+   
+     // Map to generic MediaCard
+     return (
+       <MediaCard
+         title={title}
+         subtitle={artist}
+         mediaUrl={albumArtUrl}
+         mediaAlt={`Album artwork for ${album || title}`}
+         meta={meta}
+         actions={actions}
+         ariaLabel={`${title} by ${artist}`}
+       />
+     )
+   }
+   ```
+
+2. Use your domain-specific wrapper in your app:
+   ```tsx
+   // src/pages/MusicLibrary.tsx
+   import { SongCard } from '../components/SongCard/SongCard'
+   
+   function MusicLibrary() {
+     return (
+       <div>
+         <SongCard
+           title="Bohemian Rhapsody"
+           artist="Queen"
+           album="A Night at the Opera"
+           albumArtUrl="/album-art.jpg"
+           year={1975}
+           duration="5:55"
+           onPlay={() => console.log('Playing...')}
+         />
+       </div>
+     )
+   }
+   ```
+
+**Benefits of this approach:**
+- **Type safety**: Your wrapper has strongly-typed, domain-specific props
+- **Encapsulation**: Business logic stays in your app, not UIForge
+- **Reusability**: Use `<SongCard>` throughout your app instead of repeating MediaCard setup
+- **Maintainability**: UIForge updates don't affect your domain logic
+- **Separation of concerns**: UIForge stays generic; your app stays domain-specific
+
+### Step 6: Test Your Theme
+
+1. **Visual testing**: Check all components you're using with your theme applied
+2. **Contrast testing**: Verify WCAG color contrast requirements
+   - Normal text: 4.5:1 minimum
+   - Large text: 3:1 minimum
+   - Use contrast checking tools like [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/), browser DevTools, or similar alternatives
+3. **Dark mode**: If supporting dark mode, test theme with both light and dark variants
+4. **Responsive**: Test on mobile and desktop to ensure proper scaling
+
+### Step 7: Maintain Your Theme
+
+1. **Version control**: Keep your theme file in git
+2. **Document colors**: Add comments explaining brand color choices
+3. **Update as needed**: When adding new UIForge components, map your brand tokens to them
+4. **Stay updated**: When UIForge adds new tokens, review if they need mapping
+
+### Complete Example: NexaLive Theme Adoption
+
+Here's how the NexaLive music streaming app integrates UIForge:
+
+**File structure:**
+```
+nexalive-app/
+├── src/
+│   ├── styles/
+│   │   └── nexalive-theme.css     # Brand theme (copied from examples)
+│   ├── components/
+│   │   ├── SongCard/
+│   │   │   ├── SongCard.tsx       # Wraps MediaCard for music domain
+│   │   │   └── SongCard.css       # SongCard-specific styles
+│   │   ├── PlaylistCard/          # Another domain wrapper
+│   │   └── ArtistCard/            # Another domain wrapper
+│   └── main.tsx
+└── package.json
+```
+
+**Import order (src/main.tsx):**
+```tsx
+// Core library styles FIRST
+import '@appforgeapps/uiforge/styles.css'
+
+// App theme SECOND (overrides defaults)
+import './styles/nexalive-theme.css'
+
+// App initialization
+import App from './App'
+ReactDOM.createRoot(document.getElementById('root')!).render(<App />)
+```
+
+**Using domain wrapper (src/pages/Library.tsx):**
+```tsx
+import { SongCard } from '../components/SongCard/SongCard'
+
+export function Library() {
+  return (
+    <div className="library">
+      {songs.map(song => (
+        <SongCard
+          key={song.id}
+          title={song.title}
+          artist={song.artist}
+          albumArtUrl={song.artwork}
+          onPlay={() => playSong(song.id)}
+        />
+      ))}
+    </div>
+  )
+}
+```
+
+This pattern keeps UIForge generic while giving the NexaLive app full control over branding and domain-specific functionality.
 
 ## Contributing
 
