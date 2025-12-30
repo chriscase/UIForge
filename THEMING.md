@@ -709,10 +709,15 @@ Example themes are meant to be **copied and customized** for your own projects. 
 
 There are several ways to get the example theme into your project:
 
-**Option 1: Download from GitHub (Recommended)**
+**Option 1: Download from GitHub (Recommended for exploration)**
 ```bash
 # Download directly from the UIForge repository
 curl -o src/styles/my-theme.css https://raw.githubusercontent.com/chriscase/UIForge/main/examples/themes/nexalive-theme.css
+
+# For production use, verify the file contents before using
+# Or clone the UIForge repo and copy locally:
+# git clone https://github.com/chriscase/UIForge.git /tmp/uiforge
+# cp /tmp/uiforge/examples/themes/nexalive-theme.css src/styles/my-theme.css
 ```
 
 **Option 2: View and copy manually**
@@ -1249,9 +1254,11 @@ Example: Creating a `SongCard` wrapper for a music app:
    ```tsx
    // src/components/SongCard/SongCard.tsx
    import React from 'react'
-   import { MediaCard } from '@appforgeapps/uiforge'
-   import { Button } from '@appforgeapps/uiforge'
+   import { MediaCard, Button } from '@appforgeapps/uiforge'
    
+   // Note: This is a simplified example for demonstration.
+   // The complete example in examples/SongCard/ includes additional props
+   // like genre, versionCount, variant, theme, and more actions.
    interface SongCardProps {
      title: string
      artist: string
@@ -1260,6 +1267,7 @@ Example: Creating a `SongCard` wrapper for a music app:
      year?: number
      duration?: string
      onPlay?: () => void
+     onAddToPlaylist?: () => void
    }
    
    export const SongCard: React.FC<SongCardProps> = ({
@@ -1270,6 +1278,7 @@ Example: Creating a `SongCard` wrapper for a music app:
      year,
      duration,
      onPlay,
+     onAddToPlaylist,
    }) => {
      // Build metadata from domain-specific props
      const meta: Record<string, string> = {}
@@ -1278,11 +1287,22 @@ Example: Creating a `SongCard` wrapper for a music app:
      if (duration) meta.duration = duration
    
      // Create domain-specific actions
-     const actions = onPlay ? (
-       <Button variant="primary" size="small" onClick={onPlay}>
-         ▶ Play
-       </Button>
-     ) : null
+     // Note: Simplified for brevity. Full implementation includes
+     // event.stopPropagation(), proper aria-labels, and more buttons.
+     const actions = (
+       <div>
+         {onPlay && (
+           <Button variant="primary" size="small" onClick={onPlay}>
+             ▶ Play
+           </Button>
+         )}
+         {onAddToPlaylist && (
+           <Button variant="outline" size="small" onClick={onAddToPlaylist}>
+             + Playlist
+           </Button>
+         )}
+       </div>
+     )
    
      // Map to generic MediaCard
      return (
@@ -1293,6 +1313,7 @@ Example: Creating a `SongCard` wrapper for a music app:
          mediaAlt={`Album artwork for ${album || title}`}
          meta={meta}
          actions={actions}
+         ariaLabel={`${title} by ${artist}`}
        />
      )
    }
@@ -1333,7 +1354,7 @@ Example: Creating a `SongCard` wrapper for a music app:
 2. **Contrast testing**: Verify WCAG color contrast requirements
    - Normal text: 4.5:1 minimum
    - Large text: 3:1 minimum
-   - Use tools like [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
+   - Use contrast checking tools like [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/), browser DevTools, or similar alternatives
 3. **Dark mode**: If supporting dark mode, test theme with both light and dark variants
 4. **Responsive**: Test on mobile and desktop to ensure proper scaling
 
