@@ -2,7 +2,7 @@ import { defineConfig } from '@playwright/test'
 
 /**
  * Playwright configuration for UIForge E2E tests
- * Tests mobile header primitives at various device widths per QA checklist
+ * Tests all UIForge components at various device widths per QA checklist
  */
 export default defineConfig({
   testDir: './e2e',
@@ -10,7 +10,10 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
+  reporter: [
+    ['html'],
+    ['./e2e/markdown-reporter.ts'],
+  ],
   use: {
     baseURL: 'http://localhost:5173',
     trace: 'on-first-retry',

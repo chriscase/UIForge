@@ -4,22 +4,31 @@ This directory contains end-to-end (E2E) tests and visual regression tests for t
 
 ## Test Files
 
-### `mobile-header-primitives.spec.ts`
-Tests for the Mobile Header primitives including:
-- IconButton touch targets and accessibility
-- MobileHeaderLayout structure and sizing
-- OverflowMenu interactions
-- Keyboard navigation and focus management
+### Component Tests
 
-### `song-card-example.spec.ts`
-Visual regression tests for the SongCard example demonstrating MediaCard composition:
-- **Visual Snapshots**: Tests capture screenshots of different card variants (default, compact, featured)
-- **Theme Testing**: Validates both light and dark themes
-- **Custom Themes**: Tests with NexaLive theme enabled/disabled
-- **Loading States**: Verifies MediaListSkeleton rendering
-- **Responsive Layouts**: Tests across 5 viewport sizes (320px, 375px, 414px, 768px, 1024px)
-- **Interactivity**: Tests button clicks and notifications
-- **Accessibility**: Validates ARIA labels and keyboard navigation
+| Test File | Component | Description |
+|-----------|-----------|-------------|
+| `home.spec.ts` | Home Page | Tests home page rendering, navigation, and theme switching |
+| `button.spec.ts` | Button | Tests button variants, sizes, states, and accessibility |
+| `grid.spec.ts` | UIForgeGrid | Tests table rendering, selection, search, pagination |
+| `combobox.spec.ts` | UIForgeComboBox | Tests selection, search, hierarchical options, keyboard navigation |
+| `blocks-editor.spec.ts` | UIForgeBlocksEditor | Tests block creation, editing, export, read-only mode |
+| `activity-stream.spec.ts` | UIForgeActivityStream | Tests event rendering, grouping, density, themes |
+| `video.spec.ts` | UIForgeVideo | Tests video embedding, overlay, previews, play events |
+| `sidebar.spec.ts` | UIForgeSidebar | Tests static, drawer, and bottom variants |
+| `icon-library.spec.ts` | Icon Library | Tests icon rendering, search, and display |
+| `hooks.spec.ts` | useResponsive & useDynamicPageCount | Tests hook example pages |
+| `safe-area.spec.ts` | CSS Tokens & Safe Area | Tests token documentation and utility classes |
+| `mobile-header-primitives.spec.ts` | Mobile Header | Tests IconButton, MobileHeaderLayout, OverflowMenu |
+| `song-card-example.spec.ts` | MediaCard & SongCard | Visual regression tests for SongCard composition |
+
+### Test Report
+
+Each test run generates a Markdown report at `e2e/E2E_TEST_REPORT.md` with:
+- Test summary (total, passed, failed, skipped)
+- Results by component
+- Failed test details
+- Historical runs (last 5 runs)
 
 ## Running Tests
 
