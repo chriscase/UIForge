@@ -8,6 +8,18 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/tests/setup.ts',
     css: true,
-    exclude: ['**/node_modules/**', '**/dist/**', '**/e2e/**']
+    exclude: ['**/node_modules/**', '**/dist/**', '**/e2e/**'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'text-summary', 'lcov', 'json-summary'],
+      include: ['src/components/**', 'src/hooks/**', 'src/video/**'],
+      exclude: ['src/tests/**', 'src/icons/**', '**/*.d.ts', '**/*.stories.*'],
+      thresholds: {
+        statements: 60,
+        branches: 58,
+        functions: 60,
+        lines: 60,
+      },
+    },
   }
 })
