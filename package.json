@@ -35,7 +35,8 @@
     "prepublishOnly": "npm run build",
     "screenshots": "npx tsx scripts/capture-screenshots.ts",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "benchmark": "vitest bench --run"
   },
   "keywords": [
     "react",

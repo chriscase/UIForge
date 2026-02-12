@@ -2,6 +2,7 @@
 
 A rich user interface library for ReactJS developers written by a seasoned user interface developer who loves working with ReactJS.
 
+[![codecov](https://codecov.io/gh/chriscase/UIForge/branch/main/graph/badge.svg)](https://codecov.io/gh/chriscase/UIForge)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2F19-61dafb)](https://reactjs.org/)
