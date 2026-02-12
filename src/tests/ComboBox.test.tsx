@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, screen, waitFor, fireEvent } from '@testing-library/react'
+import { render, screen, waitFor, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { UIForgeComboBox, ComboBoxOption } from '../components/ComboBox'
 
@@ -216,14 +216,10 @@ describe('UIForgeComboBox', () => {
     })
   })
 
-  // TODO: These tests are currently skipped due to an issue with opening the dropdown
-  // when searchable={true} in the test environment. The keyboard/click events don't
-  // seem to trigger the dropdown to open. This needs investigation.
-  // The component works correctly in the browser - only the test interaction is failing.
-  describe.skip('Search/Filter', () => {
+  describe('Search/Filter', () => {
     it('opens dropdown when searchable is true', async () => {
       const user = userEvent.setup()
-      render(<UIForgeComboBox options={basicOptions} searchable={false} />)
+      render(<UIForgeComboBox options={basicOptions} searchable />)
 
       const combobox = screen.getByRole('combobox')
       combobox.focus()
@@ -237,7 +233,8 @@ describe('UIForgeComboBox', () => {
       render(<UIForgeComboBox options={basicOptions} searchable />)
 
       const combobox = screen.getByRole('combobox')
-      fireEvent.keyDown(combobox, { key: 'ArrowDown' })
+      combobox.focus()
+      await user.keyboard('{ArrowDown}')
 
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
@@ -258,7 +255,8 @@ describe('UIForgeComboBox', () => {
       render(<UIForgeComboBox options={basicOptions} searchable noOptionsMessage="No matches" />)
 
       const combobox = screen.getByRole('combobox')
-      fireEvent.keyDown(combobox, { key: 'ArrowDown' })
+      combobox.focus()
+      await user.keyboard('{ArrowDown}')
 
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
@@ -277,7 +275,8 @@ describe('UIForgeComboBox', () => {
       render(<UIForgeComboBox options={hierarchicalOptions} searchable />)
 
       const combobox = screen.getByRole('combobox')
-      fireEvent.keyDown(combobox, { key: 'ArrowDown' })
+      combobox.focus()
+      await user.keyboard('{ArrowDown}')
 
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
@@ -420,9 +419,14 @@ describe('UIForgeComboBox', () => {
     })
   })
 
-  // TODO: These async search tests are currently skipped due to the same issue as Search/Filter tests.
-  // The dropdown doesn't open in the test environment when searchable={true}.
-  describe.skip('Async Search', () => {
+  describe('Async Search', () => {
+    // Helper: flush the debounce timer and async state updates by waiting inside act()
+    const flushDebounce = async (ms = 400) => {
+      await act(async () => {
+        await new Promise((r) => setTimeout(r, ms))
+      })
+    }
+
     it('calls onSearch callback', async () => {
       const user = userEvent.setup()
       const onSearch = vi.fn().mockResolvedValue([{ value: 1, label: 'Result 1' }])
@@ -430,7 +434,8 @@ describe('UIForgeComboBox', () => {
       render(<UIForgeComboBox onSearch={onSearch} searchable />)
 
       const combobox = screen.getByRole('combobox')
-      fireEvent.keyDown(combobox, { key: 'ArrowDown' })
+      combobox.focus()
+      await user.keyboard('{ArrowDown}')
 
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
@@ -439,9 +444,9 @@ describe('UIForgeComboBox', () => {
       const input = screen.getByRole('textbox')
       await user.type(input, 'test')
 
-      await waitFor(() => {
-        expect(onSearch).toHaveBeenCalledWith('test')
-      })
+      await flushDebounce()
+
+      expect(onSearch).toHaveBeenCalledWith('test', expect.anything())
     })
 
     it('displays async results', async () => {
@@ -454,7 +459,8 @@ describe('UIForgeComboBox', () => {
       render(<UIForgeComboBox onSearch={onSearch} searchable />)
 
       const combobox = screen.getByRole('combobox')
-      fireEvent.keyDown(combobox, { key: 'ArrowDown' })
+      combobox.focus()
+      await user.keyboard('{ArrowDown}')
 
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
@@ -463,22 +469,27 @@ describe('UIForgeComboBox', () => {
       const input = screen.getByRole('textbox')
       await user.type(input, 'test')
 
-      await waitFor(() => {
-        expect(screen.getByText('Async Result 1')).toBeInTheDocument()
-        expect(screen.getByText('Async Result 2')).toBeInTheDocument()
-      })
+      await flushDebounce()
+
+      expect(screen.getByText('Async Result 1')).toBeInTheDocument()
+      expect(screen.getByText('Async Result 2')).toBeInTheDocument()
     })
 
     it('shows loading state during async search', async () => {
       const user = userEvent.setup()
-      const onSearch = vi
-        .fn()
-        .mockImplementation(() => new Promise((resolve) => setTimeout(() => resolve([]), 100)))
+      let resolveSearch: ((v: ComboBoxOption[]) => void) | null = null
+      const onSearch = vi.fn().mockImplementation(
+        () =>
+          new Promise<ComboBoxOption[]>((resolve) => {
+            resolveSearch = resolve
+          })
+      )
 
-      render(<UIForgeComboBox onSearch={onSearch} searchable />)
+      render(<UIForgeComboBox onSearch={onSearch} searchable debounceMs={10} />)
 
       const combobox = screen.getByRole('combobox')
-      fireEvent.keyDown(combobox, { key: 'ArrowDown' })
+      combobox.focus()
+      await user.keyboard('{ArrowDown}')
 
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
@@ -487,13 +498,18 @@ describe('UIForgeComboBox', () => {
       const input = screen.getByRole('textbox')
       await user.type(input, 'test')
 
-      // Should show loading state briefly
-      await waitFor(
-        () => {
-          expect(screen.getByText('Loading...')).toBeInTheDocument()
-        },
-        { timeout: 2000 }
-      )
+      // Flush debounce so the async call starts (but don't resolve it)
+      await flushDebounce(50)
+
+      // Should show loading state while the promise is pending
+      await waitFor(() => {
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
+      })
+
+      // Clean up: resolve the pending promise
+      await act(async () => {
+        resolveSearch?.([])
+      })
     })
 
     it('does not repeatedly call onSearch when input remains focused', async () => {
@@ -502,27 +518,24 @@ describe('UIForgeComboBox', () => {
       render(<UIForgeComboBox onSearch={onSearch} searchable />)
 
       const combobox = screen.getByRole('combobox')
-      fireEvent.keyDown(combobox, { key: 'ArrowDown' })
+      combobox.focus()
+      await user.keyboard('{ArrowDown}')
 
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
       })
 
+      // Wait for the initial open search to complete
+      await flushDebounce()
+      const initialCallCount = onSearch.mock.calls.length
+
       const input = screen.getByRole('textbox')
-      // Focus without typing
+      // Focus/click without typing (search text stays empty)
       await user.click(input)
 
-      // Allow debounce to finish
-      await waitFor(
-        () => {
-          expect(onSearch).toHaveBeenCalledTimes(1)
-        },
-        { timeout: 1000 }
-      )
-
-      // Wait a little longer to make sure no additional calls are made
-      await new Promise((resolve) => setTimeout(resolve, 500))
-      expect(onSearch).toHaveBeenCalledTimes(1)
+      // Wait to ensure no additional calls are triggered
+      await flushDebounce(600)
+      expect(onSearch).toHaveBeenCalledTimes(initialCallCount)
     })
 
     it('cancels stale results using AbortController when a newer search starts', async () => {
@@ -537,7 +550,8 @@ describe('UIForgeComboBox', () => {
       render(<UIForgeComboBox onSearch={onSearch} searchable debounceMs={10} />)
 
       const combobox = screen.getByRole('combobox')
-      fireEvent.keyDown(combobox, { key: 'ArrowDown' })
+      combobox.focus()
+      await user.keyboard('{ArrowDown}')
 
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
@@ -545,26 +559,29 @@ describe('UIForgeComboBox', () => {
 
       const input = screen.getByRole('textbox')
 
-      // Trigger first search
+      // Trigger first search by typing 'a'
       await user.type(input, 'a')
-      // Wait for the first onSearch call to happen
-      await waitFor(() => expect(onSearch).toHaveBeenCalledTimes(1))
+      await flushDebounce(50)
+      const callsAfterA = onSearch.mock.calls.length
 
-      // Trigger second search (newer) by typing more
+      // Trigger second search by typing 'b'
       await user.type(input, 'b')
-      // Wait for second call
-      await waitFor(() => expect(onSearch).toHaveBeenCalledTimes(2))
+      await flushDebounce(50)
+      const callsAfterB = onSearch.mock.calls.length
+      expect(callsAfterB).toBeGreaterThan(callsAfterA)
 
-      // Resolve second faster
-      resolves[1]([{ value: '2', label: 'Result 2' }])
-
-      await waitFor(() => {
-        expect(screen.getByText('Result 2')).toBeInTheDocument()
+      // Resolve the latest call
+      await act(async () => {
+        resolves[resolves.length - 1]([{ value: '2', label: 'Result 2' }])
       })
 
-      // Resolve first (stale) — it should be aborted and ignored
-      resolves[0]([{ value: '1', label: 'Result 1' }])
-      await new Promise((resolve) => setTimeout(resolve, 50))
+      expect(screen.getByText('Result 2')).toBeInTheDocument()
+
+      // Resolve an earlier (stale) call — it should be aborted and ignored
+      await act(async () => {
+        resolves[0]([{ value: '1', label: 'Result 1' }])
+      })
+      await flushDebounce(50)
       expect(screen.queryByText('Result 1')).not.toBeInTheDocument()
     })
 
@@ -586,7 +603,8 @@ describe('UIForgeComboBox', () => {
       )
 
       const combobox = screen.getByRole('combobox')
-      fireEvent.keyDown(combobox, { key: 'ArrowDown' })
+      combobox.focus()
+      await user.keyboard('{ArrowDown}')
 
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
@@ -594,33 +612,51 @@ describe('UIForgeComboBox', () => {
 
       const input = screen.getByRole('textbox')
       await user.type(input, 'cache')
+      await flushDebounce(50)
 
-      await waitFor(() => expect(screen.getByText('CacheResult')).toBeInTheDocument())
-      expect(onSearch).toHaveBeenCalledTimes(1)
+      expect(screen.getByText('CacheResult')).toBeInTheDocument()
+      const cacheCallCount = onSearch.mock.calls.filter(
+        (c: [string, ...unknown[]]) => c[0] === 'cache'
+      ).length
+      expect(cacheCallCount).toBe(1)
 
       // Close and reopen
       const outsideButton = screen.getByText('Outside')
       await user.click(outsideButton)
       await waitFor(() => expect(screen.queryByRole('listbox')).not.toBeInTheDocument())
 
-      fireEvent.keyDown(combobox, { key: 'ArrowDown' })
+      combobox.focus()
+      await user.keyboard('{ArrowDown}')
       await waitFor(() => expect(screen.getByRole('listbox')).toBeInTheDocument())
       const input2 = screen.getByRole('textbox')
       await user.type(input2, 'cache')
+      await flushDebounce(50)
 
-      // Should use cache — onSearch should not be called again
-      await new Promise((resolve) => setTimeout(resolve, 50))
-      expect(onSearch).toHaveBeenCalledTimes(1)
+      // Should use cache — 'cache' search should not be called again
+      const cacheCallCount2 = onSearch.mock.calls.filter(
+        (c: [string, ...unknown[]]) => c[0] === 'cache'
+      ).length
+      expect(cacheCallCount2).toBe(1)
 
       // Clear the cache via the previously provided callback
-      clearFn?.()
-      // Open again and search — this should trigger onSearch again
-      fireEvent.keyDown(combobox, { key: 'ArrowDown' })
+      await act(async () => {
+        clearFn?.()
+      })
+      // Close and reopen, then search — this should trigger onSearch again
+      await user.click(outsideButton)
+      await waitFor(() => expect(screen.queryByRole('listbox')).not.toBeInTheDocument())
+
+      combobox.focus()
+      await user.keyboard('{ArrowDown}')
       await waitFor(() => expect(screen.getByRole('listbox')).toBeInTheDocument())
       const input3 = screen.getByRole('textbox')
       await user.type(input3, 'cache')
-      await new Promise((resolve) => setTimeout(resolve, 50))
-      expect(onSearch).toHaveBeenCalledTimes(2)
+      await flushDebounce(50)
+
+      const cacheCallCount3 = onSearch.mock.calls.filter(
+        (c: [string, ...unknown[]]) => c[0] === 'cache'
+      ).length
+      expect(cacheCallCount3).toBe(2)
     })
 
     it('re-fetches on open when refreshOnOpen is true', async () => {
@@ -634,7 +670,8 @@ describe('UIForgeComboBox', () => {
       )
 
       const combobox = screen.getByRole('combobox')
-      fireEvent.keyDown(combobox, { key: 'ArrowDown' })
+      combobox.focus()
+      await user.keyboard('{ArrowDown}')
 
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
@@ -642,26 +679,32 @@ describe('UIForgeComboBox', () => {
 
       const input = screen.getByRole('textbox')
       await user.type(input, 'refresh')
+      await flushDebounce(50)
 
-      await waitFor(() => expect(screen.getByText('RefreshResult')).toBeInTheDocument())
-      expect(onSearch).toHaveBeenCalledTimes(1)
+      expect(screen.getByText('RefreshResult')).toBeInTheDocument()
+      const callCountAfterFirstSearch = onSearch.mock.calls.length
 
       // Close and re-open — refreshOnOpen should cause another call
       await user.click(screen.getByText('Outside'))
       await waitFor(() => expect(screen.queryByRole('listbox')).not.toBeInTheDocument())
 
-      fireEvent.keyDown(combobox, { key: 'ArrowDown' })
-      await waitFor(() => expect(onSearch).toHaveBeenCalledTimes(2))
+      combobox.focus()
+      await user.keyboard('{ArrowDown}')
+      await flushDebounce(50)
+
+      expect(onSearch.mock.calls.length).toBeGreaterThan(callCountAfterFirstSearch)
     })
 
     it('exposes a force refresh API via onForceRefresh', async () => {
       const user = userEvent.setup()
-      const responses = [[{ value: '1', label: 'OldResult' }], [{ value: '2', label: 'NewResult' }]]
-      let callCount = 0
+      // Use a flag to switch results: initially return OldResult, then after the flag
+      // is set to true, return NewResult. The flag is toggled right before calling forceRefresh.
+      let returnNew = false
       const onSearch = vi.fn().mockImplementation(async () => {
-        const res = responses[callCount] || responses[responses.length - 1]
-        callCount += 1
-        return res
+        if (returnNew) {
+          return [{ value: '2', label: 'NewResult' }]
+        }
+        return [{ value: '1', label: 'OldResult' }]
       })
 
       let forceRefreshFn: (() => void) | null = null
@@ -675,7 +718,8 @@ describe('UIForgeComboBox', () => {
       )
 
       const combobox = screen.getByRole('combobox')
-      fireEvent.keyDown(combobox, { key: 'ArrowDown' })
+      combobox.focus()
+      await user.keyboard('{ArrowDown}')
 
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument()
@@ -683,12 +727,19 @@ describe('UIForgeComboBox', () => {
 
       const input = screen.getByRole('textbox')
       await user.type(input, 'a')
+      await flushDebounce(50)
 
-      await waitFor(() => expect(screen.getByText('OldResult')).toBeInTheDocument())
-      // Now force a refresh
-      forceRefreshFn?.()
+      expect(screen.getByText('OldResult')).toBeInTheDocument()
 
-      await waitFor(() => expect(screen.getByText('NewResult')).toBeInTheDocument())
+      // Switch to returning NewResult, then force a refresh
+      returnNew = true
+      await act(async () => {
+        forceRefreshFn?.()
+      })
+      // Flush any pending microtasks from the force refresh
+      await flushDebounce(50)
+
+      expect(screen.getByText('NewResult')).toBeInTheDocument()
     })
   })
 
