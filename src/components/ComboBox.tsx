@@ -392,16 +392,25 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  // Determine effective options: when a search/filter is active use filtered results
+  // (even if empty) so the "no options" message can be displayed; otherwise fall back
+  // to the full static options list.
+  const effectiveOptions = useMemo(() => {
+    const isFiltering = searchText.trim().length > 0
+    if (isFiltering) return filteredOptions
+    return filteredOptions.length > 0 ? filteredOptions : options
+  }, [filteredOptions, options, searchText])
+
   // Flatten current options for keyboard navigation
   const flatOptions = useMemo(() => {
-    const opts = flattenOptions(filteredOptions.length > 0 ? filteredOptions : options)
+    const opts = flattenOptions(effectiveOptions)
     return opts.filter((opt) => !opt.disabled)
-  }, [filteredOptions, options, flattenOptions])
+  }, [effectiveOptions, flattenOptions])
 
   // Memoize flattened options for rendering (includes disabled options)
   const flatOptionsForRender = useMemo(() => {
-    return flattenOptions(filteredOptions.length > 0 ? filteredOptions : options)
-  }, [filteredOptions, options, flattenOptions])
+    return flattenOptions(effectiveOptions)
+  }, [effectiveOptions, flattenOptions])
 
   // Create index mapping for performance in render loop
   const optionIndexMap = useMemo(() => {
@@ -584,6 +593,7 @@ export const UIForgeComboBox: React.FC<UIForgeComboBoxProps> = ({
             className={`${baseClass}-input`}
             value={searchText}
             onChange={handleInputChange}
+            onClick={(e) => e.stopPropagation()}
             placeholder={placeholder}
             disabled={disabled}
             aria-autocomplete="list"
