@@ -14,6 +14,7 @@ export default defineConfig({
     ['html'],
     ['./e2e/markdown-reporter.ts'],
   ],
+  snapshotPathTemplate: '{testDir}/screenshots/{testFilePath}/{arg}{ext}',
   use: {
     baseURL: 'http://localhost:5173',
     trace: 'on-first-retry',
